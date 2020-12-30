@@ -13,5 +13,7 @@ public interface CategoryService {
     public Category getCategoryByName(String category);
 
     public Category getCategoryById(Long id);
+
+    public Category updateCategory(Category category);
     
 }

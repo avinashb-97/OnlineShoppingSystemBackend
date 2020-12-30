@@ -9,7 +9,7 @@ public class Counter {
     @Id
     private String  id;
 
-    private Long seq;
+    private long seq;
 
     public Counter() {
     }
@@ -22,11 +22,11 @@ public class Counter {
         this.id = id;
     }
 
-    public Long getSeq() {
+    public long getSeq() {
         return seq;
     }
 
-    public void setSeq(Long seq) {
+    public void setSeq(long seq) {
         this.seq = seq;
     }
 }

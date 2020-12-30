@@ -7,10 +7,12 @@ import com.sreihaan.SreihaanFood.service.CategoryService;
 import com.sreihaan.SreihaanFood.service.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
@@ -40,5 +42,10 @@ public class CategoryServiceImpl implements CategoryService {
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(()->new CategoryNotFoundException("Category Not Found -> Id : "+id));
+    }
+
+    @Override
+    public Category updateCategory(Category category) {
+        return categoryRepository.save(category);
     }
 }

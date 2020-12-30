@@ -1,0 +1,241 @@
+{
+	"info": {
+		"_postman_id": "c394c2e7-c7f3-4f09-b620-aeaed49c9ada",
+		"name": "Sreihaan",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\" : \"Avinash\",\r\n    \"lastName\" : \"B\",\r\n    \"email\" : \"avinash@gmail.com\",\r\n    \"password\" : \"hellohello\",\r\n    \"confirmPassword\" : \"hellohello\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"avinash@gmail.com\",\r\n    \"password\":\"hellohello\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Category",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoQGdtYWlsLmNvbSIsImV4cCI6MTYxMDEzNzU5N30.9XOdhGkg06SZ_Znqk4M8zUDB6brvxZmx5v7eEcAwqWQld6YCx2zw58pefAiasW_yWWIc8Dtjhxs-gHwt4eweUg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Containers\",\r\n    \"description\" : \"Container for Foods\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Categories",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoQGdtYWlsLmNvbSIsImV4cCI6MTYxMDEzNzU5N30.9XOdhGkg06SZ_Znqk4M8zUDB6brvxZmx5v7eEcAwqWQld6YCx2zw58pefAiasW_yWWIc8Dtjhxs-gHwt4eweUg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User by email",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoQGdtYWlsLmNvbSIsImV4cCI6MTYxMDEzNzU5N30.9XOdhGkg06SZ_Znqk4M8zUDB6brvxZmx5v7eEcAwqWQld6YCx2zw58pefAiasW_yWWIc8Dtjhxs-gHwt4eweUg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/user?email=avinash@gmail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "avinash@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Product",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoQGdtYWlsLmNvbSIsImV4cCI6MTYxMDEzNzU5N30.9XOdhGkg06SZ_Znqk4M8zUDB6brvxZmx5v7eEcAwqWQld6YCx2zw58pefAiasW_yWWIc8Dtjhxs-gHwt4eweUg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Coconut Oil\",\r\n    \"description\" : \"Pure virgin Coconut oil\",\r\n    \"price\" : 123.12,\r\n    \"discountedPrict\" : 109.99,\r\n    \"isFeatured\" : true,\r\n    \"isNew\" : true,\r\n    \"isBestSeller\" : false,\r\n    \"categoryId\" : \"2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all products",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoQGdtYWlsLmNvbSIsImV4cCI6MTYxMDEzNzU5N30.9XOdhGkg06SZ_Znqk4M8zUDB6brvxZmx5v7eEcAwqWQld6YCx2zw58pefAiasW_yWWIc8Dtjhxs-gHwt4eweUg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"product"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
