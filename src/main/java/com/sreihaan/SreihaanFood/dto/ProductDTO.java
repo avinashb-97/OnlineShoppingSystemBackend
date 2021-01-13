@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
 import org.springframework.beans.BeanUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
@@ -26,6 +27,8 @@ public class ProductDTO {
     private boolean isBestSeller;
 
     private long categoryId;
+
+    private MultipartFile image;
 
     public long getId() {
         return id;
@@ -68,7 +71,7 @@ public class ProductDTO {
     }
 
     @JsonProperty("isNew")
-    public Boolean getNew() {
+    public boolean getNew() {
         return isNew;
     }
 
@@ -77,7 +80,7 @@ public class ProductDTO {
     }
 
     @JsonProperty("isFeatured")
-    public Boolean getFeatured() {
+    public boolean getFeatured() {
         return isFeatured;
     }
 
@@ -86,7 +89,7 @@ public class ProductDTO {
     }
 
     @JsonProperty("isBestSeller")
-    public Boolean getBestSeller() {
+    public boolean getBestSeller() {
         return isBestSeller;
     }
 
@@ -100,6 +103,14 @@ public class ProductDTO {
 
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 
     public static ProductDTO convertEntityToProductDTO(Product product)

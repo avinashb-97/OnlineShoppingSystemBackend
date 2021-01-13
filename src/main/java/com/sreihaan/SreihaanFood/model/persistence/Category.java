@@ -4,12 +4,16 @@ import io.github.kaiso.relmongo.annotation.CascadeType;
 import io.github.kaiso.relmongo.annotation.FetchType;
 import io.github.kaiso.relmongo.annotation.JoinProperty;
 import io.github.kaiso.relmongo.annotation.OneToMany;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 @Document(collection = "category")
 public class Category {
 
@@ -23,34 +27,6 @@ public class Category {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinProperty(name = "products")
     private List<Product> products;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
 
     public void setProducts(Product product) {
         if(products == null)
