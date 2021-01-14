@@ -34,4 +34,5 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByEmail(email)
                 .orElse(new User());
     }
+
 }

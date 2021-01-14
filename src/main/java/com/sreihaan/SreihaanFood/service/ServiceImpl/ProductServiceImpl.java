@@ -1,6 +1,5 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
-import com.sreihaan.SreihaanFood.exception.ImageNotFoundException;
 import com.sreihaan.SreihaanFood.exception.ProductNotFoundException;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Image;
