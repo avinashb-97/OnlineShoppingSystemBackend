@@ -3,24 +3,24 @@ package com.sreihaan.SreihaanFood.model.persistence;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
 @Document(collection = "user")
-public class User {
+public class User implements Persistable<String> {
 
     @Id
-    private long id;
+    private String id;
 
     private String firstName;
 
@@ -39,6 +39,14 @@ public class User {
 
     private boolean enabled;
 
+    private boolean persisted;
+
+    @CreatedDate
+    private Date createdTime = new Date();
+
+    @LastModifiedDate
+    private Date lastModifiedTime;
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = this.getRoles();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -49,4 +57,8 @@ public class User {
         return authorities;
     }
 
+    @Override
+    public boolean isNew() {
+        return !persisted;
+    }
 }

@@ -1,4 +1,4 @@
-package com.sreihaan.SreihaanFood.security;
+package com.sreihaan.SreihaanFood.conf.security;
 
 import com.sreihaan.SreihaanFood.constants.SecurityConstants;
 import org.springframework.context.annotation.Bean;

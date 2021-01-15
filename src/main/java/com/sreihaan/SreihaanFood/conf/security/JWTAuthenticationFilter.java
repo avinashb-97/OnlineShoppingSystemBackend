@@ -1,4 +1,4 @@
-package com.sreihaan.SreihaanFood.security;
+package com.sreihaan.SreihaanFood.conf.security;
 
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;

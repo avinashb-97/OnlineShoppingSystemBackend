@@ -1,4 +1,4 @@
-package com.sreihaan.SreihaanFood.security;
+package com.sreihaan.SreihaanFood.conf.security;
 
 import com.sreihaan.SreihaanFood.model.persistence.User;
 import com.sreihaan.SreihaanFood.model.persistence.repository.UserRepository;
@@ -17,7 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findUserByEmail(username).orElseThrow(()-> new UsernameNotFoundException(username));
+        User user = userRepository.findUserByEmailIgnoreCase(username).orElseThrow(()-> new UsernameNotFoundException(username));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.isEnabled(), true, true, user.isAccountNonLocked(), user.getAuthorities());
     }
 }

@@ -5,12 +5,14 @@ import com.sreihaan.SreihaanFood.model.persistence.repository.UserRepository;
 import com.sreihaan.SreihaanFood.service.CounterService;
 import com.sreihaan.SreihaanFood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@EnableMongoAuditing
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -24,18 +26,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user, String password) {
-        if(userRepository.existsUserByEmail(user.getEmail()))
+        if(userRepository.existsUserByEmailIgnoreCase(user.getEmail()))
         {
             return user;
         }
         user.setPassword(bCryptPasswordEncoder.encode(password));
-        user.setId(counterService.getNextSequence("user"));
+        user.setId(counterService.getNextSequence("user").toString());
+        user.setPersisted(true);
         return userRepository.save(user);
     }
 
     @Override
     public User getUserByEmail(String email) {
-        return userRepository.findUserByEmail(email)
+        return userRepository.findUserByEmailIgnoreCase(email)
                 .orElse(new User());
     }
 
