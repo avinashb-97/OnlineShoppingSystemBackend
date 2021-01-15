@@ -26,6 +26,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
                 .antMatchers(HttpMethod.GET, "/api/product").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/category/***").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/user/confirm-account").permitAll()
                 .antMatchers("/").hasAnyAuthority("USER", "MODERATOR", "ADMIN")
                 .anyRequest().authenticated()
                 .and()

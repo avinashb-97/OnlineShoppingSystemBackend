@@ -47,6 +47,8 @@ public class User implements Persistable<String> {
     @LastModifiedDate
     private Date lastModifiedTime;
 
+    private String confirmationToken;
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = this.getRoles();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();

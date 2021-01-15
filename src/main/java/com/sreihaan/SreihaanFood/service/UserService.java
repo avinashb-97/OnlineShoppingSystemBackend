@@ -10,4 +10,5 @@ public interface UserService {
 
     public User getUserByEmail(String email);
 
+    public User confirmUser(String confirmationToken);
 }

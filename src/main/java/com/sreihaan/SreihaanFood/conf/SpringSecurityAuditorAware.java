@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Component
 class SpringSecurityAuditorAware implements AuditorAware<String> {
-    
+
     @Override
     public Optional<String> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

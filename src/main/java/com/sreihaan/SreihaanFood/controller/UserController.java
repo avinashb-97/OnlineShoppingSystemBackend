@@ -38,6 +38,13 @@ public class UserController {
         return ResponseEntity.ok(UserDTO.convertEntityToUserDTO(user));
     }
 
+    @GetMapping("/confirm-account")
+    public ResponseEntity<UserDTO> confirmAccount(@RequestParam("token") String confirmationToken)
+    {
+        User user = userService.confirmUser(confirmationToken);
+        return ResponseEntity.ok(UserDTO.convertEntityToUserDTO(user));
+    }
+
     private User convertCreateUserRequestToUserObject(CreateUserRequest createUserRequest)
     {
         User user = new User();

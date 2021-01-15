@@ -14,7 +14,6 @@ public class MailConstants {
     public static final String ENABLE_SSL = "true";
     public static final String TEST_CONNECTION = "true";
     public static final String FALLBACK = "false";
-
-
+    public static final String USER_CONFIRMATION_ENDPOINT = "/api/user/confirm-account";
 
 }

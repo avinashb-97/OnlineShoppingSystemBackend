@@ -12,4 +12,6 @@ public interface UserRepository extends MongoRepository<User, Long> {
 
     public boolean existsUserByEmailIgnoreCase(String email);
 
+    public Optional<User> findUserByConfirmationToken(String confiramtionToken);
+
 }
