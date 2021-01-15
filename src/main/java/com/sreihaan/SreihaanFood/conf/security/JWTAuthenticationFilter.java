@@ -2,8 +2,11 @@ package com.sreihaan.SreihaanFood.conf.security;
 
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.sreihaan.SreihaanFood.constants.SecurityConstants;
+import com.sreihaan.SreihaanFood.model.persistence.Role;
 import com.sreihaan.SreihaanFood.model.persistence.User;
+import com.sreihaan.SreihaanFood.utils.AuthUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,9 +19,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.io.PrintWriter;
+import java.util.*;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
@@ -63,5 +65,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .sign(HMAC512(SecurityConstants.SECRET.getBytes()));
         res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+        PrintWriter out = res.getWriter();
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
+        Map userDetails = new HashMap();
+        userDetails.put("email", auth.getName());
+        userDetails.put("role", AuthUtil.getUserRole(auth.getAuthorities()));
+        String employeeJsonString = new Gson().toJson(userDetails);
+        out.print(employeeJsonString);
+        out.flush();
     }
 }

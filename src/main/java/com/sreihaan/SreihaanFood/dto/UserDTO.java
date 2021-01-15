@@ -22,6 +22,16 @@ public class UserDTO {
     {
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(user, userDTO);
+        Role role = Role.USER;
+        if(user.getRoles().contains(Role.ADMIN))
+        {
+            role = Role.ADMIN;
+        }
+        else if(user.getRoles().contains(Role.MODERATOR))
+        {
+            role = Role.MODERATOR;
+        }
+        userDTO.setRole(role);
         return userDTO;
     }
 }

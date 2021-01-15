@@ -2,10 +2,10 @@ package com.sreihaan.SreihaanFood.utils;
 
 import com.sreihaan.SreihaanFood.model.persistence.Role;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collection;
-import java.util.List;
 
 public class AuthUtil {
 
@@ -22,15 +22,20 @@ public class AuthUtil {
     private static Role getCurrentUserRole()
     {
         Collection roles = getLoggedInUser().getAuthorities();
-        if(roles.contains(Role.ADMIN))
+        return getUserRole(roles);
+    }
+
+    public static Role getUserRole(Collection roles)
+    {
+        if(roles.contains(new SimpleGrantedAuthority(Role.ADMIN.toString())))
         {
             return Role.ADMIN;
         }
-        if(roles.contains(Role.MODERATOR))
+        if(roles.contains(new SimpleGrantedAuthority(Role.MODERATOR.toString())))
         {
             return Role.MODERATOR;
         }
-        if (roles.contains(Role.USER))
+        if (roles.contains(new SimpleGrantedAuthority(Role.USER.toString())))
         {
             return Role.USER;
         }
