@@ -4,6 +4,7 @@ package com.sreihaan.SreihaanFood.model.persistence;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +26,7 @@ public class User {
 
     private String lastName;
 
+    @Indexed(unique = true)
     private String email;
 
     private String password;
@@ -33,7 +35,9 @@ public class User {
 
     private Set<Role> roles;
 
-    private boolean isEnabled = true;
+    private boolean accountNonLocked = true;
+
+    private boolean enabled;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = this.getRoles();

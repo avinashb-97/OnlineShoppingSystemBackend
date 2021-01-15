@@ -24,6 +24,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user, String password) {
+        if(userRepository.existsUserByEmail(user.getEmail()))
+        {
+            return user;
+        }
         user.setPassword(bCryptPasswordEncoder.encode(password));
         user.setId(counterService.getNextSequence("user"));
         return userRepository.save(user);
