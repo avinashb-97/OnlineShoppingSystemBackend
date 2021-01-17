@@ -27,6 +27,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/product").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/category/***").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/user/confirm-account").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/user/***").permitAll()
                 .antMatchers("/").hasAnyAuthority("USER", "MODERATOR", "ADMIN")
                 .anyRequest().authenticated()
                 .and()
@@ -48,8 +49,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.parentAuthenticationManager(authenticationManagerBean())
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+
     }
 }

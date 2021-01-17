@@ -1,15 +1,16 @@
 package com.sreihaan.SreihaanFood.model.persistence.repository;
 
 import com.sreihaan.SreihaanFood.model.persistence.User;
+import com.sreihaan.SreihaanFood.model.persistence.UserToken;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
+
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserTokenRepository extends MongoRepository<UserToken, Long> {
 
-    public Optional<User> findUserByEmailIgnoreCase(String email);
+    public Optional<UserToken> findUserTokenByToken(String token);
 
-    public boolean existsUserByEmailIgnoreCase(String email);
-
+    public Optional<UserToken> findUserTokenByUser(User user);
 }

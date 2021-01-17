@@ -1,5 +1,7 @@
 package com.sreihaan.SreihaanFood.constants;
 
+import javax.servlet.http.PushBuilder;
+
 public class MailConstants {
 
     public static final String USERNAME = "sreihaanfoods@gmail.com";
@@ -14,6 +16,12 @@ public class MailConstants {
     public static final String ENABLE_SSL = "true";
     public static final String TEST_CONNECTION = "true";
     public static final String FALLBACK = "false";
-    public static final String USER_CONFIRMATION_ENDPOINT = "/api/user/confirm-account";
 
+    public static final String USER_CONFIRMATION_ENDPOINT = "/api/user/confirm-account";
+    public static final String PASSWORD_RESET_ENDPOINT = "/api/user/reset-password";
+
+    public static final String USER_CONFIRMATION_SUBJECT = "Complete Registration !";
+    public static final String USER_CONFIRMATION_BODY = "To confirm your account, please click here : ";
+    public static final String PASSWORD_RESET_SUBJECT = "Password Rest Link";
+    public static final String PASSWORD_RESET_BODY = "To reset your password, please click here : ";
 }

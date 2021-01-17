@@ -11,4 +11,10 @@ public interface UserService {
     public User getUserByEmail(String email);
 
     public User confirmUser(String confirmationToken);
+
+    void forgotPassword(String email);
+
+    void resetPassword(String resetToken, String password);
+
+    void changePasswordForCurrentUser(String oldPassword, String password);
 }

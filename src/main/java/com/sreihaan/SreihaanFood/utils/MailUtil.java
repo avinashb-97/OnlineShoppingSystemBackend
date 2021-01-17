@@ -6,11 +6,20 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 public class MailUtil {
 
-    public static String getConfirmationLink(String confirmationToken)
+    private static String getCurrentUrl()
     {
         String currentUrl = ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString();
-        String url = (currentUrl.split(SecurityConstants.SIGN_UP_URL))[0]+ MailConstants.USER_CONFIRMATION_ENDPOINT+"?token="+confirmationToken;
-        return url;
+        return (currentUrl.split(SecurityConstants.SIGN_UP_URL))[0];
+    }
+
+    public static String getUserConfirmationLink(String confirmationToken)
+    {
+        return getCurrentUrl()+ MailConstants.USER_CONFIRMATION_ENDPOINT+"?token="+confirmationToken;
+     }
+
+    public static String getUserPasswordResetLink(String passwordToken)
+    {
+        return getCurrentUrl()+ MailConstants.PASSWORD_RESET_ENDPOINT+"?token="+passwordToken;
     }
 
 }

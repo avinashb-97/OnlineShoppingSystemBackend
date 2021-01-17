@@ -1,6 +1,7 @@
 package com.sreihaan.SreihaanFood.model.persistence;
 
 
+import io.github.kaiso.relmongo.annotation.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -47,7 +48,8 @@ public class User implements Persistable<String> {
     @LastModifiedDate
     private Date lastModifiedTime;
 
-    private String confirmationToken;
+    @OneToOne(mappedBy = "user")
+    private UserToken userToken;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = this.getRoles();
