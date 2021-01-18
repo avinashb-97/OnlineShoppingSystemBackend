@@ -3,8 +3,8 @@ package com.sreihaan.SreihaanFood.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
+import com.sreihaan.SreihaanFood.utils.ProductUtil;
 import org.springframework.beans.BeanUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
@@ -26,9 +26,11 @@ public class ProductDTO {
 
     private boolean isBestSeller;
 
+    private String category;
+
     private long categoryId;
 
-    private MultipartFile image;
+    private String imageUrl;
 
     public long getId() {
         return id;
@@ -105,12 +107,27 @@ public class ProductDTO {
         this.categoryId = categoryId;
     }
 
-    public MultipartFile getImage() {
-        return image;
+    public static Product convertProductDTOToEntity(ProductDTO productDTO)
+    {
+        Product product = new Product();
+        BeanUtils.copyProperties(productDTO, product);
+        return product;
     }
 
-    public void setImage(MultipartFile image) {
-        this.image = image;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public static ProductDTO convertEntityToProductDTO(Product product)
@@ -121,14 +138,11 @@ public class ProductDTO {
         if(category != null)
         {
             productDTO.setCategoryId(category.getId());
+            productDTO.setCategory(product.getCategory().getName());
         }
+        String imageUrl = ProductUtil.getImageUrl(product.getImage(), product.getId());
+        productDTO.setImageUrl(imageUrl);
         return productDTO;
     }
 
-    public static Product convertProductDTOToEntity(ProductDTO productDTO)
-    {
-        Product product = new Product();
-        BeanUtils.copyProperties(productDTO, product);
-        return product;
-    }
 }

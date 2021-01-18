@@ -24,10 +24,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
-                .antMatchers(HttpMethod.GET, "/api/product").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/category/***").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/category/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/user/confirm-account").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/user/***").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/user/**").permitAll()
                 .antMatchers("/").hasAnyAuthority("USER", "MODERATOR", "ADMIN")
                 .anyRequest().authenticated()
                 .and()

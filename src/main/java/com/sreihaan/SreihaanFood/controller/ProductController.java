@@ -3,8 +3,10 @@ package com.sreihaan.SreihaanFood.controller;
 import com.sreihaan.SreihaanFood.dto.ProductDTO;
 import com.sreihaan.SreihaanFood.model.persistence.Image;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
+import com.sreihaan.SreihaanFood.model.requests.CreateAndUpdateProductRequest;
 import com.sreihaan.SreihaanFood.service.ImageService;
 import com.sreihaan.SreihaanFood.service.ProductService;
+import com.sreihaan.SreihaanFood.utils.ProductUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -27,11 +29,11 @@ public class ProductController {
     private ImageService imageService;
 
     @PostMapping
-    public ProductDTO addProduct(@ModelAttribute ProductDTO productDTO)
+    public ProductDTO addProduct(@ModelAttribute CreateAndUpdateProductRequest createAndUpdateProductRequest)
     {
-        Product product = ProductDTO.convertProductDTOToEntity(productDTO);
-        MultipartFile image = productDTO.getImage();
-        product = productService.addProduct(product, productDTO.getCategoryId(), image);
+        Product product = CreateAndUpdateProductRequest.convertToProductEntity(createAndUpdateProductRequest);
+        MultipartFile image = createAndUpdateProductRequest.getImage();
+        product = productService.addProduct(product, createAndUpdateProductRequest.getCategoryId(), image);
         return ProductDTO.convertEntityToProductDTO(product);
     }
 
@@ -42,7 +44,8 @@ public class ProductController {
         List<ProductDTO> productDTOS = new ArrayList<>();
         for (Product product : products)
         {
-            productDTOS.add(ProductDTO.convertEntityToProductDTO(product));
+            ProductDTO productDTO = ProductDTO.convertEntityToProductDTO(product);
+            productDTOS.add(productDTO);
         }
         return productDTOS;
     }
@@ -59,7 +62,7 @@ public class ProductController {
         Image image = productService.getImage(productId);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(image.getContentType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename= "+image.getFilename())
+                .header(HttpHeaders.CONTENT_DISPOSITION,"inline; filename= "+image.getFilename())
                 .body(new ByteArrayResource(image.getData()));
     }
 }

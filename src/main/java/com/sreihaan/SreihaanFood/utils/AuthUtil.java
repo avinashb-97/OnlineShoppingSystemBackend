@@ -4,6 +4,7 @@ import com.sreihaan.SreihaanFood.model.persistence.Role;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Collection;
 
@@ -55,6 +56,11 @@ public class AuthUtil {
     public static boolean isCurrentUserIsUser()
     {
         return getCurrentUserRole() == Role.USER;
+    }
+
+    public static String getBaseUrl()
+    {
+        return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
     }
 
 }
