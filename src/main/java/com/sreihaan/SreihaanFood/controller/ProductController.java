@@ -53,7 +53,8 @@ public class ProductController {
     @GetMapping("/{id}")
     public ProductDTO getProduct(@PathVariable("id") long id)
     {
-        return null;
+        Product product = productService.getProductById(id);
+        return ProductDTO.convertEntityToProductDTO(product);
     }
 
     @GetMapping("/{id}/image")

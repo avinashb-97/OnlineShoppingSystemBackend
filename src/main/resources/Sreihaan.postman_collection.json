@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c394c2e7-c7f3-4f09-b620-aeaed49c9ada",
+		"_postman_id": "fbdb5353-5070-47c6-b68c-5f765620d325",
 		"name": "Sreihaan",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -42,7 +42,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\":\"avinash@gmail.com\",\r\n    \"password\":\"hellohello\"\r\n}",
+					"raw": "{\r\n    \"email\":\"avinashbb695@gmail.com\",\r\n    \"password\":\"hellohello\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -58,6 +58,103 @@
 					"port": "8080",
 					"path": [
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/user/forgot-password?email=avinashbb695@gmail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"forgot-password"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "avinashbb695@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password\":\"hellohello123\",\r\n    \"confirmPassword\":\"hellohello123\",\r\n    \"resetToken\":\"8ef80272-7f4f-4e9b-b5ca-bc59022516c8\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/reset-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"reset-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoYmI2OTVAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJleHAiOjE2MTE3ODEzODB9.gH6-eqk7Uzy4OzAT54GBz23h-y1wPleRhSgQBf_pTbN74aRenWnl4HL7NFtST4_zI4CEMDIbURTDZyPhVqf-7A",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"oldPassword\":\"hellohello123\",\r\n    \"password\":\"hellohello\",\r\n    \"confirmPassword\":\"hellohello\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/change-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"change-password"
 					]
 				}
 			},
@@ -140,7 +237,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoQGdtYWlsLmNvbSIsImV4cCI6MTYxMDEzNzU5N30.9XOdhGkg06SZ_Znqk4M8zUDB6brvxZmx5v7eEcAwqWQld6YCx2zw58pefAiasW_yWWIc8Dtjhxs-gHwt4eweUg",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoYmI2OTVAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJleHAiOjE2MTE4Mzg3NTZ9.lVbx_mh2oczqJvm5P1vDhxJpeoMCehJZN6mm-U-tSaeCtAT1wUATRhgN-h6SSWsssbfNqYUyQQrSFu7JywXFlQ",
 							"type": "string"
 						}
 					]
@@ -148,7 +245,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/user?email=avinash@gmail.com",
+					"raw": "http://localhost:8080/api/user?email=avinashbb695@gmail.com",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -161,7 +258,7 @@
 					"query": [
 						{
 							"key": "email",
-							"value": "avinash@gmail.com"
+							"value": "avinashbb695@gmail.com"
 						}
 					]
 				}
@@ -176,7 +273,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoQGdtYWlsLmNvbSIsImV4cCI6MTYxMDEzNzU5N30.9XOdhGkg06SZ_Znqk4M8zUDB6brvxZmx5v7eEcAwqWQld6YCx2zw58pefAiasW_yWWIc8Dtjhxs-gHwt4eweUg",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoYmI2OTVAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJleHAiOjE2MTE4MzgxMTF9.gwIyd8yknV31PXQFJBcozXdlPIap5NhTF9XXQ7HUdXjR1C7Dh1sPBaVup1LQXSGk1u7lCZ_RWFOXrWP7uzgIpw",
 							"type": "string"
 						}
 					]
@@ -184,8 +281,54 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\" : \"Coconut Oil\",\r\n    \"description\" : \"Pure virgin Coconut oil\",\r\n    \"price\" : 123.12,\r\n    \"discountedPrict\" : 109.99,\r\n    \"isFeatured\" : true,\r\n    \"isNew\" : true,\r\n    \"isBestSeller\" : false,\r\n    \"categoryId\" : \"2\"\r\n}",
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Coconut Oil",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Pure virgin Coconut oil",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "123.12",
+							"type": "text"
+						},
+						{
+							"key": "discountedPrice",
+							"value": "109.99",
+							"type": "text"
+						},
+						{
+							"key": "isFeatured",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "isNew",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "isBestSeller",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "categoryId",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/a4avi/OneDrive/Desktop/Web/305420_Bag_Seal_Tape_5.jpg"
+						}
+					],
 					"options": {
 						"raw": {
 							"language": "json"
@@ -202,6 +345,27 @@
 					"path": [
 						"api",
 						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/product/23",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"product",
+						"23"
 					]
 				}
 			},

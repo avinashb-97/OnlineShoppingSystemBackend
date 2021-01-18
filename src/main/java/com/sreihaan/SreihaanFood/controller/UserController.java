@@ -121,8 +121,14 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<UserDTO> getUserByEmail(@RequestParam String email)
     {
-        User user = userService.getUserByEmail(email);
-        return ResponseEntity.ok(UserDTO.convertEntityToUserDTO(user));
+        try {
+            User user = userService.getUserByEmail(email);
+            return ResponseEntity.ok(UserDTO.convertEntityToUserDTO(user));
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }
