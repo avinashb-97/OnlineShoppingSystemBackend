@@ -10,6 +10,8 @@ public interface UserService {
 
     public User getUserByEmail(String email);
 
+    public User findUserById(Long id);
+
     public User confirmUser(String confirmationToken);
 
     void forgotPassword(String email);

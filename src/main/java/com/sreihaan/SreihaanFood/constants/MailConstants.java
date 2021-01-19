@@ -24,4 +24,6 @@ public class MailConstants {
     public static final String USER_CONFIRMATION_BODY = "To confirm your account, please click here : ";
     public static final String PASSWORD_RESET_SUBJECT = "Password Rest Link";
     public static final String PASSWORD_RESET_BODY = "To reset your password, please click here : ";
+
+    public static final String EMAIL_NOREPLY_NOTE = "<br>Note: Do not reply to this email. This email is sent from an unattended mailbox. Replies will not be read.";
 }

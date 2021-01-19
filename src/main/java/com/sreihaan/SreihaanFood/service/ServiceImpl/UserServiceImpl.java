@@ -2,13 +2,11 @@ package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
 import com.sreihaan.SreihaanFood.constants.MailConstants;
 import com.sreihaan.SreihaanFood.exception.UserNotFoundException;
+import com.sreihaan.SreihaanFood.model.persistence.Cart;
 import com.sreihaan.SreihaanFood.model.persistence.User;
 import com.sreihaan.SreihaanFood.model.persistence.UserToken;
 import com.sreihaan.SreihaanFood.model.persistence.repository.UserRepository;
-import com.sreihaan.SreihaanFood.service.CounterService;
-import com.sreihaan.SreihaanFood.service.EmailSenderService;
-import com.sreihaan.SreihaanFood.service.UserService;
-import com.sreihaan.SreihaanFood.service.UserTokenService;
+import com.sreihaan.SreihaanFood.service.*;
 import com.sreihaan.SreihaanFood.utils.AuthUtil;
 import com.sreihaan.SreihaanFood.utils.MailUtil;
 import org.slf4j.Logger;
@@ -40,6 +38,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserTokenService userTokenService;
 
+    @Autowired
+    private CartService cartService;
+
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
@@ -49,9 +50,10 @@ public class UserServiceImpl implements UserService {
             return user;
         }
         user.setPassword(bCryptPasswordEncoder.encode(password));
-        user.setId(counterService.getNextSequence("user").toString());
+        user.setId(counterService.getNextSequence("user"));
         user.setPersisted(true);
         user = userRepository.save(user);
+        cartService.createCart(user);
         UserToken userToken = userTokenService.GenerateUserConfirmationToken(user);
         String confirmationToken = userToken.getToken();
         emailSenderService.sendEmail(user.getEmail(), MailConstants.USER_CONFIRMATION_SUBJECT, MailConstants.USER_CONFIRMATION_BODY + MailUtil.getUserConfirmationLink(confirmationToken));
@@ -62,6 +64,12 @@ public class UserServiceImpl implements UserService {
     public User getUserByEmail(String email) {
         return userRepository.findUserByEmailIgnoreCase(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found, email -> "+email));
+    }
+
+    @Override
+    public User findUserById(Long id) {
+        return userRepository.findById(id.toString())
+                .orElseThrow(() -> new UserNotFoundException("User not found, userid -> "+id));
     }
 
     @Override
@@ -77,22 +85,21 @@ public class UserServiceImpl implements UserService {
         User user = null;
         try {
             user = getUserByEmail(email);
+            logger.info("[Forgot Password] User Found, Email: "+user.getEmail()+" isEnabled: "+user.isEnabled());
+            if(user.isEnabled())
+            {
+                UserToken forgotPasswordToken = userTokenService.generateForgotPasswordToken(user);
+                String resetToken = forgotPasswordToken.getToken();
+                logger.info("[Forgot Password] Reset token generated, user: "+user.getEmail()+" token: "+resetToken);
+                emailSenderService.sendEmail(user.getEmail(), MailConstants.PASSWORD_RESET_SUBJECT, MailUtil.getUserPasswordResetMessage(resetToken));
+            }
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            String exception = e.getMessage();
+            logger.info("[Forgot Password] User not found, email: "+email+" Exception: "+exception);
         }
-        if(user != null && user.isEnabled())
-        {
-            UserToken forgotPasswordToken = userTokenService.generateForgotPasswordToken(user);
-            String resetToken = forgotPasswordToken.getToken();
-            logger.info("[Forgot Password] Reset token generated, user: "+user.getEmail()+" token: "+resetToken);
-            emailSenderService.sendEmail(user.getEmail(), MailConstants.PASSWORD_RESET_SUBJECT, MailConstants.PASSWORD_RESET_BODY+ MailUtil.getUserConfirmationLink(resetToken));
-        }
-        else
-        {
-            logger.info("[Forgot Password] User not found or not enabled, email: "+email+" isEnabled: "+ (user !=null ? user.isEnabled() : "Not exists"));
-        }
+
     }
 
     @Override

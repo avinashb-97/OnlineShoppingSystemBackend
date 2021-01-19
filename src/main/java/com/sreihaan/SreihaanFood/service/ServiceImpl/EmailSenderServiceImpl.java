@@ -27,7 +27,8 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             msg.setRecipients(Message.RecipientType.TO, toAddresses);
             msg.setSubject(subject);
             msg.setSentDate(new Date());
-            msg.setText(message);
+//            msg.setText(message);
+            msg.setContent(message, "text/html");
 
             Transport t = session.getTransport(MailConstants.PROTOCOL);
             t.connect(MailConstants.USERNAME, MailConstants.APP_PASSWORD);
@@ -39,6 +40,8 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             e.printStackTrace();
         }
     }
+
+
 
     private Properties getMailProperties() {
         Properties properties = new Properties();

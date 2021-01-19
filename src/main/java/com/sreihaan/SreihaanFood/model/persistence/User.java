@@ -18,10 +18,10 @@ import java.util.*;
 @Getter
 @Setter
 @Document(collection = "user")
-public class User implements Persistable<String> {
+public class User implements Persistable<Long> {
 
     @Id
-    private String id;
+    private Long id;
 
     private String firstName;
 
@@ -50,6 +50,9 @@ public class User implements Persistable<String> {
 
     @OneToOne(mappedBy = "user")
     private UserToken userToken;
+
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = this.getRoles();

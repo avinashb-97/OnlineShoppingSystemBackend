@@ -68,27 +68,26 @@ public class UserTokenServiceImpl implements UserTokenService {
     }
 
     @Override
-    public UserToken generateForgotPasswordToken(User user) {
-        UserToken userToken = new UserToken(user.getUserToken());
-        long id = userToken.getId();
-        if(userToken != null)
-        {
-            if(userToken.getExpiryDate().before(new Date()))
-            {
-                return userToken;
-            }
+    public UserToken generateForgotPasswordToken(User user)
+    {
+        UserToken userToken = null;
+        try {
+            userToken = new UserToken(user.getUserToken());
+            logger.info("[Forgot Password] Updating password token for user -> "+user.getEmail());
             userToken.setToken(UUID.randomUUID().toString());
         }
-        else
+        catch (Exception e)
         {
             userToken = generateTokenForUser(user);
+            logger.info("[Forgot Password] Generating new password token for user -> "+user.getEmail());
         }
         userToken.setExpiryDate(getExpiryTimeForPasswordToken());
         return userTokenRepository.save(userToken);
     }
 
     @Override
-    public User getUserAndDeleteResetToken(String token) {
+    public User getUserAndDeleteResetToken(String token)
+    {
         UserToken passwordToken = userTokenRepository.findUserTokenByToken(token)
                 .orElseThrow(()->new InvalidPasswordResetToken("The link is invalid or Broken"));
         if(isPasswordTokenExpired(passwordToken))
