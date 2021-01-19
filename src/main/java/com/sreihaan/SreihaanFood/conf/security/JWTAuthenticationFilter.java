@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.sreihaan.SreihaanFood.constants.SecurityConstants;
-import com.sreihaan.SreihaanFood.model.persistence.Role;
 import com.sreihaan.SreihaanFood.model.persistence.User;
 import com.sreihaan.SreihaanFood.utils.AuthUtil;
 import org.springframework.security.authentication.AuthenticationManager;

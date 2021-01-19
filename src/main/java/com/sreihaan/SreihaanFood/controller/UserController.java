@@ -1,7 +1,7 @@
 package com.sreihaan.SreihaanFood.controller;
 
 import com.sreihaan.SreihaanFood.dto.UserDTO;
-import com.sreihaan.SreihaanFood.model.persistence.Role;
+import com.sreihaan.SreihaanFood.model.persistence.enums.Role;
 import com.sreihaan.SreihaanFood.model.persistence.User;
 import com.sreihaan.SreihaanFood.model.requests.ChangePasswordRequest;
 import com.sreihaan.SreihaanFood.model.requests.CreateUserRequest;

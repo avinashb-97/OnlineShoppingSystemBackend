@@ -1,7 +1,8 @@
 package com.sreihaan.SreihaanFood.model.persistence;
 
 
-import io.github.kaiso.relmongo.annotation.OneToOne;
+import com.sreihaan.SreihaanFood.model.persistence.enums.Role;
+import io.github.kaiso.relmongo.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -53,6 +54,10 @@ public class User implements Persistable<Long> {
 
     @OneToOne(mappedBy = "user")
     private Cart cart;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinProperty(name = "orders")
+    private List<Order> orders;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = this.getRoles();

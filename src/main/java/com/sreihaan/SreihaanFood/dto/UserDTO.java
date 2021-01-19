@@ -1,6 +1,6 @@
 package com.sreihaan.SreihaanFood.dto;
 
-import com.sreihaan.SreihaanFood.model.persistence.Role;
+import com.sreihaan.SreihaanFood.model.persistence.enums.Role;
 import com.sreihaan.SreihaanFood.model.persistence.User;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.sreihaan.SreihaanFood.model.persistence;
+package com.sreihaan.SreihaanFood.model.persistence.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 
