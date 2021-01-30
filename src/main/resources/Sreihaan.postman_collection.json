@@ -168,7 +168,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoQGdtYWlsLmNvbSIsImV4cCI6MTYxMDEzNzU5N30.9XOdhGkg06SZ_Znqk4M8zUDB6brvxZmx5v7eEcAwqWQld6YCx2zw58pefAiasW_yWWIc8Dtjhxs-gHwt4eweUg",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoYmI2OTVAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJleHAiOjE2MTI4NzIzMzF9.ygFzYyGCzxMHThEjwnvKwXa3GjkERIYOGZHpfmOTIH4so9-vRTn2LGMutVqtcTXWjVStMlkbnLv-50gh8WOKvg",
 							"type": "string"
 						}
 					]
@@ -177,7 +177,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\" : \"Containers\",\r\n    \"description\" : \"Container for Foods\"\r\n}",
+					"raw": "{\r\n    \"name\" : \"Cake Boxes\",\r\n    \"description\" : \"Cake boxes\",\r\n    \"subCategories\" : [\"Round\",\"Square\",\"Rectangle\"]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
