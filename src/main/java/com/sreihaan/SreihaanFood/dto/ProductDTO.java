@@ -14,6 +14,18 @@ public class ProductDTO {
 
     private String name;
 
+    private String code;
+
+    private String productSize;
+
+    private String cartonSize;
+
+    private long pcsPerBag;
+
+    private long bagsPerCtn;
+
+    private long pcsPerCtn;
+
     private String description;
 
     private BigDecimal price;
@@ -27,6 +39,8 @@ public class ProductDTO {
     private boolean isBestSeller;
 
     private String category;
+
+    private String subCategory;
 
     private long categoryId;
 
@@ -73,29 +87,29 @@ public class ProductDTO {
     }
 
     @JsonProperty("isNew")
-    public boolean getNew() {
+    public boolean isNew() {
         return isNew;
     }
 
-    public void setNew(Boolean aNew) {
+    public void setNew(boolean aNew) {
         isNew = aNew;
     }
 
     @JsonProperty("isFeatured")
-    public boolean getFeatured() {
+    public boolean isFeatured() {
         return isFeatured;
     }
 
-    public void setFeatured(Boolean featured) {
+    public void setFeatured(boolean featured) {
         isFeatured = featured;
     }
 
     @JsonProperty("isBestSeller")
-    public boolean getBestSeller() {
+    public boolean isBestSeller() {
         return isBestSeller;
     }
 
-    public void setBestSeller(Boolean bestSeller) {
+    public void setBestSeller(boolean bestSeller) {
         isBestSeller = bestSeller;
     }
 
@@ -105,13 +119,6 @@ public class ProductDTO {
 
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public static Product convertProductDTOToEntity(ProductDTO productDTO)
-    {
-        Product product = new Product();
-        BeanUtils.copyProperties(productDTO, product);
-        return product;
     }
 
     public String getImageUrl() {
@@ -128,6 +135,61 @@ public class ProductDTO {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getProductSize() {
+        return productSize;
+    }
+
+    public void setProductSize(String productSize) {
+        this.productSize = productSize;
+    }
+
+    public String getCartonSize() {
+        return cartonSize;
+    }
+
+    public void setCartonSize(String cartonSize) {
+        this.cartonSize = cartonSize;
+    }
+
+    public long getPcsPerBag() {
+        return pcsPerBag;
+    }
+
+    public void setPcsPerBag(long pcsPerBag) {
+        this.pcsPerBag = pcsPerBag;
+    }
+
+    public long getBagsPerCtn() {
+        return bagsPerCtn;
+    }
+
+    public void setBagsPerCtn(long bagsPerCtn) {
+        this.bagsPerCtn = bagsPerCtn;
+    }
+
+    public long getPcsPerCtn() {
+        return pcsPerCtn;
+    }
+
+    public void setPcsPerCtn(long pcsPerCtn) {
+        this.pcsPerCtn = pcsPerCtn;
+    }
+
+    public static Product convertProductDTOToEntity(ProductDTO productDTO)
+    {
+        Product product = new Product();
+        BeanUtils.copyProperties(productDTO, product);
+        return product;
     }
 
     public static ProductDTO convertEntityToProductDTO(Product product)

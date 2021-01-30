@@ -3,6 +3,8 @@ package com.sreihaan.SreihaanFood.dto;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
 import org.springframework.beans.BeanUtils;
 
+import java.util.Set;
+
 public class CategoryDTO {
 
     private long id;
@@ -10,6 +12,8 @@ public class CategoryDTO {
     private String name;
 
     private String description;
+
+    private Set<String> subCategories;
 
     public long getId() {
         return id;
@@ -33,6 +37,14 @@ public class CategoryDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<String> getSubCategories() {
+        return subCategories;
+    }
+
+    public void setSubCategories(Set<String> subCategories) {
+        this.subCategories = subCategories;
     }
 
     public static CategoryDTO convertEntityToCategoryDTO(Category category)

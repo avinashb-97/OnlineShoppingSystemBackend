@@ -1,9 +1,16 @@
 package com.sreihaan.SreihaanFood.controller;
 
 import com.sreihaan.SreihaanFood.dto.CategoryDTO;
+import com.sreihaan.SreihaanFood.dto.ProductDTO;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
+import com.sreihaan.SreihaanFood.model.persistence.Image;
+import com.sreihaan.SreihaanFood.model.persistence.Product;
 import com.sreihaan.SreihaanFood.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -34,6 +41,19 @@ public class CategoryController {
             categoryDTOS.add(CategoryDTO.convertEntityToCategoryDTO(category));
         }
         return categoryDTOS;
+    }
+
+    @GetMapping("/{id}/products")
+    public List<ProductDTO> getImage(@PathVariable("id") long categoryId)
+    {
+        List<Product> products = categoryService.getProductsForCategory(categoryId);
+        List<ProductDTO> productDTOS = new ArrayList<>();
+        for (Product product : products)
+        {
+            ProductDTO productDTO = ProductDTO.convertEntityToProductDTO(product);
+            productDTOS.add(productDTO);
+        }
+        return productDTOS;
     }
 
 }

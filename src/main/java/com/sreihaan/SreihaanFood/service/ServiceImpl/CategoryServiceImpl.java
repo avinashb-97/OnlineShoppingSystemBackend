@@ -2,6 +2,7 @@ package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
 import com.sreihaan.SreihaanFood.exception.CategoryNotFoundException;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
+import com.sreihaan.SreihaanFood.model.persistence.Product;
 import com.sreihaan.SreihaanFood.model.persistence.repository.CategoryRepository;
 import com.sreihaan.SreihaanFood.service.CategoryService;
 import com.sreihaan.SreihaanFood.service.CounterService;
@@ -47,5 +48,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category updateCategory(Category category) {
         return categoryRepository.save(category);
+    }
+
+    @Override
+    public List<Product> getProductsForCategory(long id) {
+        Category category = getCategoryById(id);
+        return category.getProducts();
     }
 }

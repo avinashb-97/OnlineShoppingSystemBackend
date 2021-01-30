@@ -499,6 +499,28 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get Products By Category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/category/2/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"category",
+						"2",
+						"products"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

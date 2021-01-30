@@ -19,6 +19,18 @@ public class Product {
 
     private String name;
 
+    private String code;
+
+    private String productSize;
+
+    private String cartonSize;
+
+    private long pcsPerBag;
+
+    private long bagsPerCtn;
+
+    private long pcsPerCtn;
+
     private String description;
 
     private BigDecimal price;
@@ -36,5 +48,7 @@ public class Product {
 
     @ManyToOne(mappedBy = "products")
     private Category category;
+
+    private String subCategory;
 
 }
