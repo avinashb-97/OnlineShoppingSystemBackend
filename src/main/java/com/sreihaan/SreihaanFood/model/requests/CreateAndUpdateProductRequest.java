@@ -29,7 +29,21 @@ public class CreateAndUpdateProductRequest {
 
     private boolean isBestSeller;
 
+    private String code;
+
+    private String productSize;
+
+    private String cartonSize;
+
+    private long pcsPerBag;
+
+    private long bagsPerCtn;
+
+    private long pcsPerCtn;
+
     private long categoryId;
+
+    private String subCategory;
 
     private MultipartFile image;
 

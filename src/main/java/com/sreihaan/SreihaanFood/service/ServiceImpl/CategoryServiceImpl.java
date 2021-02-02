@@ -55,4 +55,10 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = getCategoryById(id);
         return category.getProducts();
     }
+
+    @Override
+    public void deleteCategory(long categoryId) {
+        Category category = getCategoryById(categoryId);
+        categoryRepository.delete(category);
+    }
 }

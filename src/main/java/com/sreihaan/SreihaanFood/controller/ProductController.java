@@ -6,7 +6,8 @@ import com.sreihaan.SreihaanFood.model.persistence.Product;
 import com.sreihaan.SreihaanFood.model.requests.CreateAndUpdateProductRequest;
 import com.sreihaan.SreihaanFood.service.ImageService;
 import com.sreihaan.SreihaanFood.service.ProductService;
-import com.sreihaan.SreihaanFood.utils.ProductUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/api/product")
@@ -27,6 +27,8 @@ public class ProductController {
 
     @Autowired
     private ImageService imageService;
+
+    private static Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @PostMapping
     public ProductDTO addProduct(@ModelAttribute CreateAndUpdateProductRequest createAndUpdateProductRequest)
@@ -41,12 +43,7 @@ public class ProductController {
     public List<ProductDTO> getAllProducts()
     {
         List<Product> products = productService.getAllProducts();
-        List<ProductDTO> productDTOS = new ArrayList<>();
-        for (Product product : products)
-        {
-            ProductDTO productDTO = ProductDTO.convertEntityToProductDTO(product);
-            productDTOS.add(productDTO);
-        }
+        List<ProductDTO> productDTOS = ProductDTO.convertEntityListToProductDTOList(products);
         return productDTOS;
     }
 
@@ -66,4 +63,20 @@ public class ProductController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,"inline; filename= "+image.getFilename())
                 .body(new ByteArrayResource(image.getData()));
     }
+
+    @GetMapping("/bestseller")
+    public List<ProductDTO> getBestSellers()
+    {
+        List<Product> products = productService.getBestSellers();
+        return ProductDTO.convertEntityListToProductDTOList(products);
+    }
+
+    @GetMapping("/featured")
+    public List<ProductDTO> getFeaturedProducts()
+    {
+        List<Product> products = productService.getFeaturedProducts();
+        return ProductDTO.convertEntityListToProductDTOList(products);
+    }
+
+
 }

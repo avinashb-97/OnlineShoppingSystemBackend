@@ -43,12 +43,11 @@ public class Product {
 
     private boolean isBestSeller = false;
 
+    private String subCategory;
+
     @OneToOne(mappedBy = "product")
     private Image image;
 
     @ManyToOne(mappedBy = "products")
     private Category category;
-
-    private String subCategory;
-
 }

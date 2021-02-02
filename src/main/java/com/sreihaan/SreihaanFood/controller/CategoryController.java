@@ -44,7 +44,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}/products")
-    public List<ProductDTO> getImage(@PathVariable("id") long categoryId)
+    public List<ProductDTO> getCategoryProducts(@PathVariable("id") long categoryId)
     {
         List<Product> products = categoryService.getProductsForCategory(categoryId);
         List<ProductDTO> productDTOS = new ArrayList<>();
@@ -55,5 +55,12 @@ public class CategoryController {
         }
         return productDTOS;
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteCategory(@PathVariable("id") long categoryId)
+    {
+        categoryService.deleteCategory(categoryId);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
+import com.sreihaan.SreihaanFood.controller.ProductController;
 import com.sreihaan.SreihaanFood.exception.ProductNotFoundException;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Image;
@@ -9,6 +10,8 @@ import com.sreihaan.SreihaanFood.service.CategoryService;
 import com.sreihaan.SreihaanFood.service.CounterService;
 import com.sreihaan.SreihaanFood.service.ImageService;
 import com.sreihaan.SreihaanFood.service.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +35,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ImageService imageService;
+
+    private static Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Override
     public Product addProduct(Product product, Long categoryId, MultipartFile imageFile)
@@ -57,7 +62,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        long start = System.currentTimeMillis();
+        List<Product> products = productRepository.findAll();
+        long timeTaken = System.currentTimeMillis() - start;
+        logger.info("Time taken to get all products from DB : "+timeTaken);
+        return products;
     }
 
     @Override
@@ -76,6 +85,16 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(()->new ProductNotFoundException("Product not found, Id -> "+productId));
         return imageService.getImage(product);
+    }
+
+    @Override
+    public List<Product> getBestSellers() {
+        return productRepository.findByIsBestSeller(true);
+    }
+
+    @Override
+    public List<Product> getFeaturedProducts() {
+        return productRepository.findByIsFeatured(true);
     }
 
 

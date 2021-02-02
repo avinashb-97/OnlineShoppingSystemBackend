@@ -2,11 +2,14 @@ package com.sreihaan.SreihaanFood.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
+import com.sreihaan.SreihaanFood.model.persistence.Image;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
 import com.sreihaan.SreihaanFood.utils.ProductUtil;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDTO {
 
@@ -200,11 +203,23 @@ public class ProductDTO {
         if(category != null)
         {
             productDTO.setCategoryId(category.getId());
-            productDTO.setCategory(product.getCategory().getName());
+            productDTO.setCategory(category.getName());
         }
-        String imageUrl = ProductUtil.getImageUrl(product.getImage(), product.getId());
+        Image image = product.getImage();
+        String imageUrl = ProductUtil.getImageUrl(image, product.getId());
         productDTO.setImageUrl(imageUrl);
         return productDTO;
+    }
+
+    public static List<ProductDTO> convertEntityListToProductDTOList(List<Product> productList)
+    {
+        List<ProductDTO> productDTOS = new ArrayList<>();
+        for (Product product : productList)
+        {
+            ProductDTO productDTO = ProductDTO.convertEntityToProductDTO(product);
+            productDTOS.add(productDTO);
+        }
+        return productDTOS;
     }
 
 }

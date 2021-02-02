@@ -18,5 +18,6 @@ public interface CategoryService {
     public Category updateCategory(Category category);
 
     public List<Product> getProductsForCategory(long id);
-    
+
+    void deleteCategory(long categoryId);
 }

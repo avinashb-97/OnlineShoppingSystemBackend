@@ -17,4 +17,8 @@ public interface ProductService {
     public Product getProductById(Long id);
 
     Image getImage(long productId);
+
+    List<Product> getBestSellers();
+
+    List<Product> getFeaturedProducts();
 }
