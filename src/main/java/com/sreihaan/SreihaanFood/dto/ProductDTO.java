@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Image;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
+import com.sreihaan.SreihaanFood.model.persistence.SubCategory;
 import com.sreihaan.SreihaanFood.utils.ProductUtil;
 import org.springframework.beans.BeanUtils;
 
@@ -41,11 +42,13 @@ public class ProductDTO {
 
     private boolean isBestSeller;
 
-    private String category;
+    private long subCategoryId;
 
     private String subCategory;
 
     private long categoryId;
+
+    private String category;
 
     private String imageUrl;
 
@@ -188,6 +191,22 @@ public class ProductDTO {
         this.pcsPerCtn = pcsPerCtn;
     }
 
+    public long getSubCategoryId() {
+        return subCategoryId;
+    }
+
+    public void setSubCategoryId(long subCategoryId) {
+        this.subCategoryId = subCategoryId;
+    }
+
+    public String getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(String subCategory) {
+        this.subCategory = subCategory;
+    }
+
     public static Product convertProductDTOToEntity(ProductDTO productDTO)
     {
         Product product = new Product();
@@ -204,6 +223,12 @@ public class ProductDTO {
         {
             productDTO.setCategoryId(category.getId());
             productDTO.setCategory(category.getName());
+        }
+        SubCategory subCategory = product.getSubCategory();
+        if(subCategory != null)
+        {
+            productDTO.setSubCategory(subCategory.getName());
+            productDTO.setSubCategoryId(subCategory.getId());
         }
         Image image = product.getImage();
         String imageUrl = ProductUtil.getImageUrl(image, product.getId());

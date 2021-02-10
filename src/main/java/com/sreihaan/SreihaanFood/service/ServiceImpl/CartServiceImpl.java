@@ -1,12 +1,10 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
 import com.sreihaan.SreihaanFood.model.persistence.Cart;
-import com.sreihaan.SreihaanFood.model.persistence.Counter;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
 import com.sreihaan.SreihaanFood.model.persistence.User;
 import com.sreihaan.SreihaanFood.model.persistence.repository.CartRepository;
 import com.sreihaan.SreihaanFood.service.CartService;
-import com.sreihaan.SreihaanFood.service.CounterService;
 import com.sreihaan.SreihaanFood.service.ProductService;
 import com.sreihaan.SreihaanFood.service.UserService;
 import com.sreihaan.SreihaanFood.utils.AuthUtil;
@@ -26,9 +24,6 @@ public class CartServiceImpl implements CartService {
     private UserService userService;
 
     @Autowired
-    private CounterService counterService;
-
-    @Autowired
     private CartRepository cartRepository;
 
     @Autowired
@@ -37,9 +32,8 @@ public class CartServiceImpl implements CartService {
     @Override
     public Cart createCart(User user) {
         Cart cart = new Cart();
-        cart.setCartContents(null);
+//        cart.setCartContents(null);
         cart.setUser(user);
-        cart.setId(counterService.getNextSequence("cart"));
         return cartRepository.save(cart);
     }
 
@@ -68,7 +62,7 @@ public class CartServiceImpl implements CartService {
             cartContent.put(product.getId(), quantity);
         };
         cart.setTotal(total);
-        cart.setCartContents(cartContent);
+//        cart.setCartContents(cartContent);
         return cartRepository.save(cart);
     }
 
@@ -76,7 +70,7 @@ public class CartServiceImpl implements CartService {
     public void removeAllFromCart() {
         User user = userService.getUserByEmail(AuthUtil.getLoggedInUserName());
         Cart cart = new Cart(user.getCart());
-        cart.setCartContents(null);
+//        cart.setCartContents(null);
         cart.setTotal(new BigDecimal(0));
         cartRepository.save(cart);
     }

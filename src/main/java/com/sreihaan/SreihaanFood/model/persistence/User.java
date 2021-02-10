@@ -2,51 +2,53 @@ package com.sreihaan.SreihaanFood.model.persistence;
 
 
 import com.sreihaan.SreihaanFood.model.persistence.enums.Role;
-import io.github.kaiso.relmongo.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import javax.persistence.*;
 import java.util.*;
 
 @Getter
 @Setter
-@Document(collection = "user")
-public class User implements Persistable<Long> {
+@Entity
+@Table(name = "USER")
+public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String firstName;
 
     private String lastName;
 
-    @Indexed(unique = true)
+    @Column(unique = true)
     private String email;
 
     private String password;
 
-    private String salt;
-
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    @Column(nullable = false, columnDefinition = "tinyint(1) default 1")
     private boolean accountNonLocked = true;
 
+    @Column(nullable = false, columnDefinition = "tinyint(1) default 0")
     private boolean enabled;
 
-    private boolean persisted;
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time")
+    private Date createdTime;
 
-    @CreatedDate
-    private Date createdTime = new Date();
-
-    @LastModifiedDate
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_modified_time")
     private Date lastModifiedTime;
 
     @OneToOne(mappedBy = "user")
@@ -55,8 +57,7 @@ public class User implements Persistable<Long> {
     @OneToOne(mappedBy = "user")
     private Cart cart;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinProperty(name = "orders")
+    @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -67,10 +68,5 @@ public class User implements Persistable<Long> {
             authorities.add(new SimpleGrantedAuthority(role.toString()));
         }
         return authorities;
-    }
-
-    @Override
-    public boolean isNew() {
-        return !persisted;
     }
 }

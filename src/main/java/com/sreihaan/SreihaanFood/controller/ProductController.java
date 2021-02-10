@@ -35,7 +35,7 @@ public class ProductController {
     {
         Product product = CreateAndUpdateProductRequest.convertToProductEntity(createAndUpdateProductRequest);
         MultipartFile image = createAndUpdateProductRequest.getImage();
-        product = productService.addProduct(product, createAndUpdateProductRequest.getCategoryId(), image);
+        product = productService.addProduct(product, createAndUpdateProductRequest.getCategoryId(), createAndUpdateProductRequest.getSubCategoryId(), image);
         return ProductDTO.convertEntityToProductDTO(product);
     }
 
@@ -61,7 +61,7 @@ public class ProductController {
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(image.getContentType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION,"inline; filename= "+image.getFilename())
-                .body(new ByteArrayResource(image.getData()));
+                .body(new ByteArrayResource(image.getPhoto()));
     }
 
     @GetMapping("/bestseller")

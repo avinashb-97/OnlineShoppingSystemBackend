@@ -1,28 +1,24 @@
 package com.sreihaan.SreihaanFood.model.persistence;
 
-import io.github.kaiso.relmongo.annotation.CascadeType;
-import io.github.kaiso.relmongo.annotation.FetchType;
-import io.github.kaiso.relmongo.annotation.JoinProperty;
-import io.github.kaiso.relmongo.annotation.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.*;
 import java.util.Date;
 
 @Setter
 @Getter
-@Document(collection = "user_token")
+@Entity
 public class UserToken {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String token;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinProperty(name = "userToken")
+    @OneToOne( cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "tokenId", referencedColumnName = "id")
     private User user;
 
     private Date expiryDate;

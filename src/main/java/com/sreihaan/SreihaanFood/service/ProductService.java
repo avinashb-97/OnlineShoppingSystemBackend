@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    public Product addProduct(Product product, Long categoryId, MultipartFile imageFile);
+    public Product addProduct(Product product, Long categoryId, Long subCategroyId, MultipartFile imageFile);
 
     public List<Product> getAllProducts();
 

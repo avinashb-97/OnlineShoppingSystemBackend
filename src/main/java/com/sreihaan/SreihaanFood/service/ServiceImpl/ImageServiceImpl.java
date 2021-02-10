@@ -4,7 +4,6 @@ import com.sreihaan.SreihaanFood.exception.ImageNotFoundException;
 import com.sreihaan.SreihaanFood.model.persistence.Image;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
 import com.sreihaan.SreihaanFood.model.persistence.repository.ImageRepository;
-import com.sreihaan.SreihaanFood.service.CounterService;
 import com.sreihaan.SreihaanFood.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,9 +22,6 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     private ImageRepository imageRepository;
 
-    @Autowired
-    private CounterService counterService;
-
     @Override
     public Image saveImage(MultipartFile imageFile, Product product) throws IOException {
         Long size = imageFile.getSize();
@@ -33,11 +29,10 @@ public class ImageServiceImpl implements ImageService {
         {
             return null;
         }
-        long id = counterService.getNextSequence("image");
         String filename = imageFile.getOriginalFilename();
         String contentType = imageFile.getContentType();
         byte[] data = compress(imageFile.getBytes());
-        Image image = new Image(id, filename, contentType, size, product, data);
+        Image image = new Image(0, filename, contentType, size, product, data);
         return imageRepository.save(image);
     }
 
@@ -47,7 +42,7 @@ public class ImageServiceImpl implements ImageService {
         try
         {
             image = product.getImage();
-            image.setData(decompress(image.getData()));
+            image.setPhoto(decompress(image.getPhoto()));
         }
         catch (Exception ex)
         {

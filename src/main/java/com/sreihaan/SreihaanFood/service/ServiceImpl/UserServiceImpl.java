@@ -1,33 +1,35 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
 import com.sreihaan.SreihaanFood.constants.MailConstants;
+import com.sreihaan.SreihaanFood.constants.SecurityConstants;
 import com.sreihaan.SreihaanFood.exception.UserNotFoundException;
-import com.sreihaan.SreihaanFood.model.persistence.Cart;
 import com.sreihaan.SreihaanFood.model.persistence.User;
 import com.sreihaan.SreihaanFood.model.persistence.UserToken;
-import com.sreihaan.SreihaanFood.model.persistence.repository.UserRepository;
-import com.sreihaan.SreihaanFood.service.*;
+import com.sreihaan.SreihaanFood.model.persistence.enums.Role;
+import com.sreihaan.SreihaanFood.model.persistence.repository.UserDataRepository;
+import com.sreihaan.SreihaanFood.service.CartService;
+import com.sreihaan.SreihaanFood.service.EmailSenderService;
+import com.sreihaan.SreihaanFood.service.UserService;
+import com.sreihaan.SreihaanFood.service.UserTokenService;
 import com.sreihaan.SreihaanFood.utils.AuthUtil;
 import com.sreihaan.SreihaanFood.utils.MailUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 @Transactional
-@EnableMongoAuditing
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CounterService counterService;
+    private UserDataRepository userDataRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -45,14 +47,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user, String password) {
-        if(userRepository.existsUserByEmailIgnoreCase(user.getEmail()))
+        if(userDataRepository.existsUserByEmailIgnoreCase(user.getEmail()))
         {
             return user;
         }
+        if(user.getEmail().equals(SecurityConstants.MAIN_ADMIN_EMAIL))
+        {
+            user = addAdminRoleToUser(user);
+        }
         user.setPassword(bCryptPasswordEncoder.encode(password));
-        user.setId(counterService.getNextSequence("user"));
-        user.setPersisted(true);
-        user = userRepository.save(user);
+        user = userDataRepository.save(user);
         cartService.createCart(user);
         UserToken userToken = userTokenService.GenerateUserConfirmationToken(user);
         String confirmationToken = userToken.getToken();
@@ -60,15 +64,25 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    private User addAdminRoleToUser(User user)
+    {
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(Role.USER);
+        roleSet.add(Role.MODERATOR);
+        roleSet.add(Role.ADMIN);
+        user.setRoles(roleSet);
+        return user;
+    }
+
     @Override
     public User getUserByEmail(String email) {
-        return userRepository.findUserByEmailIgnoreCase(email)
+        return userDataRepository.findUserByEmailIgnoreCase(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found, email -> "+email));
     }
 
     @Override
     public User findUserById(Long id) {
-        return userRepository.findById(id.toString())
+        return userDataRepository.findById(id.toString())
                 .orElseThrow(() -> new UserNotFoundException("User not found, userid -> "+id));
     }
 
@@ -77,7 +91,7 @@ public class UserServiceImpl implements UserService {
         User user = userTokenService.getUserAndDeleteConfirmationToken(confirmationToken);
         user.setEnabled(true);
         user.setUserToken(null);
-        return userRepository.save(user);
+        return userDataRepository.save(user);
     }
 
     @Override
@@ -107,20 +121,20 @@ public class UserServiceImpl implements UserService {
         User user = userTokenService.getUserAndDeleteResetToken(resetToken);
         logger.info("[Reset Password] User found successfully, user: "+user.getEmail()+" token: "+resetToken);
         user.setPassword(bCryptPasswordEncoder.encode(password));
-        userRepository.save(user);
+        userDataRepository.save(user);
         logger.info("[Reset Password] Password Reset Success, user: "+user.getEmail());
     }
 
     @Override
     public void changePasswordForCurrentUser(String oldPassword, String password) {
-        User user = userRepository.findUserByEmailIgnoreCase(AuthUtil.getLoggedInUserName())
+        User user = userDataRepository.findUserByEmailIgnoreCase(AuthUtil.getLoggedInUserName())
                 .orElseThrow(()-> new UserNotFoundException("User not found"));
         if(!BCrypt.checkpw(oldPassword, user.getPassword()))
         {
             throw new SecurityException("Invalid Password given");
         }
         user.setPassword(bCryptPasswordEncoder.encode(password));
-        userRepository.save(user);
+        userDataRepository.save(user);
 
     }
 

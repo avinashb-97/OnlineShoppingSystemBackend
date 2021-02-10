@@ -1,10 +1,16 @@
 package com.sreihaan.SreihaanFood.dto;
 
 import com.sreihaan.SreihaanFood.model.persistence.Category;
+import com.sreihaan.SreihaanFood.model.persistence.SubCategory;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
+@Getter
+@Setter
 public class CategoryDTO {
 
     private long id;
@@ -13,44 +19,14 @@ public class CategoryDTO {
 
     private String description;
 
-    private Set<String> subCategories;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<String> getSubCategories() {
-        return subCategories;
-    }
-
-    public void setSubCategories(Set<String> subCategories) {
-        this.subCategories = subCategories;
-    }
+    private List<SubCategoryDTO> subCategory;
 
     public static CategoryDTO convertEntityToCategoryDTO(Category category)
     {
         CategoryDTO categoryDTO = new CategoryDTO();
         BeanUtils.copyProperties(category, categoryDTO);
+        List<SubCategoryDTO> subCategoryDTOS = SubCategoryDTO.convertEntityListToDTOList(category.getSubCategories());
+        categoryDTO.setSubCategory(subCategoryDTOS);
         return categoryDTO;
     }
 

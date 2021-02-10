@@ -43,7 +43,7 @@ public class CreateAndUpdateProductRequest {
 
     private long categoryId;
 
-    private String subCategory;
+    private long subCategoryId;
 
     private MultipartFile image;
 

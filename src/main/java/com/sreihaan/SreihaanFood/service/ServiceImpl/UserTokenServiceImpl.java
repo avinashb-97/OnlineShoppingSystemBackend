@@ -28,9 +28,6 @@ public class UserTokenServiceImpl implements UserTokenService {
     @Autowired
     private UserTokenRepository userTokenRepository;
 
-    @Autowired
-    private CounterService counterService;
-
     private static Logger logger = LoggerFactory.getLogger(UserTokenServiceImpl.class);
 
     @Override
@@ -53,7 +50,6 @@ public class UserTokenServiceImpl implements UserTokenService {
     {
         UserToken userToken = new UserToken();
         String token = UUID.randomUUID().toString();
-        userToken.setId(counterService.getNextSequence("user_token"));
         userToken.setToken(token);
         userToken.setUser(user);
         return userToken;

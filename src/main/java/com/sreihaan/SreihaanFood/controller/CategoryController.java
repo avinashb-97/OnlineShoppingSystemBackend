@@ -2,6 +2,7 @@ package com.sreihaan.SreihaanFood.controller;
 
 import com.sreihaan.SreihaanFood.dto.CategoryDTO;
 import com.sreihaan.SreihaanFood.dto.ProductDTO;
+import com.sreihaan.SreihaanFood.dto.SubCategoryDTO;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Image;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
@@ -27,7 +28,7 @@ public class CategoryController {
     public CategoryDTO addCategory(@RequestBody CategoryDTO categoryDTO)
     {
         Category category = CategoryDTO.convertCategoryDTOToEntity(categoryDTO);
-        category = categoryService.addCategory(category);
+        category = categoryService.addCategory(category, SubCategoryDTO.convertDTOListToEntityList(categoryDTO.getSubCategory()));
         return CategoryDTO.convertEntityToCategoryDTO(category);
     }
 

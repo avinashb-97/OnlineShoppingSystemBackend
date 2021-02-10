@@ -1,12 +1,13 @@
 package com.sreihaan.SreihaanFood.model.persistence.repository;
 
 import com.sreihaan.SreihaanFood.model.persistence.User;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserDataRepository extends JpaRepository<User, String> {
 
     public Optional<User> findUserByEmailIgnoreCase(String email);
 

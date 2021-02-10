@@ -5,6 +5,7 @@ import com.sreihaan.SreihaanFood.exception.ProductNotFoundException;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Image;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
+import com.sreihaan.SreihaanFood.model.persistence.SubCategory;
 import com.sreihaan.SreihaanFood.model.persistence.repository.ProductRepository;
 import com.sreihaan.SreihaanFood.service.CategoryService;
 import com.sreihaan.SreihaanFood.service.CounterService;
@@ -31,19 +32,17 @@ public class ProductServiceImpl implements ProductService {
     private CategoryService categoryService;
 
     @Autowired
-    private CounterService counterService;
-
-    @Autowired
     private ImageService imageService;
 
     private static Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Override
-    public Product addProduct(Product product, Long categoryId, MultipartFile imageFile)
+    public Product addProduct(Product product, Long categoryId, Long subCategroyId, MultipartFile imageFile)
     {
         Category category = categoryService.getCategoryById(categoryId);
+        SubCategory subCategory = categoryService.getSubCategoryById(subCategroyId);
         product.setCategory(category);
-        product.setId(counterService.getNextSequence("product"));
+        product.setSubCategory(subCategory);
         Image image = null;
         try
         {

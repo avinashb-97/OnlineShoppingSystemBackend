@@ -1,41 +1,38 @@
 package com.sreihaan.SreihaanFood.model.persistence;
 
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "CATEGORY")
-public class Category {
+@AllArgsConstructor
+@NoArgsConstructor
+public class SubCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @SequenceGenerator(name="category_entity_seq_gen", sequenceName="CATEGORY_ENTITY_SEQ")
+    @SequenceGenerator(name="subcategory_entity_seq_gen", sequenceName="SUBCATEGORY_ENTITY_SEQ")
     private long id;
 
     @Nationalized
     private String name;
 
-    @Column(length = 1000)
+    @Nationalized
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<SubCategory> subCategories;
+    @ManyToOne
+    @JoinColumn(name = "categoryId")
+    private Category category;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Product> products;
 
-    public void setProducts(Product product) {
-        if(products == null)
-        {
-            products = new ArrayList<>();
-        }
-        products.add(product);
-    }
 }
