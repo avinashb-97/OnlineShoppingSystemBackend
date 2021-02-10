@@ -18,7 +18,7 @@ public class UserToken {
     private String token;
 
     @OneToOne( cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "tokenId", referencedColumnName = "id")
+    @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
 
     private Date expiryDate;

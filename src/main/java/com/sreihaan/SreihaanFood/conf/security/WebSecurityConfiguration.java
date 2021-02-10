@@ -40,6 +40,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
                 .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
+                .antMatchers("/api/product/**").hasAnyAuthority("MODERATOR", "ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/category/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/user/confirm-account").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/user/**").permitAll()
