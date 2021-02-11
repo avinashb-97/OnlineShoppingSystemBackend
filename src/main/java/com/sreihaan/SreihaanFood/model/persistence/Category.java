@@ -38,4 +38,18 @@ public class Category {
         }
         products.add(product);
     }
+
+    public void removeSubCategory(SubCategory subCategory)
+    {
+        this.subCategories.remove(subCategory);
+    }
+
+    public void addSubCategory(SubCategory subCategory)
+    {
+        if(this.subCategories == null)
+        {
+            this.subCategories = new ArrayList<>();
+        }
+        this.subCategories.add(subCategory);
+    }
 }

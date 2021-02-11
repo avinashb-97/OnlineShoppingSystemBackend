@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -34,5 +35,14 @@ public class SubCategory {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Product> products;
+
+    public void addProducts(Product product)
+    {
+        if(this.products == null)
+        {
+            this.products = new ArrayList<>();
+        }
+        this.products.add(product);
+    }
 
 }

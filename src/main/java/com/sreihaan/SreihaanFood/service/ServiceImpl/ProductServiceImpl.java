@@ -54,7 +54,9 @@ public class ProductServiceImpl implements ProductService {
         product.setImage(image);
         product = productRepository.save(product);
         category.setProducts(product);
-        categoryService.updateCategory(category);
+        categoryService.updateCategory(categoryId, category);
+        subCategory.addProducts(product);
+        categoryService.updateSubCategory(subCategroyId, subCategory);
         return product;
 
     }

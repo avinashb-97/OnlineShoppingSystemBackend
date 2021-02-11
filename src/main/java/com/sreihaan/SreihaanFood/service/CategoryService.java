@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CategoryService {
     
-    public Category addCategory(Category category, List<SubCategory> subCategories);
+    public Category addCategory(Category category);
     
     public List<Category> getAllCategories();
 
@@ -16,11 +16,17 @@ public interface CategoryService {
 
     public Category getCategoryById(Long id);
 
-    public Category updateCategory(Category category);
+    public Category updateCategory(long id, Category category);
 
     public List<Product> getProductsForCategory(long id);
 
     void deleteCategory(long categoryId);
 
     SubCategory getSubCategoryById(Long subCategroyId);
+
+    SubCategory addSubCategory(SubCategory subCategory, long categoryId);
+
+    SubCategory updateSubCategory(long id, SubCategory subCategory);
+
+    void deleteSubCategory(long subCategoryId);
 }

@@ -56,11 +56,15 @@ public class UserServiceImpl implements UserService {
             user = addAdminRoleToUser(user);
         }
         user.setPassword(bCryptPasswordEncoder.encode(password));
+
+        //TODO: Remove this after properly checking mail
+        user.setEnabled(true);
+
         user = userDataRepository.save(user);
         cartService.createCart(user);
-        UserToken userToken = userTokenService.GenerateUserConfirmationToken(user);
-        String confirmationToken = userToken.getToken();
-        emailSenderService.sendEmail(user.getEmail(), MailConstants.USER_CONFIRMATION_SUBJECT, MailConstants.USER_CONFIRMATION_BODY + MailUtil.getUserConfirmationLink(confirmationToken));
+//        UserToken userToken = userTokenService.GenerateUserConfirmationToken(user);
+//        String confirmationToken = userToken.getToken();
+//        emailSenderService.sendEmail(user.getEmail(), MailConstants.USER_CONFIRMATION_SUBJECT, MailConstants.USER_CONFIRMATION_BODY + MailUtil.getUserConfirmationLink(confirmationToken));
         return user;
     }
 

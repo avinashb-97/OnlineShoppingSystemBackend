@@ -18,6 +18,8 @@ public class SubCategoryDTO {
 
     private String description;
 
+    private long categoryId;
+
     public static SubCategory convertSubCategoryDTOToEntity(SubCategoryDTO subCategoryDTO)
     {
         SubCategory subCategory = new SubCategory();
@@ -44,6 +46,10 @@ public class SubCategoryDTO {
     public static List<SubCategoryDTO> convertEntityListToDTOList(List<SubCategory> subCategories)
     {
         List<SubCategoryDTO> subCategoryDTOSList = new ArrayList<>();
+        if(subCategories == null || subCategories.isEmpty())
+        {
+            return  subCategoryDTOSList;
+        }
         for(SubCategory subCategory : subCategories)
         {
             subCategoryDTOSList.add(convertEntityToSubCategoryDTO(subCategory));

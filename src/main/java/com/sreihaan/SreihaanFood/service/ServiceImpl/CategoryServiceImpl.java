@@ -7,12 +7,10 @@ import com.sreihaan.SreihaanFood.model.persistence.SubCategory;
 import com.sreihaan.SreihaanFood.model.persistence.repository.CategoryRepository;
 import com.sreihaan.SreihaanFood.model.persistence.repository.SubCategoryRepository;
 import com.sreihaan.SreihaanFood.service.CategoryService;
-import com.sreihaan.SreihaanFood.service.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,17 +24,8 @@ public class CategoryServiceImpl implements CategoryService {
     private SubCategoryRepository subCategoryRepository;
 
     @Override
-    public Category addCategory(Category category, List<SubCategory> subCategories) {
+    public Category addCategory(Category category) {
         Category savedCategory = categoryRepository.save(category);
-        for(SubCategory subCategory : subCategories)
-        {
-            subCategory.setCategory(savedCategory);
-        }
-        List<SubCategory> savedSubCategories = new ArrayList<>();
-        if(!subCategories.isEmpty()){
-            savedSubCategories = subCategoryRepository.saveAll(subCategories);
-            savedCategory.setSubCategories(savedSubCategories);
-        }
         return savedCategory;
     }
 
@@ -58,7 +47,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category updateCategory(Category category) {
+    public Category updateCategory(long categoryId, Category categoryObj) {
+        Category category = getCategoryById(categoryId);
+        category.setName(categoryObj.getName());
+        category.setDescription(categoryObj.getName());
         return categoryRepository.save(category);
     }
 
@@ -71,6 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(long categoryId) {
         Category category = getCategoryById(categoryId);
+        subCategoryRepository.deleteAll(category.getSubCategories());
         categoryRepository.delete(category);
     }
 
@@ -78,5 +71,32 @@ public class CategoryServiceImpl implements CategoryService {
     public SubCategory getSubCategoryById(Long subCategroyId) {
         return subCategoryRepository.findById(subCategroyId)
                 .orElse(new SubCategory());
+    }
+
+    @Override
+    public SubCategory addSubCategory(SubCategory subCategory, long categoryId) {
+        Category category = getCategoryById(categoryId);
+        subCategory.setCategory(category);
+        SubCategory savedSubCategory = subCategoryRepository.save(subCategory);
+        category.addSubCategory(savedSubCategory);
+        categoryRepository.save(category);
+        return savedSubCategory;
+    }
+
+    @Override
+    public SubCategory updateSubCategory(long subCategoryId, SubCategory subCategoryObj) {
+        SubCategory subCategory = getSubCategoryById(subCategoryId);
+        subCategory.setName(subCategoryObj.getName());
+        subCategory.setDescription(subCategoryObj.getDescription());
+        return subCategoryRepository.save(subCategory);
+    }
+
+    @Override
+    public void deleteSubCategory(long subCategoryId) {
+        SubCategory subCategory = getSubCategoryById(subCategoryId);
+        Category category = subCategory.getCategory();
+        category.removeSubCategory(subCategory);
+        categoryRepository.save(category);
+        subCategoryRepository.delete(subCategory);
     }
 }

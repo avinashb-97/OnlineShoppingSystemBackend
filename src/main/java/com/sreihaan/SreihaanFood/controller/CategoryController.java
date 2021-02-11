@@ -2,16 +2,11 @@ package com.sreihaan.SreihaanFood.controller;
 
 import com.sreihaan.SreihaanFood.dto.CategoryDTO;
 import com.sreihaan.SreihaanFood.dto.ProductDTO;
-import com.sreihaan.SreihaanFood.dto.SubCategoryDTO;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
-import com.sreihaan.SreihaanFood.model.persistence.Image;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
+import com.sreihaan.SreihaanFood.model.requests.CreateAndUpdateCategoryRequest;
 import com.sreihaan.SreihaanFood.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -23,14 +18,6 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
-
-    @PostMapping
-    public CategoryDTO addCategory(@RequestBody CategoryDTO categoryDTO)
-    {
-        Category category = CategoryDTO.convertCategoryDTOToEntity(categoryDTO);
-        category = categoryService.addCategory(category, SubCategoryDTO.convertDTOListToEntityList(categoryDTO.getSubCategory()));
-        return CategoryDTO.convertEntityToCategoryDTO(category);
-    }
 
     @GetMapping
     public List<CategoryDTO> getAllCategories()
@@ -44,17 +31,24 @@ public class CategoryController {
         return categoryDTOS;
     }
 
-    @GetMapping("/{id}/products")
-    public List<ProductDTO> getCategoryProducts(@PathVariable("id") long categoryId)
+    @PostMapping
+    public CategoryDTO addCategory(@RequestBody CreateAndUpdateCategoryRequest createCategoryRequest)
     {
-        List<Product> products = categoryService.getProductsForCategory(categoryId);
-        List<ProductDTO> productDTOS = new ArrayList<>();
-        for (Product product : products)
-        {
-            ProductDTO productDTO = ProductDTO.convertEntityToProductDTO(product);
-            productDTOS.add(productDTO);
-        }
-        return productDTOS;
+        Category category = new Category();
+        category.setName(createCategoryRequest.getName());
+        category.setDescription(createCategoryRequest.getDescription());
+        category = categoryService.addCategory(category);
+        return CategoryDTO.convertEntityToCategoryDTO(category);
+    }
+
+    @PutMapping
+    public CategoryDTO updateCategory(@RequestBody CreateAndUpdateCategoryRequest updateCategoryRequest)
+    {
+        Category category = new Category();
+        category.setName(updateCategoryRequest.getName());
+        category.setDescription(updateCategoryRequest.getDescription());
+        category = categoryService.updateCategory(updateCategoryRequest.getId(), category);
+        return CategoryDTO.convertEntityToCategoryDTO(category);
     }
 
     @DeleteMapping("/{id}")
@@ -63,5 +57,15 @@ public class CategoryController {
         categoryService.deleteCategory(categoryId);
     }
 
+    @GetMapping("/{id}/products")
+    public List<ProductDTO> getCategoryProducts(@PathVariable("id") long categoryId) {
+        List<Product> products = categoryService.getProductsForCategory(categoryId);
+        List<ProductDTO> productDTOS = new ArrayList<>();
+        for (Product product : products) {
+            ProductDTO productDTO = ProductDTO.convertEntityToProductDTO(product);
+            productDTOS.add(productDTO);
+        }
+        return productDTOS;
+    }
 
 }
