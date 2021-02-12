@@ -42,7 +42,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\":\"avinashbb695@gmail.com\",\r\n    \"password\":\"hellohello\"\r\n}",
+					"raw": "{\r\n    \"email\":\"sreihaanfoods@gmail.com\",\r\n    \"password\":\"hellohello\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -168,7 +168,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoYmI2OTVAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJleHAiOjE2MTI4NzIzMzF9.ygFzYyGCzxMHThEjwnvKwXa3GjkERIYOGZHpfmOTIH4so9-vRTn2LGMutVqtcTXWjVStMlkbnLv-50gh8WOKvg",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoYmI2OTVAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJleHAiOjE2MTM4NDc3MTR9.LxbQDaQ1J8aggLXD6hF4zEJGSWpMIBxOyCRSV4eNrAWLr3To_jyQeE7nt6n91Ib4IG5i2mpDiIg3S3FIGXhGcQ",
 							"type": "string"
 						}
 					]
@@ -177,7 +177,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\" : \"Cake Boxes\",\r\n    \"description\" : \"Cake boxes\",\r\n    \"subCategories\" : [\"Round\",\"Square\",\"Rectangle\"]\r\n}",
+					"raw": "{\r\n  \"description\": \"Superior quality pizza boxes\",\r\n  \"name\": \"Pizza Box\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -207,7 +207,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoQGdtYWlsLmNvbSIsImV4cCI6MTYxMDEzNzU5N30.9XOdhGkg06SZ_Znqk4M8zUDB6brvxZmx5v7eEcAwqWQld6YCx2zw58pefAiasW_yWWIc8Dtjhxs-gHwt4eweUg",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzcmVpaGFhbmZvb2RzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiTU9ERVJBVE9SIiwiVVNFUiJdLCJleHAiOjE2MTM5NDYwNjJ9.OtxNuaLSigcCxqT2OY_YdWcX3J4SVL34tt1dyC6kmLR_WqDp3pBsaEY6L8dHgiLiX41cMxSwYMkpoDzgC-blSQ",
 							"type": "string"
 						}
 					]
@@ -273,7 +273,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoYmI2OTVAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJleHAiOjE2MTE4MzgxMTF9.gwIyd8yknV31PXQFJBcozXdlPIap5NhTF9XXQ7HUdXjR1C7Dh1sPBaVup1LQXSGk1u7lCZ_RWFOXrWP7uzgIpw",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdmluYXNoYmI2OTVAZ21haWwuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJleHAiOjE2MTM4NDc3MTR9.LxbQDaQ1J8aggLXD6hF4zEJGSWpMIBxOyCRSV4eNrAWLr3To_jyQeE7nt6n91Ib4IG5i2mpDiIg3S3FIGXhGcQ",
 							"type": "string"
 						}
 					]
@@ -285,23 +285,29 @@
 					"formdata": [
 						{
 							"key": "name",
-							"value": "Coconut Oil",
+							"value": "8oz PLA Deli Container",
 							"type": "text"
 						},
 						{
 							"key": "description",
-							"value": "Pure virgin Coconut oil",
+							"value": "8oz PLA Deli Container",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "DC-08",
 							"type": "text"
 						},
 						{
 							"key": "price",
-							"value": "123.12",
+							"value": "63",
 							"type": "text"
 						},
 						{
 							"key": "discountedPrice",
 							"value": "109.99",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "isFeatured",
@@ -326,7 +332,37 @@
 						{
 							"key": "image",
 							"type": "file",
-							"src": "/C:/Users/a4avi/OneDrive/Desktop/Web/305420_Bag_Seal_Tape_5.jpg"
+							"src": "/C:/Users/a4avi/OneDrive/Desktop/Web/C-SEA1.jpg"
+						},
+						{
+							"key": "productSize",
+							"value": "118x39",
+							"type": "text"
+						},
+						{
+							"key": "cartonSize",
+							"value": "380x380x380",
+							"type": "text"
+						},
+						{
+							"key": "pcsPerBag",
+							"value": "50",
+							"type": "text"
+						},
+						{
+							"key": "bagsPerCtn",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "pcsPerCtn",
+							"value": "500",
+							"type": "text"
+						},
+						{
+							"key": "subCategoryId",
+							"value": "3",
+							"type": "text"
 						}
 					],
 					"options": {
@@ -506,7 +542,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/category/2/products",
+					"raw": "http://localhost:8080/api/category/6/products",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -515,8 +551,181 @@
 					"path": [
 						"api",
 						"category",
-						"2",
+						"6",
 						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Category",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzcmVpaGFhbmZvb2RzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiTU9ERVJBVE9SIiwiVVNFUiJdLCJleHAiOjE2MTM4NDk4NDN9.IQeEQulm7kuwfhYcjW41voqq5r5ZF4cEb9V9TwytQJvouQPpJPohMnYpBCrA2j4aAR4d7-LqVCCsfh_pTjzoJA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Superior quality pizza boxes\",\r\n  \"id\": 2,\r\n  \"name\": \"Pizza Boxes\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete SubCategory",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzcmVpaGFhbmZvb2RzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiTU9ERVJBVE9SIiwiVVNFUiJdLCJleHAiOjE2MTM4NDk4NDN9.IQeEQulm7kuwfhYcjW41voqq5r5ZF4cEb9V9TwytQJvouQPpJPohMnYpBCrA2j4aAR4d7-LqVCCsfh_pTjzoJA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/subcategory/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"subcategory",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add SubCategory",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzcmVpaGFhbmZvb2RzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiTU9ERVJBVE9SIiwiVVNFUiJdLCJleHAiOjE2MTM5NDI5Mjd9.XPioPRj27Juhdj8wCs2wDMJB4TEMjTfvakAa4_evhigxGhkO7p-Rj--utfvjqkolKWKHADGC7SE5r2lG7B6UOg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Superiror Subcategory box 4\",\r\n  \"name\": \"Subcategory box 4\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/category/3/subcategory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"category",
+						"3",
+						"subcategory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Category",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzcmVpaGFhbmZvb2RzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiTU9ERVJBVE9SIiwiVVNFUiJdLCJleHAiOjE2MTM4NDk4NDN9.IQeEQulm7kuwfhYcjW41voqq5r5ZF4cEb9V9TwytQJvouQPpJPohMnYpBCrA2j4aAR4d7-LqVCCsfh_pTjzoJA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/category/14",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"category",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Product",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzcmVpaGFhbmZvb2RzQGdtYWlsLmNvbSIsInJvbGVzIjpbIkFETUlOIiwiTU9ERVJBVE9SIiwiVVNFUiJdLCJleHAiOjE2MTM5NDYwNjJ9.OtxNuaLSigcCxqT2OY_YdWcX3J4SVL34tt1dyC6kmLR_WqDp3pBsaEY6L8dHgiLiX41cMxSwYMkpoDzgC-blSQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/product/79",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"product",
+						"79"
 					]
 				}
 			},
