@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RequestMapping("/api/category")
 @RestController
@@ -54,15 +55,15 @@ public class CategoryController {
         categoryService.deleteCategory(categoryId);
     }
 
-//    @GetMapping("/{id}/products")
-//    public List<ProductDTO> getCategoryProducts(@PathVariable("id") long categoryId) {
-//        List<Product> products = categoryService.getProductsForCategory(categoryId);
-//        List<ProductDTO> productDTOS = new ArrayList<>();
-//        for (Product product : products) {
-//            ProductDTO productDTO = ProductDTO.convertEntityToProductDTO(product);
-//            productDTOS.add(productDTO);
-//        }
-//        return productDTOS;
-//    }
+    @GetMapping("/{id}/products")
+    public List<ProductDTO> getCategoryProducts(@PathVariable("id") long categoryId) {
+        Set<Product> products = categoryService.getProductsForCategory(categoryId);
+        List<ProductDTO> productDTOS = new ArrayList<>();
+        for (Product product : products) {
+            ProductDTO productDTO = ProductDTO.convertEntityToProductDTO(product);
+            productDTOS.add(productDTO);
+        }
+        return productDTOS;
+    }
 
 }

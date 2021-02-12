@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -66,12 +67,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts(Category category)
-    {
-        return productRepository.findByAssociatedWithCategory(category.getId());
-    }
-
-    @Override
     public Product getProductByName(String name) {
         return null;
     }
@@ -104,6 +99,11 @@ public class ProductServiceImpl implements ProductService {
     {
         Product product = getProductById(productId);
         productRepository.delete(product);
+    }
+
+    @Override
+    public Set<Product> getProductsForCategory(long categoryId) {
+        return productRepository.findByAssociatedWithCategory(categoryId);
     }
 
 

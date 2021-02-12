@@ -35,4 +35,6 @@ public interface CategoryService {
     Set<Category> getSubCategories(Long parentId);
 
     Category removeProductFromCategory(Category category, Product product);
+
+    Set<Product> getProductsForCategory(long categoryId);
 }

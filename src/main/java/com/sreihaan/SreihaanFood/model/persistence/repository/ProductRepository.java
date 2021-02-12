@@ -7,16 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    String GET_PRODUCTS_ASSOCIATED_WITH_CATEGORY_SQL = "select p.* from product where (pc.categoryid = ?1 or pc.categoryid in (select ac.id from category where ac.parentid = ?1)) ";
+    String GET_PRODUCTS_ASSOCIATED_WITH_CATEGORY_SQL = "select * from product p where (p.category_id = ?1 or p.category_id in (select id from category ac where ac.parent_id = ?1)) ";
 
     public List<Product> findByIsBestSeller(boolean isBestSeller);
 
     public List<Product> findByIsFeatured(boolean isFeatured);
 
     @Query(value = GET_PRODUCTS_ASSOCIATED_WITH_CATEGORY_SQL, nativeQuery = true)
-    List<Product> findByAssociatedWithCategory(long id);
+    Set<Product> findByAssociatedWithCategory(long categoryId);
 }

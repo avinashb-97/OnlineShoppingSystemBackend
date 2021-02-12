@@ -63,11 +63,10 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.save(category);
     }
 
-//    @Override
-//    public Set<Product> getProductsForCategory(long id) {
-//        Category category = getCategoryById(id);
-//        return category.getProducts();
-//    }
+    @Override
+    public Set<Product> getProductsForCategory(long categoryId) {
+        return  productService.getProductsForCategory(categoryId);
+    }
 
     @Override
     public void deleteCategory(long categoryId) {
