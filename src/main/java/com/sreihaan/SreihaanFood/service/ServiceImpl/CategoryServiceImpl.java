@@ -91,10 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Category updateSubCategoryDetails(Long parentId, Long childId, Category subCategory) {
         Category parent = getCategoryById(parentId);
         Category child = getCategoryById(childId);
-        if(!isChildCategory(child, parent))
-        {
-            throw new IllegalArgumentException("category " + parent.getId() + " is not parent of " + child.getId());
-        }
+        checkIsParentAndChildCategory(child, parent);
         return categoryRepository.save(child);
     }
 
