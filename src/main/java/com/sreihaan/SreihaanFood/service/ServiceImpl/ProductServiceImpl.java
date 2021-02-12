@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     public Product addProduct(Product product, Long categoryId, Long subCategroyId, MultipartFile imageFile)
     {
         Category category = categoryService.getCategoryById(categoryId);
-        Category childCategory = categoryService.getCategoryById(subCategroyId);
+        Category childCategory = subCategroyId != null ? categoryService.getCategoryById(subCategroyId) : null;
         categoryService.checkIsParentAndChildCategory(childCategory, category);
         product.setCategory(childCategory != null ? childCategory : category);
         Image image = null;
@@ -103,9 +103,7 @@ public class ProductServiceImpl implements ProductService {
     public void removeProduct(long productId)
     {
         Product product = getProductById(productId);
-        Category category = categoryService.removeProductFromCategory(product.getCategory(), product);
-//        product.setCategory(category);
-//        productRepository.delete(product);
+        productRepository.delete(product);
     }
 
 

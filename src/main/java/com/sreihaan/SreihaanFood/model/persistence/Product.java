@@ -48,7 +48,7 @@ public class Product {
     @Column(nullable = false, columnDefinition = "tinyint(1) default 0")
     private boolean isBestSeller = false;
 
-    @OneToOne(mappedBy = "product")
+    @OneToOne(mappedBy = "product",orphanRemoval = true, cascade = CascadeType.ALL)
     private Image image;
 
     @ManyToOne

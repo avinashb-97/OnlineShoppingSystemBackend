@@ -24,10 +24,10 @@ public class Category {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "parentid")
+    @JoinColumn(name = "parentId")
     private Category parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private Set<Category> childCategories;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL)

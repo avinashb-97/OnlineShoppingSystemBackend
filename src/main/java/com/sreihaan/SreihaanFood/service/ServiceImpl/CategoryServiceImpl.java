@@ -118,7 +118,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void checkIsParentAndChildCategory(Category child, Category parent) {
         checkIsParentCategory(parent);
-        if(!isChildCategory(child, parent))
+        if(child == null)
+        {
+            return;
+        }
+        else if(!isChildCategory(child, parent))
         {
             throw new IllegalArgumentException("category " + parent.getId() + " is not parent of " + child.getId());
         }

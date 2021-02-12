@@ -1,6 +1,5 @@
 package com.sreihaan.SreihaanFood.model.requests;
 
-import com.sreihaan.SreihaanFood.dto.ProductDTO;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,9 +40,9 @@ public class CreateAndUpdateProductRequest {
 
     private long pcsPerCtn;
 
-    private long categoryId;
+    private Long categoryId;
 
-    private long subCategoryId;
+    private Long subCategoryId;
 
     private MultipartFile image;
 
