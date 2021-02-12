@@ -17,7 +17,6 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @SequenceGenerator(name="cart_entity_seq_gen", sequenceName="CART_ENTITY_SEQ")
     private long id;
 
     @OneToOne(cascade = CascadeType.ALL)

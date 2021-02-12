@@ -1,6 +1,7 @@
 package com.sreihaan.SreihaanFood.controller;
 
 import com.sreihaan.SreihaanFood.dto.CategoryDTO;
+import com.sreihaan.SreihaanFood.dto.ParentCategoryDTO;
 import com.sreihaan.SreihaanFood.dto.ProductDTO;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
@@ -20,34 +21,30 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public List<CategoryDTO> getAllCategories()
+    public List<ParentCategoryDTO> getAllCategories()
     {
         List<Category> categories = categoryService.getAllCategories();
-        List<CategoryDTO> categoryDTOS = new ArrayList<>();
-        for (Category category : categories)
-        {
-            categoryDTOS.add(CategoryDTO.convertEntityToCategoryDTO(category));
-        }
+        List<ParentCategoryDTO> categoryDTOS = ParentCategoryDTO.convertEntityListToDTOList(categories);
         return categoryDTOS;
     }
 
     @PostMapping
-    public CategoryDTO addCategory(@RequestBody CreateAndUpdateCategoryRequest createCategoryRequest)
+    public CategoryDTO createCategory(@RequestBody CreateAndUpdateCategoryRequest createCategoryRequest)
     {
         Category category = new Category();
         category.setName(createCategoryRequest.getName());
         category.setDescription(createCategoryRequest.getDescription());
-        category = categoryService.addCategory(category);
+        category = categoryService.createCategory(category);
         return CategoryDTO.convertEntityToCategoryDTO(category);
     }
 
-    @PutMapping
-    public CategoryDTO updateCategory(@RequestBody CreateAndUpdateCategoryRequest updateCategoryRequest)
+    @PutMapping("/{id}")
+    public CategoryDTO updateCategory(@PathVariable("id") long categoryId, @RequestBody CreateAndUpdateCategoryRequest updateCategoryRequest)
     {
         Category category = new Category();
         category.setName(updateCategoryRequest.getName());
         category.setDescription(updateCategoryRequest.getDescription());
-        category = categoryService.updateCategory(updateCategoryRequest.getId(), category);
+        category = categoryService.updateCategoryDetails(categoryId, category);
         return CategoryDTO.convertEntityToCategoryDTO(category);
     }
 
@@ -57,15 +54,15 @@ public class CategoryController {
         categoryService.deleteCategory(categoryId);
     }
 
-    @GetMapping("/{id}/products")
-    public List<ProductDTO> getCategoryProducts(@PathVariable("id") long categoryId) {
-        List<Product> products = categoryService.getProductsForCategory(categoryId);
-        List<ProductDTO> productDTOS = new ArrayList<>();
-        for (Product product : products) {
-            ProductDTO productDTO = ProductDTO.convertEntityToProductDTO(product);
-            productDTOS.add(productDTO);
-        }
-        return productDTOS;
-    }
+//    @GetMapping("/{id}/products")
+//    public List<ProductDTO> getCategoryProducts(@PathVariable("id") long categoryId) {
+//        List<Product> products = categoryService.getProductsForCategory(categoryId);
+//        List<ProductDTO> productDTOS = new ArrayList<>();
+//        for (Product product : products) {
+//            ProductDTO productDTO = ProductDTO.convertEntityToProductDTO(product);
+//            productDTOS.add(productDTO);
+//        }
+//        return productDTOS;
+//    }
 
 }

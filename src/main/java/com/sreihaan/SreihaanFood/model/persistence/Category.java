@@ -5,8 +5,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,7 +15,6 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @SequenceGenerator(name="category_entity_seq_gen", sequenceName="CATEGORY_ENTITY_SEQ")
     private long id;
 
     @Nationalized
@@ -25,31 +23,14 @@ public class Category {
     @Column(length = 1000)
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<SubCategory> subCategories;
+    @ManyToOne
+    @JoinColumn(name = "parentid")
+    private Category parent;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Product> products;
+    @OneToMany(mappedBy = "parent")
+    private Set<Category> childCategories;
 
-    public void setProducts(Product product) {
-        if(products == null)
-        {
-            products = new ArrayList<>();
-        }
-        products.add(product);
-    }
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL)
+    private Set<Product> products;
 
-    public void removeSubCategory(SubCategory subCategory)
-    {
-        this.subCategories.remove(subCategory);
-    }
-
-    public void addSubCategory(SubCategory subCategory)
-    {
-        if(this.subCategories == null)
-        {
-            this.subCategories = new ArrayList<>();
-        }
-        this.subCategories.add(subCategory);
-    }
 }

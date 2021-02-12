@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Image;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
-import com.sreihaan.SreihaanFood.model.persistence.SubCategory;
 import com.sreihaan.SreihaanFood.utils.ProductUtil;
 import org.springframework.beans.BeanUtils;
 
@@ -42,7 +41,7 @@ public class ProductDTO {
 
     private boolean isBestSeller;
 
-    private long subCategoryId;
+    private Long subCategoryId;
 
     private String subCategory;
 
@@ -191,11 +190,11 @@ public class ProductDTO {
         this.pcsPerCtn = pcsPerCtn;
     }
 
-    public long getSubCategoryId() {
+    public Long getSubCategoryId() {
         return subCategoryId;
     }
 
-    public void setSubCategoryId(long subCategoryId) {
+    public void setSubCategoryId(Long subCategoryId) {
         this.subCategoryId = subCategoryId;
     }
 
@@ -219,16 +218,20 @@ public class ProductDTO {
         ProductDTO productDTO = new ProductDTO();
         BeanUtils.copyProperties(product, productDTO);
         Category category = product.getCategory();
-        if(category != null)
+        Category parent = category.getParent();
+        if(category != null && parent == null)
         {
             productDTO.setCategoryId(category.getId());
             productDTO.setCategory(category.getName());
+            productDTO.setSubCategoryId(null);
+            productDTO.setSubCategory(null);
         }
-        SubCategory subCategory = product.getSubCategory();
-        if(subCategory != null)
+        else if(category != null && parent != null)
         {
-            productDTO.setSubCategory(subCategory.getName());
-            productDTO.setSubCategoryId(subCategory.getId());
+            productDTO.setCategoryId(parent.getId());
+            productDTO.setCategory(parent.getName());
+            productDTO.setSubCategoryId(category.getId());
+            productDTO.setSubCategory(category.getName());
         }
         Image image = product.getImage();
         String imageUrl = ProductUtil.getImageUrl(image, product.getId());

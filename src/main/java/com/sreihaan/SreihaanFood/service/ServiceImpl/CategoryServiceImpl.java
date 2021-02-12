@@ -3,15 +3,16 @@ package com.sreihaan.SreihaanFood.service.ServiceImpl;
 import com.sreihaan.SreihaanFood.exception.CategoryNotFoundException;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
-import com.sreihaan.SreihaanFood.model.persistence.SubCategory;
 import com.sreihaan.SreihaanFood.model.persistence.repository.CategoryRepository;
-import com.sreihaan.SreihaanFood.model.persistence.repository.SubCategoryRepository;
+import com.sreihaan.SreihaanFood.model.persistence.repository.ProductRepository;
 import com.sreihaan.SreihaanFood.service.CategoryService;
+import com.sreihaan.SreihaanFood.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -21,12 +22,14 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private SubCategoryRepository subCategoryRepository;
+    private ProductService productService;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
-    public Category addCategory(Category category) {
-        Category savedCategory = categoryRepository.save(category);
-        return savedCategory;
+    public Category createCategory(Category category) {
+        return categoryRepository.save(category);
     }
 
     @Override
@@ -47,56 +50,91 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category updateCategory(long categoryId, Category categoryObj) {
+    public Category updateCategoryDetails(long categoryId, Category categoryObj) {
         Category category = getCategoryById(categoryId);
         category.setName(categoryObj.getName());
-        category.setDescription(categoryObj.getName());
+        category.setDescription(categoryObj.getDescription());
         return categoryRepository.save(category);
     }
 
     @Override
-    public List<Product> getProductsForCategory(long id) {
-        Category category = getCategoryById(id);
-        return category.getProducts();
+    public Category updateCategoryDetails(Category category)
+    {
+        return categoryRepository.save(category);
     }
+
+//    @Override
+//    public Set<Product> getProductsForCategory(long id) {
+//        Category category = getCategoryById(id);
+//        return category.getProducts();
+//    }
 
     @Override
     public void deleteCategory(long categoryId) {
         Category category = getCategoryById(categoryId);
-        subCategoryRepository.deleteAll(category.getSubCategories());
         categoryRepository.delete(category);
     }
 
     @Override
-    public SubCategory getSubCategoryById(Long subCategroyId) {
-        return subCategoryRepository.findById(subCategroyId)
-                .orElse(new SubCategory());
+    public boolean isChildCategory(Category category, Category parent) {
+        return category.getParent().equals(parent);
     }
 
     @Override
-    public SubCategory addSubCategory(SubCategory subCategory, long categoryId) {
-        Category category = getCategoryById(categoryId);
-        subCategory.setCategory(category);
-        SubCategory savedSubCategory = subCategoryRepository.save(subCategory);
-        category.addSubCategory(savedSubCategory);
-        categoryRepository.save(category);
-        return savedSubCategory;
+    public Category createAndAddSubCategory(Long parentId, Category subCategory) {
+        Category parent = getCategoryById(parentId);
+        subCategory.setParent(parent);
+        checkIsParentAndChildCategory(subCategory, parent);
+        return categoryRepository.save(subCategory);
     }
 
     @Override
-    public SubCategory updateSubCategory(long subCategoryId, SubCategory subCategoryObj) {
-        SubCategory subCategory = getSubCategoryById(subCategoryId);
-        subCategory.setName(subCategoryObj.getName());
-        subCategory.setDescription(subCategoryObj.getDescription());
-        return subCategoryRepository.save(subCategory);
+    public Category updateSubCategoryDetails(Long parentId, Long childId, Category subCategory) {
+        Category parent = getCategoryById(parentId);
+        Category child = getCategoryById(childId);
+        if(!isChildCategory(child, parent))
+        {
+            throw new IllegalArgumentException("category " + parent.getId() + " is not parent of " + child.getId());
+        }
+        return categoryRepository.save(child);
     }
 
     @Override
-    public void deleteSubCategory(long subCategoryId) {
-        SubCategory subCategory = getSubCategoryById(subCategoryId);
-        Category category = subCategory.getCategory();
-        category.removeSubCategory(subCategory);
-        categoryRepository.save(category);
-        subCategoryRepository.delete(subCategory);
+    public void deleteSubCategory(long parentId, long subCategoryId) {
+        Category parent = getCategoryById(parentId);
+        Category child = getCategoryById(subCategoryId);
+        checkIsParentAndChildCategory(child, parent);
+        categoryRepository.delete(child);
     }
+
+    private void checkIsParentCategory(Category category)
+    {
+        if(category.getParent() != null)
+        {
+            throw new IllegalArgumentException("category " + category.getId() + " is not a parent category");
+        }
+    }
+
+    @Override
+    public void checkIsParentAndChildCategory(Category child, Category parent) {
+        checkIsParentCategory(parent);
+        if(!isChildCategory(child, parent))
+        {
+            throw new IllegalArgumentException("category " + parent.getId() + " is not parent of " + child.getId());
+        }
+    }
+
+    @Override
+    public Set<Category> getSubCategories(Long parentId) {
+        Category parent = getCategoryById(parentId);
+        checkIsParentCategory(parent);
+        return parent.getChildCategories();
+    }
+
+    @Override
+    public Category removeProductFromCategory(Category category, Product product) {
+        category.getProducts().remove(product);
+        return categoryRepository.save(category);
+    }
+
 }

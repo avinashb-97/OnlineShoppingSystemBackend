@@ -6,6 +6,7 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,7 +15,6 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @SequenceGenerator(name="product_entity_seq_gen", sequenceName="PRODUCT_ENTITY_SEQ")
     private long id;
 
     @Nationalized
@@ -55,7 +55,4 @@ public class Product {
     @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "subCategoryId", nullable = true)
-    private SubCategory subCategory;
 }

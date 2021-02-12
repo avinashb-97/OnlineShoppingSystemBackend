@@ -47,6 +47,12 @@ public class ProductController {
         return productDTOS;
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable("id") long id)
+    {
+        productService.removeProduct(id);
+    }
+
     @GetMapping("/{id}")
     public ProductDTO getProduct(@PathVariable("id") long id)
     {

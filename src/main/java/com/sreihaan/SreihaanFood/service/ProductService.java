@@ -1,5 +1,6 @@
 package com.sreihaan.SreihaanFood.service;
 
+import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Image;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +13,8 @@ public interface ProductService {
 
     public List<Product> getAllProducts();
 
+    public List<Product> getAllProducts(Category category);
+
     public Product getProductByName(String name);
 
     public Product getProductById(Long id);
@@ -21,4 +24,6 @@ public interface ProductService {
     List<Product> getBestSellers();
 
     List<Product> getFeaturedProducts();
+
+    public void removeProduct(long productId);
 }

@@ -5,10 +5,8 @@ import com.sreihaan.SreihaanFood.exception.ProductNotFoundException;
 import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Image;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
-import com.sreihaan.SreihaanFood.model.persistence.SubCategory;
 import com.sreihaan.SreihaanFood.model.persistence.repository.ProductRepository;
 import com.sreihaan.SreihaanFood.service.CategoryService;
-import com.sreihaan.SreihaanFood.service.CounterService;
 import com.sreihaan.SreihaanFood.service.ImageService;
 import com.sreihaan.SreihaanFood.service.ProductService;
 import org.slf4j.Logger;
@@ -40,23 +38,20 @@ public class ProductServiceImpl implements ProductService {
     public Product addProduct(Product product, Long categoryId, Long subCategroyId, MultipartFile imageFile)
     {
         Category category = categoryService.getCategoryById(categoryId);
-        SubCategory subCategory = categoryService.getSubCategoryById(subCategroyId);
-        product.setCategory(category);
-        product.setSubCategory(subCategory);
+        Category childCategory = categoryService.getCategoryById(subCategroyId);
+        categoryService.checkIsParentAndChildCategory(childCategory, category);
+        product.setCategory(childCategory != null ? childCategory : category);
         Image image = null;
         try
         {
             image = imageService.saveImage(imageFile, product);
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
         product.setImage(image);
         product = productRepository.save(product);
-        category.setProducts(product);
-        categoryService.updateCategory(categoryId, category);
-        subCategory.addProducts(product);
-        categoryService.updateSubCategory(subCategroyId, subCategory);
         return product;
 
     }
@@ -68,6 +63,12 @@ public class ProductServiceImpl implements ProductService {
         long timeTaken = System.currentTimeMillis() - start;
         logger.info("Time taken to get all products from DB : "+timeTaken);
         return products;
+    }
+
+    @Override
+    public List<Product> getAllProducts(Category category)
+    {
+        return productRepository.findByAssociatedWithCategory(category.getId());
     }
 
     @Override
@@ -96,6 +97,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getFeaturedProducts() {
         return productRepository.findByIsFeatured(true);
+    }
+
+    @Override
+    public void removeProduct(long productId)
+    {
+        Product product = getProductById(productId);
+        Category category = categoryService.removeProductFromCategory(product.getCategory(), product);
+//        product.setCategory(category);
+//        productRepository.delete(product);
     }
 
 

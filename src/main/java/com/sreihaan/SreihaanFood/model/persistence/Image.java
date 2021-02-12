@@ -17,7 +17,6 @@ public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @SequenceGenerator(name="image_entity_seq_gen", sequenceName="IMAGE_ENTITY_SEQ")
     private long id;
 
     private String filename;

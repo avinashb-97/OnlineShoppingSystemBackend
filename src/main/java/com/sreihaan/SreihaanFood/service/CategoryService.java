@@ -2,13 +2,13 @@ package com.sreihaan.SreihaanFood.service;
 
 import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
-import com.sreihaan.SreihaanFood.model.persistence.SubCategory;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CategoryService {
     
-    public Category addCategory(Category category);
+    public Category createCategory(Category category);
     
     public List<Category> getAllCategories();
 
@@ -16,17 +16,23 @@ public interface CategoryService {
 
     public Category getCategoryById(Long id);
 
-    public Category updateCategory(long id, Category category);
+    public Category updateCategoryDetails(long id, Category category);
 
-    public List<Product> getProductsForCategory(long id);
+    public Category updateCategoryDetails(Category category);
 
     void deleteCategory(long categoryId);
 
-    SubCategory getSubCategoryById(Long subCategroyId);
+    public boolean isChildCategory(Category category, Category parent);
 
-    SubCategory addSubCategory(SubCategory subCategory, long categoryId);
+    Category createAndAddSubCategory(Long parentid, Category subCategory);
 
-    SubCategory updateSubCategory(long id, SubCategory subCategory);
+    Category updateSubCategoryDetails(Long parentId, Long childId, Category subCategory);
 
-    void deleteSubCategory(long subCategoryId);
+    void deleteSubCategory(long parentId, long subCategoryId);
+
+    void checkIsParentAndChildCategory(Category childCategory, Category category);
+
+    Set<Category> getSubCategories(Long parentId);
+
+    Category removeProductFromCategory(Category category, Product product);
 }

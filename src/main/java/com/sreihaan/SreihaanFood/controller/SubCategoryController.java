@@ -1,13 +1,17 @@
 package com.sreihaan.SreihaanFood.controller;
 
 
-import com.sreihaan.SreihaanFood.dto.SubCategoryDTO;
-import com.sreihaan.SreihaanFood.model.persistence.SubCategory;
+import com.sreihaan.SreihaanFood.dto.CategoryDTO;
+import com.sreihaan.SreihaanFood.model.persistence.Category;
+import com.sreihaan.SreihaanFood.model.requests.CreateAndUpdateCategoryRequest;
 import com.sreihaan.SreihaanFood.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/subcategory")
+import java.util.List;
+import java.util.Set;
+
+@RequestMapping(path = "/api/category/{parentId}/subcategory")
 @RestController
 public class SubCategoryController {
 
@@ -15,25 +19,39 @@ public class SubCategoryController {
     private CategoryService categoryService;
 
     @PostMapping
-    public SubCategoryDTO addSubCategory(@RequestBody SubCategoryDTO subCategoryDTO)
+    public CategoryDTO addSubCategory(@PathVariable Long parentId,
+                                      @RequestBody CreateAndUpdateCategoryRequest createAndUpdateCategoryRequest)
     {
-        SubCategory subCategory = SubCategoryDTO.convertSubCategoryDTOToEntity(subCategoryDTO);
-        subCategory = categoryService.addSubCategory(subCategory, subCategoryDTO.getCategoryId());
-        return SubCategoryDTO.convertEntityToSubCategoryDTO(subCategory);
+        Category subCategory = new Category();
+        subCategory.setName(createAndUpdateCategoryRequest.getName());
+        subCategory.setDescription(createAndUpdateCategoryRequest.getDescription());
+        subCategory = categoryService.createAndAddSubCategory(parentId, subCategory);
+        return CategoryDTO.convertEntityToCategoryDTO(subCategory);
     }
 
-    @PutMapping
-    public SubCategoryDTO updateSubCategory(@RequestBody SubCategoryDTO subCategoryDTO)
+    @GetMapping
+    public List<CategoryDTO> getSubCategories(@PathVariable Long parentId)
     {
-        SubCategory subCategory = SubCategoryDTO.convertSubCategoryDTOToEntity(subCategoryDTO);
-        subCategory = categoryService.updateSubCategory(subCategoryDTO.getId(), subCategory);
-        return SubCategoryDTO.convertEntityToSubCategoryDTO(subCategory);
+        Set<Category> subCategories = categoryService.getSubCategories(parentId);
+        return CategoryDTO.convertEntityListToDTOList(subCategories);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteSubCategory(@PathVariable("id") long subCategoryId)
-    {
-        categoryService.deleteSubCategory(subCategoryId);
-    }
+
+//    @PutMapping("/{childId}")
+//    public CategoryDTO updateSubCategory(@PathVariable Long parentId, @PathVariable Long childId,
+//                                            @RequestBody CreateAndUpdateCategoryRequest createAndUpdateCategoryRequest)
+//    {
+//        Category subCategory = new Category();
+//        subCategory.setName(createAndUpdateCategoryRequest.getName());
+//        subCategory.setDescription(createAndUpdateCategoryRequest.getDescription());
+//        subCategory = categoryService.updateSubCategoryDetails(parentId, childId, subCategory);
+//        return CategoryDTO.convertEntityToCategoryDTO(subCategory);
+//    }
+//
+//    @DeleteMapping("/{childId}")
+//    public void deleteSubCategory(@PathVariable Long parentId, @PathVariable Long childId)
+//    {
+//        categoryService.deleteSubCategory(parentId, childId);
+//    }
 
 }
