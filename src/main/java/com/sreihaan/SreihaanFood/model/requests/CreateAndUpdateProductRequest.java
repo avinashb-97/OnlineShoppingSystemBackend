@@ -1,5 +1,6 @@
 package com.sreihaan.SreihaanFood.model.requests;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,11 +23,14 @@ public class CreateAndUpdateProductRequest {
 
     private BigDecimal discountPrice;
 
-    private boolean isNew;
+    @JsonProperty("isNew")
+    private Boolean isNew = false;
 
-    private boolean isFeatured;
+    @JsonProperty("isFeatured")
+    private Boolean isFeatured = false;
 
-    private boolean isBestSeller;
+    @JsonProperty("isBestSeller")
+    private Boolean isBestSeller = false;
 
     private String code;
 

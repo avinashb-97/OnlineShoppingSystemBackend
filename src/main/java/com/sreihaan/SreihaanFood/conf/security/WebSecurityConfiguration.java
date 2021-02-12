@@ -39,11 +39,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
+
                 .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
                 .antMatchers("/api/product/**").hasAnyAuthority("MODERATOR", "ADMIN")
+
                 .antMatchers(HttpMethod.GET, "/api/category/**").permitAll()
+                .antMatchers("/api/category/**").hasAnyAuthority("MODERATOR", "ADMIN")
+
                 .antMatchers(HttpMethod.GET, "/api/user/confirm-account").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/user/**").permitAll()
+
                 .antMatchers(SWAGGER_AUTH_WHITELIST).permitAll()
                 .antMatchers("/").hasAnyAuthority("USER", "MODERATOR", "ADMIN")
                 .anyRequest().authenticated()

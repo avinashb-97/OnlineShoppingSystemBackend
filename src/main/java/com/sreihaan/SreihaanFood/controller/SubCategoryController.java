@@ -36,22 +36,4 @@ public class SubCategoryController {
         return CategoryDTO.convertEntityListToDTOList(subCategories);
     }
 
-
-//    @PutMapping("/{childId}")
-//    public CategoryDTO updateSubCategory(@PathVariable Long parentId, @PathVariable Long childId,
-//                                            @RequestBody CreateAndUpdateCategoryRequest createAndUpdateCategoryRequest)
-//    {
-//        Category subCategory = new Category();
-//        subCategory.setName(createAndUpdateCategoryRequest.getName());
-//        subCategory.setDescription(createAndUpdateCategoryRequest.getDescription());
-//        subCategory = categoryService.updateSubCategoryDetails(parentId, childId, subCategory);
-//        return CategoryDTO.convertEntityToCategoryDTO(subCategory);
-//    }
-//
-//    @DeleteMapping("/{childId}")
-//    public void deleteSubCategory(@PathVariable Long parentId, @PathVariable Long childId)
-//    {
-//        categoryService.deleteSubCategory(parentId, childId);
-//    }
-
 }

@@ -5,12 +5,20 @@ import com.sreihaan.SreihaanFood.model.persistence.Category;
 import com.sreihaan.SreihaanFood.model.persistence.Image;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
 import com.sreihaan.SreihaanFood.utils.ProductUtil;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductDTO {
 
     private long id;
@@ -35,11 +43,14 @@ public class ProductDTO {
 
     private BigDecimal discountPrice;
 
-    private boolean isNew;
+    @JsonProperty("isNew")
+    private Boolean isNew;
 
-    private boolean isFeatured;
+    @JsonProperty("isFeatured")
+    private Boolean isFeatured;
 
-    private boolean isBestSeller;
+    @JsonProperty("isBestSeller")
+    private Boolean isBestSeller;
 
     private Long subCategoryId;
 
@@ -50,161 +61,6 @@ public class ProductDTO {
     private String category;
 
     private String imageUrl;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public BigDecimal getDiscountPrice() {
-        return discountPrice;
-    }
-
-    public void setDiscountPrice(BigDecimal discountPrice) {
-        this.discountPrice = discountPrice;
-    }
-
-    @JsonProperty("isNew")
-    public boolean isNew() {
-        return isNew;
-    }
-
-    public void setNew(boolean aNew) {
-        isNew = aNew;
-    }
-
-    @JsonProperty("isFeatured")
-    public boolean isFeatured() {
-        return isFeatured;
-    }
-
-    public void setFeatured(boolean featured) {
-        isFeatured = featured;
-    }
-
-    @JsonProperty("isBestSeller")
-    public boolean isBestSeller() {
-        return isBestSeller;
-    }
-
-    public void setBestSeller(boolean bestSeller) {
-        isBestSeller = bestSeller;
-    }
-
-    public long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getProductSize() {
-        return productSize;
-    }
-
-    public void setProductSize(String productSize) {
-        this.productSize = productSize;
-    }
-
-    public String getCartonSize() {
-        return cartonSize;
-    }
-
-    public void setCartonSize(String cartonSize) {
-        this.cartonSize = cartonSize;
-    }
-
-    public long getPcsPerBag() {
-        return pcsPerBag;
-    }
-
-    public void setPcsPerBag(long pcsPerBag) {
-        this.pcsPerBag = pcsPerBag;
-    }
-
-    public long getBagsPerCtn() {
-        return bagsPerCtn;
-    }
-
-    public void setBagsPerCtn(long bagsPerCtn) {
-        this.bagsPerCtn = bagsPerCtn;
-    }
-
-    public long getPcsPerCtn() {
-        return pcsPerCtn;
-    }
-
-    public void setPcsPerCtn(long pcsPerCtn) {
-        this.pcsPerCtn = pcsPerCtn;
-    }
-
-    public Long getSubCategoryId() {
-        return subCategoryId;
-    }
-
-    public void setSubCategoryId(Long subCategoryId) {
-        this.subCategoryId = subCategoryId;
-    }
-
-    public String getSubCategory() {
-        return subCategory;
-    }
-
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
-    }
 
     public static Product convertProductDTOToEntity(ProductDTO productDTO)
     {

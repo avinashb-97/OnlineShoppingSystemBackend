@@ -40,13 +40,13 @@ public class Product {
     private BigDecimal discountPrice;
 
     @Column(nullable = false, columnDefinition = "tinyint(1) default 0")
-    private boolean isNew = false;
+    private Boolean isNew = false;
 
     @Column(nullable = false, columnDefinition = "tinyint(1) default 0")
-    private boolean isFeatured = false;
+    private Boolean isFeatured = false;
 
     @Column(nullable = false, columnDefinition = "tinyint(1) default 0")
-    private boolean isBestSeller = false;
+    private Boolean isBestSeller = false;
 
     @OneToOne(mappedBy = "product",orphanRemoval = true, cascade = CascadeType.ALL)
     private Image image;
