@@ -33,6 +33,7 @@ public class ProductController {
     @PostMapping
     public ProductDTO addProduct(@ModelAttribute CreateAndUpdateProductRequest createAndUpdateProductRequest)
     {
+        logger.info("[Create Product] create product initiated");
         Product product = CreateAndUpdateProductRequest.convertToProductEntity(createAndUpdateProductRequest);
         MultipartFile image = createAndUpdateProductRequest.getImage();
         product = productService.addProduct(product, createAndUpdateProductRequest.getCategoryId(), createAndUpdateProductRequest.getSubCategoryId(), image);
@@ -42,7 +43,9 @@ public class ProductController {
     @GetMapping
     public List<ProductDTO> getAllProducts()
     {
+        logger.info("[Get Products] get all products initiated");
         List<Product> products = productService.getAllProducts();
+        logger.info("[Get Products] Product fetched -> size : "+products.size());
         List<ProductDTO> productDTOS = ProductDTO.convertEntityListToProductDTOList(products);
         return productDTOS;
     }
@@ -50,6 +53,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable("id") long id)
     {
+        logger.info("[Delete Product] Delete product initiated, Product Id -> "+id);
         productService.removeProduct(id);
     }
 
@@ -63,6 +67,7 @@ public class ProductController {
     @GetMapping("/{id}/image")
     public ResponseEntity<ByteArrayResource> getImage(@PathVariable("id") long productId)
     {
+        logger.info("[Get Image] Get product image initiated, Product Id -> "+productId);
         Image image = productService.getImage(productId);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(image.getContentType()))
@@ -73,14 +78,18 @@ public class ProductController {
     @GetMapping("/bestseller")
     public List<ProductDTO> getBestSellers()
     {
+        logger.info("[Get Bestseller] get bestseller products initiated");
         List<Product> products = productService.getBestSellers();
+        logger.info("[Get Bestseller] bestseller products fetched, size -> "+products.size());
         return ProductDTO.convertEntityListToProductDTOList(products);
     }
 
     @GetMapping("/featured")
     public List<ProductDTO> getFeaturedProducts()
     {
+        logger.info("[Get Featured] get featured products initiated");
         List<Product> products = productService.getFeaturedProducts();
+        logger.info("[Get Featured] featured products fetched, size -> "+products.size());
         return ProductDTO.convertEntityListToProductDTOList(products);
     }
 
