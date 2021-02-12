@@ -45,7 +45,10 @@ public class ProductServiceImpl implements ProductService {
         Image image = null;
         try
         {
-            image = imageService.saveImage(imageFile, product);
+            if(imageFile != null)
+            {
+                image = imageService.saveImage(imageFile, product);
+            }
         }
         catch (IOException e)
         {
