@@ -9,6 +9,8 @@ import com.sreihaan.SreihaanFood.model.persistence.repository.ProductRepository;
 import com.sreihaan.SreihaanFood.service.CategoryService;
 import com.sreihaan.SreihaanFood.service.ImageService;
 import com.sreihaan.SreihaanFood.service.ProductService;
+import com.sreihaan.SreihaanFood.utils.CategoryUtil;
+import com.sreihaan.SreihaanFood.utils.ProductUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,28 +38,58 @@ public class ProductServiceImpl implements ProductService {
     private static Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Override
-    public Product addProduct(Product product, Long categoryId, Long subCategroyId, MultipartFile imageFile)
+    public Product addProduct(Product product, Long categoryId, Long subCategoryId, MultipartFile imageFile)
     {
-        Category category = categoryService.getCategoryById(categoryId);
-        Category childCategory = subCategroyId != null ? categoryService.getCategoryById(subCategroyId) : null;
-        categoryService.checkIsParentAndChildCategory(childCategory, category);
-        product.setCategory(childCategory != null ? childCategory : category);
-        Image image = null;
-        try
-        {
-            if(imageFile != null)
-            {
-                image = imageService.saveImage(imageFile, product);
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        product.setImage(image);
+        product = setImageAndCategoryForProduct(product, categoryId, subCategoryId, imageFile);
         product = productRepository.save(product);
         return product;
+    }
 
+    private Product setImageAndCategoryForProduct(Product product, Long categoryId, Long subCategoryId, MultipartFile imageFile)
+    {
+        product.setCategory(getProductCategory(categoryId, subCategoryId));
+        product = setImageForProduct(product, imageFile);
+        return product;
+    }
+
+    private Category getProductCategory(Long parentCategory, Long childCategory)
+    {
+        Category category = categoryService.getCategoryById(parentCategory);
+        Category subCategory = childCategory != null ? categoryService.getCategoryById(childCategory) : null;
+        CategoryUtil.checkIsParentAndChildCategory(subCategory, category);
+        return subCategory != null ? subCategory : category;
+    }
+
+    private Product setImageForProduct(Product product, MultipartFile imageFile)
+    {
+        if(imageFile != null)
+        {
+            try
+            {
+                Image image = imageService.saveImage(imageFile, product);
+                product.setImage(image);
+            }
+            catch (IOException e)
+            {
+                logger.info("Exception while setting image for product, Id -> ", product.getId()," name -> "+product.getName()+" Exp -> "+e.getMessage());
+            }
+        }
+        return product;
+    }
+
+    @Override
+    public Product updateProduct(long productId, Product productObj, Long categoryId, Long subCategoryId, MultipartFile imageFile)
+    {
+        Product product = getProductById(productId);
+        Category category = product.getCategory();
+        product = ProductUtil.copyPropertiesForUpdate(productObj, product);
+        if(category.getId() != categoryId && category.getId() != subCategoryId)
+        {
+            Category newCategory = categoryService.updateCategoryForProduct(getProductCategory(categoryId, subCategoryId), product);
+            product.setCategory(newCategory);
+        }
+        product = setImageForProduct(product, imageFile);
+        return productRepository.save(product);
     }
 
     @Override
@@ -108,6 +140,5 @@ public class ProductServiceImpl implements ProductService {
     public Set<Product> getProductsForCategory(long categoryId) {
         return productRepository.findByAssociatedWithCategory(categoryId);
     }
-
 
 }

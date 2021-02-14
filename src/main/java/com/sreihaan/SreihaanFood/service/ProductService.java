@@ -26,4 +26,6 @@ public interface ProductService {
     public void removeProduct(long productId);
 
     Set<Product> getProductsForCategory(long categoryId);
+
+    Product updateProduct(long productId, Product product, Long categoryId, Long subCategoryId, MultipartFile image);
 }

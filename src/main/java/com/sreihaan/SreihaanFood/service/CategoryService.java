@@ -22,19 +22,17 @@ public interface CategoryService {
 
     void deleteCategory(long categoryId);
 
-    public boolean isChildCategory(Category category, Category parent);
-
     Category createAndAddSubCategory(Long parentid, Category subCategory);
 
     Category updateSubCategoryDetails(Long parentId, Long childId, Category subCategory);
 
     void deleteSubCategory(long parentId, long subCategoryId);
 
-    void checkIsParentAndChildCategory(Category childCategory, Category category);
-
     Set<Category> getSubCategories(Long parentId);
 
     Category removeProductFromCategory(Category category, Product product);
 
     Set<Product> getProductsForCategory(long categoryId);
+
+    Category updateCategoryForProduct(Category productCategory, Product product);
 }

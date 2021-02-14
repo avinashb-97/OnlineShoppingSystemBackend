@@ -13,4 +13,5 @@ public interface ImageService {
 
     public Image getImage(Product product);
 
+    void deleteImage(long id);
 }

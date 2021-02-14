@@ -25,7 +25,7 @@ public class Image {
 
     private long fileSize;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER)
     private Product product;
 
     @Lob

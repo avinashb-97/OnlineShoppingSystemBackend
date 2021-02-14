@@ -7,6 +7,7 @@ import com.sreihaan.SreihaanFood.model.persistence.repository.CategoryRepository
 import com.sreihaan.SreihaanFood.model.persistence.repository.ProductRepository;
 import com.sreihaan.SreihaanFood.service.CategoryService;
 import com.sreihaan.SreihaanFood.service.ProductService;
+import com.sreihaan.SreihaanFood.utils.CategoryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,21 +70,22 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category updateCategoryForProduct(Category productCategory, Product product) {
+        productCategory.getProducts().add(product);
+        return categoryRepository.save(productCategory);
+    }
+
+    @Override
     public void deleteCategory(long categoryId) {
         Category category = getCategoryById(categoryId);
         categoryRepository.delete(category);
     }
 
     @Override
-    public boolean isChildCategory(Category category, Category parent) {
-        return category.getParent().equals(parent);
-    }
-
-    @Override
     public Category createAndAddSubCategory(Long parentId, Category subCategory) {
         Category parent = getCategoryById(parentId);
         subCategory.setParent(parent);
-        checkIsParentAndChildCategory(subCategory, parent);
+        CategoryUtil.checkIsParentAndChildCategory(subCategory, parent);
         return categoryRepository.save(subCategory);
     }
 
@@ -91,7 +93,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Category updateSubCategoryDetails(Long parentId, Long childId, Category subCategory) {
         Category parent = getCategoryById(parentId);
         Category child = getCategoryById(childId);
-        checkIsParentAndChildCategory(child, parent);
+        CategoryUtil.checkIsParentAndChildCategory(child, parent);
         return categoryRepository.save(child);
     }
 
@@ -99,35 +101,14 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteSubCategory(long parentId, long subCategoryId) {
         Category parent = getCategoryById(parentId);
         Category child = getCategoryById(subCategoryId);
-        checkIsParentAndChildCategory(child, parent);
+        CategoryUtil.checkIsParentAndChildCategory(child, parent);
         categoryRepository.delete(child);
-    }
-
-    private void checkIsParentCategory(Category category)
-    {
-        if(category.getParent() != null)
-        {
-            throw new IllegalArgumentException("category " + category.getId() + " is not a parent category");
-        }
-    }
-
-    @Override
-    public void checkIsParentAndChildCategory(Category child, Category parent) {
-        checkIsParentCategory(parent);
-        if(child == null)
-        {
-            return;
-        }
-        else if(!isChildCategory(child, parent))
-        {
-            throw new IllegalArgumentException("category " + parent.getId() + " is not parent of " + child.getId());
-        }
     }
 
     @Override
     public Set<Category> getSubCategories(Long parentId) {
         Category parent = getCategoryById(parentId);
-        checkIsParentCategory(parent);
+        CategoryUtil.checkIsParentCategory(parent);
         return parent.getChildCategories();
     }
 

@@ -24,11 +24,11 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Image saveImage(MultipartFile imageFile, Product product) throws IOException {
-        Long size = imageFile.getSize();
-        if(size <= 0)
+        if(imageFile == null || imageFile.getSize() <=0)
         {
             return null;
         }
+        Long size = imageFile.getSize();
         String filename = imageFile.getOriginalFilename();
         String contentType = imageFile.getContentType();
         byte[] data = compress(imageFile.getBytes());
@@ -49,6 +49,11 @@ public class ImageServiceImpl implements ImageService {
             throw new ImageNotFoundException("Image not found, Product Id -> "+product.getId());
         }
         return image;
+    }
+
+    @Override
+    public void deleteImage(long id) {
+        imageRepository.deleteById(id);
     }
 
     public static byte[] compress(byte[] in) {

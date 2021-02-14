@@ -40,6 +40,16 @@ public class ProductController {
         return ProductDTO.convertEntityToProductDTO(product);
     }
 
+    @PutMapping("/{id}")
+    public ProductDTO updateProduct(@PathVariable("id") long productId, @ModelAttribute CreateAndUpdateProductRequest createAndUpdateProductRequest)
+    {
+        logger.info("[Update Product] update product initiated, Id -> "+productId);
+        Product product = CreateAndUpdateProductRequest.convertToProductEntity(createAndUpdateProductRequest);
+        MultipartFile image = createAndUpdateProductRequest.getImage();
+        product = productService.updateProduct(productId, product, createAndUpdateProductRequest.getCategoryId(), createAndUpdateProductRequest.getSubCategoryId(), image);
+        return ProductDTO.convertEntityToProductDTO(product);
+    }
+
     @GetMapping
     public List<ProductDTO> getAllProducts()
     {
