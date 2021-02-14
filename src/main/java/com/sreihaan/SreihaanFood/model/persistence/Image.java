@@ -1,9 +1,6 @@
 package com.sreihaan.SreihaanFood.model.persistence;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +8,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "IMAGE")
 public class Image {
@@ -31,5 +29,14 @@ public class Image {
     @Lob
     @Column(name = "photo", columnDefinition = "BLOB")
     private byte[] photo;
+
+    public Image(Image image)
+    {
+        this.id = image.getId();
+        this.filename = image.getFilename();
+        this.fileSize = image.getFileSize();
+        this.contentType = image.getContentType();
+        this.photo = image.getPhoto();
+    }
 
 }

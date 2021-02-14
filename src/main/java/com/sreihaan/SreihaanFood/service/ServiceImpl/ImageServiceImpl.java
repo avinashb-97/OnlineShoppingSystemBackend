@@ -41,7 +41,7 @@ public class ImageServiceImpl implements ImageService {
         Image image = null;
         try
         {
-            image = product.getImage();
+            image = new Image(product.getImage());
             image.setPhoto(decompress(image.getPhoto()));
         }
         catch (Exception ex)
