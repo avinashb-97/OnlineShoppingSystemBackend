@@ -62,7 +62,6 @@ public class ImageServiceImpl implements ImageService {
             return out.toByteArray();
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(150);
             return null;
         }
     }
@@ -78,7 +77,6 @@ public class ImageServiceImpl implements ImageService {
             return out.toByteArray();
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(150);
             return null;
         }
     }
