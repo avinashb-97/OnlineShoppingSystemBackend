@@ -20,5 +20,7 @@ public interface UserService {
 
     void changePasswordForCurrentUser(String oldPassword, String password);
 
-    String generateOTP(String email);
+    Integer generateOTP(String email);
+
+    boolean verifyOTP(String email, int otp);
 }

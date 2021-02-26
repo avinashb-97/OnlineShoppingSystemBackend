@@ -1,7 +1,8 @@
 package com.sreihaan.SreihaanFood.controller;
 
-import com.sreihaan.SreihaanFood.dto.GuestOTPDTO;
+import com.sreihaan.SreihaanFood.dto.OtpDTO;
 import com.sreihaan.SreihaanFood.dto.UserDTO;
+import com.sreihaan.SreihaanFood.exception.InvalidOTPException;
 import com.sreihaan.SreihaanFood.model.persistence.enums.Role;
 import com.sreihaan.SreihaanFood.model.persistence.User;
 import com.sreihaan.SreihaanFood.model.requests.ChangePasswordRequest;
@@ -41,8 +42,14 @@ public class UserController {
             logger.info("[Create User] Non admin user trying to create "+createUserRequest.getRole());
             throw new AccessDeniedException("Only Admin is allowed to create Moderator and Admin roles");
         }
+        boolean isOTPVerified = userService.verifyOTP(createUserRequest.getEmail(), createUserRequest.getOTP());
         User user = convertCreateUserRequestToUserObject(createUserRequest);
         String password = createUserRequest.getPassword();
+        if(!isOTPVerified)
+        {
+            logger.info("[Create User] Invalid OTP, email -> "+user.getEmail());
+            throw new InvalidOTPException("OTP is invalid or is Expired");
+        }
         if(!isPasswordStrong(password, createUserRequest.getConfirmPassword()))
         {
             logger.info("[Create User] bad password given, user -> "+ createUserRequest.getEmail());
@@ -124,18 +131,17 @@ public class UserController {
     }
 
     @PostMapping("/otp/generate")
-    public void sendOTPToVerifyGuestEmail(@RequestBody GuestOTPDTO guestOTPDTO)
+    public void sendOTPToVerifyGuestEmail(@RequestBody OtpDTO otpDTO)
     {
-        String email = guestOTPDTO.getEmail();
-        String otp = userService.generateOTP(email);
+        String email = otpDTO.getEmail();
+        userService.generateOTP(email);
     }
 
     @PostMapping("/otp/verify")
-    public ResponseEntity confirmOTP(@RequestBody GuestOTPDTO guestOTPDTO)
+    public ResponseEntity confirmOTP(@RequestBody OtpDTO otpDTO)
     {
-        String email = guestOTPDTO.getEmail();
-        String OTP = guestOTPDTO.getOTP();
-        if(OTP.equals("542312"))
+        boolean isVerified = userService.verifyOTP(otpDTO.getEmail(), otpDTO.getOTP());
+        if(isVerified)
         {
             return ResponseEntity.ok().build();
         }

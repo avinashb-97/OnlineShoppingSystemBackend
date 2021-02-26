@@ -18,5 +18,7 @@ public class CreateUserRequest {
 
     private String confirmPassword;
 
+    private int OTP;
+
     private Role role;
 }

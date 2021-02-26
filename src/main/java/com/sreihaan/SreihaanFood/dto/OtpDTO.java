@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GuestOTPDTO {
+public class OtpDTO {
 
     private String email;
-    private String OTP;
+    private int OTP;
 
 }

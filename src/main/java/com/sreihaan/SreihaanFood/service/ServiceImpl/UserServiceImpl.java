@@ -7,10 +7,7 @@ import com.sreihaan.SreihaanFood.model.persistence.User;
 import com.sreihaan.SreihaanFood.model.persistence.UserToken;
 import com.sreihaan.SreihaanFood.model.persistence.enums.Role;
 import com.sreihaan.SreihaanFood.model.persistence.repository.UserDataRepository;
-import com.sreihaan.SreihaanFood.service.CartService;
-import com.sreihaan.SreihaanFood.service.EmailSenderService;
-import com.sreihaan.SreihaanFood.service.UserService;
-import com.sreihaan.SreihaanFood.service.UserTokenService;
+import com.sreihaan.SreihaanFood.service.*;
 import com.sreihaan.SreihaanFood.utils.AuthUtil;
 import com.sreihaan.SreihaanFood.utils.MailUtil;
 import org.slf4j.Logger;
@@ -41,6 +38,9 @@ public class UserServiceImpl implements UserService {
     private UserTokenService userTokenService;
 
     @Autowired
+    private OTPService otpService;
+
+    @Autowired
     private CartService cartService;
 
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -56,10 +56,7 @@ public class UserServiceImpl implements UserService {
             user = addAdminRoleToUser(user);
         }
         user.setPassword(bCryptPasswordEncoder.encode(password));
-
-        //TODO: Remove this after properly checking mail
         user.setEnabled(true);
-
         user = userDataRepository.save(user);
         cartService.createCart(user);
 //        UserToken userToken = userTokenService.GenerateUserConfirmationToken(user);
@@ -143,10 +140,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String generateOTP(String email) {
-        String otp = "542312";
+    public Integer generateOTP(String email) {
+        int otp = otpService.generateOTP(email);
         emailSenderService.sendEmail(email, "OTP", "Your OTP is "+otp);
         return otp;
+    }
+
+    @Override
+    public boolean verifyOTP(String email, int userOTP) {
+        int otp = otpService.getOtp(email);
+        return userOTP == otp;
     }
 
 }
