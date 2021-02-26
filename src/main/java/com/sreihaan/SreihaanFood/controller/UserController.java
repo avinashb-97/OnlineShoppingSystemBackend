@@ -7,6 +7,7 @@ import com.sreihaan.SreihaanFood.model.persistence.User;
 import com.sreihaan.SreihaanFood.model.requests.ChangePasswordRequest;
 import com.sreihaan.SreihaanFood.model.requests.CreateUserRequest;
 import com.sreihaan.SreihaanFood.model.requests.PasswordResetRequest;
+import com.sreihaan.SreihaanFood.service.EmailSenderService;
 import com.sreihaan.SreihaanFood.service.UserService;
 import com.sreihaan.SreihaanFood.utils.AuthUtil;
 import org.slf4j.Logger;
@@ -25,6 +26,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -123,13 +127,19 @@ public class UserController {
     public void sendOTPToVerifyGuestEmail(@RequestBody GuestOTPDTO guestOTPDTO)
     {
         String email = guestOTPDTO.getEmail();
+        String otp = userService.generateOTP(email);
     }
 
-    @PostMapping("/otp/validate")
-    public void confirmOTP(@RequestBody GuestOTPDTO guestOTPDTO)
+    @PostMapping("/otp/verify")
+    public ResponseEntity confirmOTP(@RequestBody GuestOTPDTO guestOTPDTO)
     {
         String email = guestOTPDTO.getEmail();
         String OTP = guestOTPDTO.getOTP();
+        if(OTP.equals("542312"))
+        {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().body("Invalid OTP");
     }
 
 //    @GetMapping

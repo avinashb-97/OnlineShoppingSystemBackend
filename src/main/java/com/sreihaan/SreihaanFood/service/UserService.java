@@ -19,4 +19,6 @@ public interface UserService {
     void resetPassword(String resetToken, String password);
 
     void changePasswordForCurrentUser(String oldPassword, String password);
+
+    String generateOTP(String email);
 }

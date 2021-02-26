@@ -27,7 +27,6 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             msg.setRecipients(Message.RecipientType.TO, toAddresses);
             msg.setSubject(subject);
             msg.setSentDate(new Date());
-//            msg.setText(message);
             msg.setContent(message, "text/html");
 
             Transport t = session.getTransport(MailConstants.PROTOCOL);

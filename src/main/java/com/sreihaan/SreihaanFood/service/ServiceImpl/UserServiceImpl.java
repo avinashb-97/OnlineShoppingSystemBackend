@@ -142,4 +142,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public String generateOTP(String email) {
+        String otp = "542312";
+        emailSenderService.sendEmail(email, "OTP", "Your OTP is "+otp);
+        return otp;
+    }
+
 }
