@@ -1,5 +1,6 @@
 package com.sreihaan.SreihaanFood.controller;
 
+import com.sreihaan.SreihaanFood.dto.GuestOTPDTO;
 import com.sreihaan.SreihaanFood.dto.UserDTO;
 import com.sreihaan.SreihaanFood.model.persistence.enums.Role;
 import com.sreihaan.SreihaanFood.model.persistence.User;
@@ -116,6 +117,19 @@ public class UserController {
         }
         user.setRoles(userRoles);
         return user;
+    }
+
+    @PostMapping("/otp/generate")
+    public void sendOTPToVerifyGuestEmail(@RequestBody GuestOTPDTO guestOTPDTO)
+    {
+        String email = guestOTPDTO.getEmail();
+    }
+
+    @PostMapping("/otp/validate")
+    public void confirmOTP(@RequestBody GuestOTPDTO guestOTPDTO)
+    {
+        String email = guestOTPDTO.getEmail();
+        String OTP = guestOTPDTO.getOTP();
     }
 
 //    @GetMapping

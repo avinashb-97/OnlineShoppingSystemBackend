@@ -16,9 +16,8 @@ public class CartDTO {
 
     private long userId;
 
+    //Map of productId vs numberOfProducts
     private Map<Long, Long> cartContents;
-
-    private BigDecimal total;
 
     public static CartDTO convertEntityToCartDTO(Cart cart)
     {
