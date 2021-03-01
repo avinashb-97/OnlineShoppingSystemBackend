@@ -1,5 +1,6 @@
 package com.sreihaan.SreihaanFood.dto;
 
+import com.sreihaan.SreihaanFood.model.persistence.Address;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,23 +10,10 @@ import java.util.Map;
 @Setter
 public class GuestOrderDTO {
 
-    private String firstName;
-
-    private String lastName;
-
     private String email;
 
-    private String address;
-
-    private String phone;
-
-    private String postCode;
-
-    private String state;
-
-    private String country;
+    private Address address;
 
     private Map<Long, Long> cartContents;
-
-
+        
 }
