@@ -2,6 +2,8 @@ package com.sreihaan.SreihaanFood.controller;
 
 import com.sreihaan.SreihaanFood.service.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.*;
@@ -17,14 +19,12 @@ public class TestController {
     private EmailSenderService emailSenderService;
 
     @PostMapping("/mail/{mailId}")
-    public void sendMail(@PathVariable String mailId)
-    {
-        emailSenderService.sendEmail(mailId,"Test", "Hello Test 123 !");
+    public void sendMail(@PathVariable String mailId) {
+        emailSenderService.sendEmail(mailId, "Test", "Hello Test 123 !");
     }
 
     @PostMapping("/mail2/{mailId}")
-    public void sendMail2(@PathVariable String mailId)
-    {
+    public void sendMail2(@PathVariable String mailId) {
         String to = "avinashbb695@gmail.com";
 
         String from = "sreihaanfoods@gmail.com";
@@ -76,9 +76,45 @@ public class TestController {
 
 
     @GetMapping("/hello")
-    public String hello()
-    {
+    public String hello() {
         return "hello world!";
     }
 
+
+    @PostMapping("mail3")
+    public void prepareAndSendEmail()
+    {
+
+        String toMailId = "avinashbb695@gmail.com";
+        String htmlMessage = "Hello world!";
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(465);
+
+        mailSender.setUsername(String.valueOf("sreihaanfoods@gmail.com"));
+        mailSender.setPassword(String.valueOf("nbqxeaqsujqzainf"));
+
+
+        Properties mailProp = mailSender.getJavaMailProperties();
+        mailProp.put("mail.transport.protocol", "smtp");
+        mailProp.put("mail.smtp.auth", "true");
+        mailProp.put("mail.smtp.starttls.enable", "true");
+        mailProp.put("mail.smtp.starttls.required", "true");
+        mailProp.put("mail.debug", "true");
+        mailProp.put("mail.smtp.ssl.enable", "true");
+
+        mailProp.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+            helper.setTo(toMailId);
+            helper.setSubject("Welcome to Subject Part");
+            helper.setText(htmlMessage, true);
+            mailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
