@@ -49,6 +49,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         properties.setProperty("mail.transport.protocol", MailConstants.PROTOCOL);
         properties.setProperty("mail.smtp.auth", MailConstants.AUTH);
         properties.setProperty("mail.smtp.starttls.enable", MailConstants.START_TLS);
+        properties.setProperty("mail.smtp.starttls.required", "false");
         properties.setProperty("mail.debug", MailConstants.DEBUG);
         properties.setProperty("mail.smtp.ssl.enable", MailConstants.ENABLE_SSL);
         properties.setProperty("mail.test-connection", MailConstants.TEST_CONNECTION);
