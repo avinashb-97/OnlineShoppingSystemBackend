@@ -1,11 +1,9 @@
 package com.sreihaan.SreihaanFood.constants;
 
-import javax.servlet.http.PushBuilder;
-
 public class MailConstants {
 
     public static final String USERNAME = "sreihaanfoods@gmail.com";
-    public static final String APP_PASSWORD = "nbqxeaqsujqzainf";
+    public static final String APP_PASSWORD = "rforwkqoekaghjeg";
     public static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
     public static final String PROTOCOL = "smtp";
     public static final String HOST = "smtp.gmail.com";

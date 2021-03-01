@@ -92,7 +92,9 @@ public class TestController {
         mailSender.setPort(465);
 
         mailSender.setUsername(String.valueOf("sreihaanfoods@gmail.com"));
-        mailSender.setPassword(String.valueOf("nbqxeaqsujqzainf"));
+        mailSender.setPassword(String.valueOf("rforwkqoekaghjeg"));
+
+//        mailSender.setPassword(String.valueOf("!Droid@1A"));
 
 
         Properties mailProp = mailSender.getJavaMailProperties();
