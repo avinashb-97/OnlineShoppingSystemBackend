@@ -15,5 +15,5 @@ public class GuestOrderDTO {
     private Address address;
 
     private Map<Long, Long> cartContents;
-        
+
 }

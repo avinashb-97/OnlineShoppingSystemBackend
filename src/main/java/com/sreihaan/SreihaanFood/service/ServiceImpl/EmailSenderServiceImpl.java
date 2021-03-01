@@ -55,6 +55,9 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         properties.setProperty("mail.smtp.socketFactory.fallback", MailConstants.FALLBACK);
         properties.setProperty("mail.smtp.port", MailConstants.PORT);
         properties.setProperty("mail.smtp.socketFactory.port", MailConstants.PORT);
+        properties.put("mail.smtp.timeout", 15000);
+        properties.put("mail.smtp.connectiontimeout", 15000);
+        properties.put("mail.smtp.writetimeout", 15000);
         properties.put("mail.smtp.ssl.trust", "*");
         return properties;
     }
