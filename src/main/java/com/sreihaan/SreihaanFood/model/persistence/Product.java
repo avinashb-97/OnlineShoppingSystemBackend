@@ -55,4 +55,7 @@ public class Product {
     @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
 
+    @OneToOne(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
+    private CartItem cartItem;
+
 }

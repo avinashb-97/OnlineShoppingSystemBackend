@@ -6,7 +6,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,7 +25,8 @@ public class Cart {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
 
-//    private Map<Long, Long> cartContents;
+    @OneToMany(mappedBy = "cart", orphanRemoval = true)
+    private Set<CartItem> cartItemList;
 
     private BigDecimal total;
 
@@ -31,7 +34,7 @@ public class Cart {
     {
         this.id = cart.getId();
         this.user = cart.getUser();
-//        this.cartContents = cart.getCartContents();
+        this.cartItemList = cart.getCartItemList();
         this.total = cart.getTotal();
     }
 }

@@ -14,6 +14,7 @@ public class MailConstants {
     public static final String ENABLE_SSL = "true";
     public static final String TEST_CONNECTION = "true";
     public static final String FALLBACK = "false";
+    public static final String TIME_OUT = "15000";
 
     public static final String USER_CONFIRMATION_ENDPOINT = "/api/user/confirm-account";
     public static final String PASSWORD_RESET_ENDPOINT = "/api/user/reset-password";
