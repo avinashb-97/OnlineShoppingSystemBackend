@@ -1,8 +1,10 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
 import com.sreihaan.SreihaanFood.model.persistence.Cart;
+import com.sreihaan.SreihaanFood.model.persistence.CartItem;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
 import com.sreihaan.SreihaanFood.model.persistence.User;
+import com.sreihaan.SreihaanFood.model.persistence.repository.CartItemRepository;
 import com.sreihaan.SreihaanFood.model.persistence.repository.CartRepository;
 import com.sreihaan.SreihaanFood.service.CartService;
 import com.sreihaan.SreihaanFood.service.ProductService;
@@ -13,8 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -29,10 +33,12 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CartItemRepository cartItemRepository;
+
     @Override
     public Cart createCart(User user) {
         Cart cart = new Cart();
-//        cart.setCartContents(null);
         cart.setUser(user);
         return cartRepository.save(cart);
     }
@@ -45,34 +51,80 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart addToCart(Hashtable<Long, Long> productQuantityTable) {
+    public Cart removeProductFromCart(Long productId) {
         User user = userService.getUserByEmail(AuthUtil.getLoggedInUserName());
         Cart cart = new Cart(user.getCart());
-        Hashtable<Long, Long> cartContent = new Hashtable<>();
-        BigDecimal total = new BigDecimal(0);
+        Product product = productService.getProductById(productId);
 
-        Iterator<Long> iterator = productQuantityTable.keySet().iterator();
-        while (iterator.hasNext())
+        Set<CartItem> cartItemSet = cart.getCartItemList();
+        boolean found = false;
+        for(CartItem item : cartItemSet)
         {
-            long productId = iterator.next();
-            long quantity = productQuantityTable.get(productId);
-            Product product = productService.getProductById(productId);
-            BigDecimal price = product.getDiscountPrice() != null ? product.getDiscountPrice() : product.getPrice();
-            total = total.add(price.multiply(BigDecimal.valueOf(quantity)));
-            cartContent.put(product.getId(), quantity);
-        };
-        cart.setTotal(total);
-//        cart.setCartContents(cartContent);
-        return cartRepository.save(cart);
+            Product cartProduct = item.getProduct();
+            if(cartProduct.equals(product))
+            {
+                cartItemSet.remove(item);
+                cartItemRepository.delete(item);
+                found = true;
+                break;
+            }
+        }
+        if(!found)
+        {
+            return cart;
+        }
+        cart.setCartItemList(cartItemSet);
+        cart = cartRepository.save(cart);
+        return cart;
     }
 
     @Override
-    public void removeAllFromCart() {
+    public Cart addToCart(Long productId, Long quantity) {
         User user = userService.getUserByEmail(AuthUtil.getLoggedInUserName());
         Cart cart = new Cart(user.getCart());
-//        cart.setCartContents(null);
-        cart.setTotal(new BigDecimal(0));
-        cartRepository.save(cart);
+        Product product = productService.getProductById(productId);
+
+        Set<CartItem> cartItemSet = cart.getCartItemList();
+        boolean found = false;
+        for(CartItem item : cartItemSet)
+        {
+            Product cartProduct = item.getProduct();
+            if(cartProduct.equals(product))
+            {
+                item.setQuantity(quantity);
+                found = true;
+            }
+        }
+        if(!found)
+        {
+            CartItem cartItem = new CartItem();
+            cartItem.setProduct(product);
+            cartItem.setQuantity(quantity);
+            cartItem.setCart(cart);
+            cartItem = cartItemRepository.save(cartItem);
+            cart.getCartItemList().add(cartItem);
+        }
+        return cartRepository.save(cart);
+    }
+
+    private BigDecimal getProductPrice(Product product, Long quantity)
+    {
+        BigDecimal price = product.getDiscountPrice() != null && product.getDiscountPrice().compareTo(BigDecimal.ZERO) != 0 ? product.getDiscountPrice() : product.getPrice();
+        return price.multiply(BigDecimal.valueOf(quantity));
+    }
+
+    @Override
+    public Cart removeAllFromCart() {
+        User user = userService.getUserByEmail(AuthUtil.getLoggedInUserName());
+        Cart cart = new Cart(user.getCart());
+        Set<CartItem> cartItemSet = cart.getCartItemList();
+        for(CartItem item : cartItemSet)
+        {
+            Product cartProduct = item.getProduct();
+            cartItemRepository.delete(item);
+        }
+        cart.setCartItemList(new HashSet<>());
+        return cartRepository.save(cart);
     }
 
 }

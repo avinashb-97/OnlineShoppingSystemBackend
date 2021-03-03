@@ -58,4 +58,10 @@ public class Product {
     @OneToOne(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
     private CartItem cartItem;
 
+    @Override
+    public boolean equals(Object o){
+        Product product = (Product) o;
+        return product!= null && product.getId() == this.id;
+    }
+
 }

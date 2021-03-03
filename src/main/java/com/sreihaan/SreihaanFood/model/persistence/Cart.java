@@ -21,20 +21,17 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "cart", orphanRemoval = true)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private Set<CartItem> cartItemList;
-
-    private BigDecimal total;
 
     public Cart(Cart cart)
     {
         this.id = cart.getId();
         this.user = cart.getUser();
         this.cartItemList = cart.getCartItemList();
-        this.total = cart.getTotal();
     }
 }

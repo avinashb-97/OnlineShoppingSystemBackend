@@ -1,7 +1,9 @@
 package com.sreihaan.SreihaanFood.controller;
 
 import com.sreihaan.SreihaanFood.dto.CartDTO;
+import com.sreihaan.SreihaanFood.dto.CartItemDTO;
 import com.sreihaan.SreihaanFood.model.persistence.Cart;
+import com.sreihaan.SreihaanFood.model.persistence.CartItem;
 import com.sreihaan.SreihaanFood.model.requests.ModifyCartRequest;
 import com.sreihaan.SreihaanFood.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +25,26 @@ public class CartController {
     }
 
     @PostMapping()
-    public ResponseEntity<CartDTO> addToCart(@RequestBody ModifyCartRequest modifyCartRequest)
+    @PutMapping()
+    public ResponseEntity<CartDTO> addToCart(@RequestBody CartItemDTO cartItem)
     {
-        Cart cart = cartService.addToCart(modifyCartRequest.getProducts());
+        Cart cart = cartService.addToCart(cartItem.getProductId(), cartItem.getQuantity());
+        return ResponseEntity.ok(CartDTO.convertEntityToCartDTO(cart));
+    }
+
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<CartDTO> removeProductFromCart(@PathVariable Long productId)
+    {
+        Cart cart = cartService.removeProductFromCart(productId);
         return ResponseEntity.ok(CartDTO.convertEntityToCartDTO(cart));
     }
 
     @DeleteMapping()
-    public void emptyCart()
+    public ResponseEntity<CartDTO> emptyCart()
     {
-        cartService.removeAllFromCart();
+        Cart cart = cartService.removeAllFromCart();
+        return ResponseEntity.ok(CartDTO.convertEntityToCartDTO(cart));
     }
 
 }

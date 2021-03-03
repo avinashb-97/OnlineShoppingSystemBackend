@@ -7,11 +7,13 @@ import java.util.Hashtable;
 
 public interface CartService {
 
-    public Cart addToCart(Hashtable<Long, Long> productQuantityTable);
+    public Cart addToCart(Long productId, Long quantity);
 
-    public void removeAllFromCart();
+    public Cart removeAllFromCart();
 
     public Cart createCart(User user);
 
     public Cart getCart();
+
+    Cart removeProductFromCart(Long productId);
 }

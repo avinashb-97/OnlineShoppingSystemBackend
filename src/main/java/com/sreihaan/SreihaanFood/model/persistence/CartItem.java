@@ -15,6 +15,7 @@ import javax.persistence.*;
 public class CartItem {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @OneToOne
@@ -30,7 +31,7 @@ public class CartItem {
     @Override
     public boolean equals(Object o){
         CartItem item = (CartItem) o;
-        return item!= null && item.getProduct().getId() == this.product.getId();
+        return item!= null && item.getProduct() == this.product;
     }
 
 }
