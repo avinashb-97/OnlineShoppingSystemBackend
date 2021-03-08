@@ -6,7 +6,7 @@ import com.sreihaan.SreihaanFood.exception.UserNotFoundException;
 import com.sreihaan.SreihaanFood.model.persistence.User;
 import com.sreihaan.SreihaanFood.model.persistence.UserToken;
 import com.sreihaan.SreihaanFood.model.persistence.enums.Role;
-import com.sreihaan.SreihaanFood.model.persistence.repository.UserDataRepository;
+import com.sreihaan.SreihaanFood.model.persistence.repository.UserRepository;
 import com.sreihaan.SreihaanFood.service.*;
 import com.sreihaan.SreihaanFood.utils.AuthUtil;
 import com.sreihaan.SreihaanFood.utils.MailUtil;
@@ -26,7 +26,7 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserDataRepository userDataRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user, String password) {
-        if(userDataRepository.existsUserByEmailIgnoreCase(user.getEmail()))
+        if(userRepository.existsUserByEmailIgnoreCase(user.getEmail()))
         {
             return user;
         }
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(bCryptPasswordEncoder.encode(password));
         user.setEnabled(true);
-        user = userDataRepository.save(user);
+        user = userRepository.save(user);
         cartService.createCart(user);
 //        UserToken userToken = userTokenService.GenerateUserConfirmationToken(user);
 //        String confirmationToken = userToken.getToken();
@@ -77,13 +77,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
-        return userDataRepository.findUserByEmailIgnoreCase(email)
+        return userRepository.findUserByEmailIgnoreCase(email)
                 .orElseThrow(() -> new UserNotFoundException("User not found, email -> "+email));
     }
 
     @Override
     public User findUserById(Long id) {
-        return userDataRepository.findById(id.toString())
+        return userRepository.findById(id.toString())
                 .orElseThrow(() -> new UserNotFoundException("User not found, userid -> "+id));
     }
 
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
         User user = userTokenService.getUserAndDeleteConfirmationToken(confirmationToken);
         user.setEnabled(true);
         user.setUserToken(null);
-        return userDataRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
@@ -122,20 +122,20 @@ public class UserServiceImpl implements UserService {
         User user = userTokenService.getUserAndDeleteResetToken(resetToken);
         logger.info("[Reset Password] User found successfully, user: "+user.getEmail()+" token: "+resetToken);
         user.setPassword(bCryptPasswordEncoder.encode(password));
-        userDataRepository.save(user);
+        userRepository.save(user);
         logger.info("[Reset Password] Password Reset Success, user: "+user.getEmail());
     }
 
     @Override
     public void changePasswordForCurrentUser(String oldPassword, String password) {
-        User user = userDataRepository.findUserByEmailIgnoreCase(AuthUtil.getLoggedInUserName())
+        User user = userRepository.findUserByEmailIgnoreCase(AuthUtil.getLoggedInUserName())
                 .orElseThrow(()-> new UserNotFoundException("User not found"));
         if(!BCrypt.checkpw(oldPassword, user.getPassword()))
         {
             throw new SecurityException("Invalid Password given");
         }
         user.setPassword(bCryptPasswordEncoder.encode(password));
-        userDataRepository.save(user);
+        userRepository.save(user);
 
     }
 
@@ -150,6 +150,12 @@ public class UserServiceImpl implements UserService {
     public boolean verifyOTP(String email, int userOTP) {
         int otp = otpService.getOtp(email);
         return userOTP == otp;
+    }
+
+    @Override
+    public void deleteUser(String email) {
+        User user = getUserByEmail(email);
+        userRepository.delete(user);
     }
 
 }

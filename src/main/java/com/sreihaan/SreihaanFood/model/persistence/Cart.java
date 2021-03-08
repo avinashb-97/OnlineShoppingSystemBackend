@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 @Getter
@@ -25,7 +26,7 @@ public class Cart {
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CartItem> cartItemList;
 
     public Cart(Cart cart)

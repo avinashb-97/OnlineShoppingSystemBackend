@@ -65,6 +65,23 @@ public class UserController {
        return (password.length() >= 8 && confirmPassword.equals(password));
     }
 
+    @GetMapping()
+    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam String email)
+    {
+        if(!AuthUtil.isCurrentUserIsAdmin())
+        {
+            throw new AccessDeniedException("Access denied to get user");
+        }
+        User user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(UserDTO.convertEntityToUserDTO(user));
+    }
+
+    @DeleteMapping()
+    public void deleteUser(@RequestParam String email)
+    {
+        userService.deleteUser(email);
+    }
+
     @GetMapping("/confirm-account")
     public ResponseEntity<UserDTO> confirmAccount(@RequestParam("token") String confirmationToken)
     {
@@ -73,14 +90,14 @@ public class UserController {
         return ResponseEntity.ok(UserDTO.convertEntityToUserDTO(user));
     }
 
-    @PostMapping("/forgot-password")
+    @PostMapping("/password/forgot")
     public void forgotPassword(@RequestParam("email") String email)
     {
         logger.info("[Forgot password] forgot password initiated, email -> "+ email);
         userService.forgotPassword(email);
     }
 
-    @PostMapping("/reset-password")
+    @PostMapping("/password/reset")
     public ResponseEntity resetPassword(@RequestBody PasswordResetRequest passwordResetRequest)
     {
         logger.info("[Reset password] reset password initiated, resetToken -> "+ passwordResetRequest.getResetToken());
@@ -94,7 +111,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/change-password")
+    @PostMapping("/password/change")
     public ResponseEntity changePassword(@RequestBody ChangePasswordRequest changePasswordRequest)
     {
         logger.info("[Change password] change password initiated, user -> "+ AuthUtil.getLoggedInUserName());
@@ -147,18 +164,5 @@ public class UserController {
         }
         return ResponseEntity.badRequest().body("Invalid OTP");
     }
-
-//    @GetMapping
-//    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam String email)
-//    {
-//        try {
-//            User user = userService.getUserByEmail(email);
-//            return ResponseEntity.ok(UserDTO.convertEntityToUserDTO(user));
-//        }
-//        catch (Exception e)
-//        {
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
 
 }

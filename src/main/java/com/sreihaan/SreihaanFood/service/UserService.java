@@ -23,4 +23,6 @@ public interface UserService {
     Integer generateOTP(String email);
 
     boolean verifyOTP(String email, int otp);
+
+    void deleteUser(String email);
 }
