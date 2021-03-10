@@ -1,5 +1,6 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
+import com.sreihaan.SreihaanFood.dto.CartItemDTO;
 import com.sreihaan.SreihaanFood.model.persistence.Cart;
 import com.sreihaan.SreihaanFood.model.persistence.CartItem;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
@@ -14,11 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.PreRemove;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -64,7 +63,7 @@ public class CartServiceImpl implements CartService {
             if(cartProduct.equals(product))
             {
                 cartItemSet.remove(item);
-                cartItemRepository.delete(item);
+                cartItemRepository.deleteCartItem(item.getId());
                 found = true;
                 break;
             }
@@ -78,9 +77,19 @@ public class CartServiceImpl implements CartService {
         return cart;
     }
 
+    private void deleteCartItem(CartItem item)
+    {
+        cartItemRepository.deleteById(item.getId());
+    }
+
     @Override
     public Cart addToCart(Long productId, Long quantity) {
         User user = userService.getUserByEmail(AuthUtil.getLoggedInUserName());
+        return addToCart(user, productId, quantity);
+    }
+
+    private Cart addToCart(User user, Long productId, Long quantity)
+    {
         Cart cart = new Cart(user.getCart());
         Product product = productService.getProductById(productId);
 
@@ -106,6 +115,17 @@ public class CartServiceImpl implements CartService {
         }
         return cartRepository.save(cart);
     }
+
+    @Override
+    public Cart addToCart(Hashtable<Long, Long> itemVsQuantity) {
+        User user = userService.getUserByEmail(AuthUtil.getLoggedInUserName());
+        for(Long productId : itemVsQuantity.keySet())
+        {
+            addToCart(user, productId, itemVsQuantity.get(productId));
+        }
+        return getCart();
+    }
+
 
     private BigDecimal getProductPrice(Product product, Long quantity)
     {
