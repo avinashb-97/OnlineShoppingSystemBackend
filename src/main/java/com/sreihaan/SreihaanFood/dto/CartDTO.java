@@ -2,6 +2,7 @@ package com.sreihaan.SreihaanFood.dto;
 
 import com.sreihaan.SreihaanFood.model.persistence.Cart;
 import com.sreihaan.SreihaanFood.model.persistence.CartItem;
+import com.sreihaan.SreihaanFood.model.persistence.Product;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
@@ -25,7 +26,9 @@ public class CartDTO {
         for(CartItem cartItem : cart.getCartItemList())
         {
             CartItemDTO cartItemDTO = new CartItemDTO();
-            cartItemDTO.setProductId(cartItem.getProduct().getId());
+            Product product = cartItem.getProduct();
+            cartItemDTO.setProductId(product.getId());
+            cartItemDTO.setUnitPrice(product.getPrice());
             cartItemDTO.setQuantity(cartItem.getQuantity());
             cartItemDTOList.add(cartItemDTO);
         }
