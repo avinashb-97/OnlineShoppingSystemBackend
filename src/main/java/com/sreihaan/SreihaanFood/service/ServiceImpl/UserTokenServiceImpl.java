@@ -7,18 +7,15 @@ import com.sreihaan.SreihaanFood.exception.PasswordTokenExpiredException;
 import com.sreihaan.SreihaanFood.model.persistence.User;
 import com.sreihaan.SreihaanFood.model.persistence.UserToken;
 import com.sreihaan.SreihaanFood.model.persistence.repository.UserTokenRepository;
-import com.sreihaan.SreihaanFood.service.CounterService;
 import com.sreihaan.SreihaanFood.service.UserTokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

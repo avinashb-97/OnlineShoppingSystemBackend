@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,6 +44,12 @@ public class UserServiceImpl implements UserService {
     private CartService cartService;
 
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+    @Override
+    public User getCurrentUser()
+    {
+        return getUserByEmail(AuthUtil.getLoggedInUserName());
+    }
 
     @Override
     public User createUser(User user, String password) {

@@ -60,6 +60,9 @@ public class User {
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Order> orders;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses;
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = this.getRoles();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();

@@ -1,6 +1,9 @@
 package com.sreihaan.SreihaanFood.utils;
 
+import com.sreihaan.SreihaanFood.model.persistence.User;
 import com.sreihaan.SreihaanFood.model.persistence.enums.Role;
+import com.sreihaan.SreihaanFood.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;

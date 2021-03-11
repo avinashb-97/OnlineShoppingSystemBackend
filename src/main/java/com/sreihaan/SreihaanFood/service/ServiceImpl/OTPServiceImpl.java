@@ -8,10 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@Transactional
 public class OTPServiceImpl implements OTPService {
 
     private static final Integer EXPIRE_MINS = 10;

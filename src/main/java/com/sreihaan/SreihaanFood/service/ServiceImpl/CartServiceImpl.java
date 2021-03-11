@@ -1,6 +1,5 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
-import com.sreihaan.SreihaanFood.dto.CartItemDTO;
 import com.sreihaan.SreihaanFood.model.persistence.Cart;
 import com.sreihaan.SreihaanFood.model.persistence.CartItem;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
@@ -13,11 +12,12 @@ import com.sreihaan.SreihaanFood.service.UserService;
 import com.sreihaan.SreihaanFood.utils.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.PreRemove;
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Set;
 
 @Service
 @Transactional

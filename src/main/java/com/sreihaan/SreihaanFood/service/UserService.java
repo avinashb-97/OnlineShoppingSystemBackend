@@ -25,4 +25,6 @@ public interface UserService {
     boolean verifyOTP(String email, int otp);
 
     void deleteUser(String email);
+
+    public User getCurrentUser();
 }

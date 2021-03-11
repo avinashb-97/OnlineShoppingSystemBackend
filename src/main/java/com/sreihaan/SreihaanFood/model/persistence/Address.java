@@ -3,14 +3,16 @@ package com.sreihaan.SreihaanFood.model.persistence;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 @Getter
 @Setter
+@Entity
 public class Address {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String customerName;
@@ -28,5 +30,9 @@ public class Address {
     private String postalCode;
 
     private String phone;
+
+    @ManyToOne()
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
 
 }
