@@ -141,7 +141,7 @@ public class CartServiceImpl implements CartService {
         for(CartItem item : cartItemSet)
         {
             Product cartProduct = item.getProduct();
-            cartItemRepository.delete(item);
+            cartItemRepository.deleteCartItem(item.getId());
         }
         cart.setCartItemList(new HashSet<>());
         return cartRepository.save(cart);
