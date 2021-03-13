@@ -8,10 +8,7 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -23,7 +20,7 @@ public class CartDTO {
     {
         CartDTO cartDTO = new CartDTO();
         List<CartItemDTO> cartItemDTOList = new ArrayList<>();
-        for(CartItem cartItem : cart.getCartItemList())
+        for(CartItem cartItem : sortAndGetCartItemsList(cart))
         {
             CartItemDTO cartItemDTO = new CartItemDTO();
             Product product = cartItem.getProduct();
@@ -34,6 +31,21 @@ public class CartDTO {
         }
         cartDTO.setCartItems(cartItemDTOList);
         return cartDTO;
+    }
+
+
+    private static List<CartItem> sortAndGetCartItemsList(Cart cart)
+    {
+        List<CartItem> cartItems = new ArrayList<>();
+        cartItems.addAll(cart.getCartItemList());
+        Comparator<CartItem> cartItemComparator = new Comparator<CartItem>() {
+            @Override
+            public int compare(CartItem c1, CartItem c2) {
+                return c1.getAddedTime().compareTo(c2.getAddedTime());
+            }
+        };
+        Collections.sort(cartItems, cartItemComparator);
+        return cartItems;
     }
 
 }

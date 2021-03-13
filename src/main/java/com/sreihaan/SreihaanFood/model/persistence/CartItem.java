@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -27,6 +29,10 @@ public class CartItem {
     @ManyToOne
     @JoinColumn(name = "cartId", nullable = false)
     private Cart cart;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date addedTime;
 
     @Override
     public boolean equals(Object o){
