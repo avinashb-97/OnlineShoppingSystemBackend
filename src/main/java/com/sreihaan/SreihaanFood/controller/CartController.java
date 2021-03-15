@@ -36,7 +36,7 @@ public class CartController {
     {
         if(id != cartItem.getProductId())
         {
-            throw new InvalidDataException("product id mismatch");
+            throw new InvalidDataException("Product id mismatch");
         }
         Cart cart = cartService.addToCart(cartItem.getProductId(), cartItem.getQuantity());
         return ResponseEntity.ok(CartDTO.convertEntityToCartDTO(cart));

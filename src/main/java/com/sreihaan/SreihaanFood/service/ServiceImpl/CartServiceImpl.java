@@ -1,5 +1,7 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
+import com.sreihaan.SreihaanFood.constants.ProductConstants;
+import com.sreihaan.SreihaanFood.exception.InvalidDataException;
 import com.sreihaan.SreihaanFood.model.persistence.Cart;
 import com.sreihaan.SreihaanFood.model.persistence.CartItem;
 import com.sreihaan.SreihaanFood.model.persistence.Product;
@@ -90,6 +92,10 @@ public class CartServiceImpl implements CartService {
 
     private Cart addToCart(User user, Long productId, Long quantity)
     {
+        if(quantity < 1 || quantity > ProductConstants.MAX_QUANTITY_PER_ITEM)
+        {
+            throw new InvalidDataException("Quantity must be a min of 1 & max of "+ProductConstants.MAX_QUANTITY_PER_ITEM);
+        }
         Cart cart = new Cart(user.getCart());
         Product product = productService.getProductById(productId);
 
