@@ -42,7 +42,7 @@ public class UserController {
             logger.info("[Create User] Non admin user trying to create "+createUserRequest.getRole());
             throw new AccessDeniedException("Only Admin is allowed to create Moderator and Admin roles");
         }
-        boolean isOTPVerified = userService.verifyOTP(createUserRequest.getEmail(), createUserRequest.getOTP());
+        boolean isOTPVerified = userService.verifyOTP(createUserRequest.getEmail(), createUserRequest.getOtp());
         User user = convertCreateUserRequestToUserObject(createUserRequest);
         String password = createUserRequest.getPassword();
         if(!isOTPVerified)
@@ -157,7 +157,7 @@ public class UserController {
     @PostMapping("/otp/verify")
     public ResponseEntity confirmOTP(@RequestBody OtpDTO otpDTO)
     {
-        boolean isVerified = userService.verifyOTP(otpDTO.getEmail(), otpDTO.getOTP());
+        boolean isVerified = userService.verifyOTP(otpDTO.getEmail(), otpDTO.getOtp());
         if(isVerified)
         {
             return ResponseEntity.ok().build();

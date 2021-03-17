@@ -8,6 +8,7 @@ import lombok.Setter;
 public class OtpDTO {
 
     private String email;
-    private int OTP;
+
+    private int otp;
 
 }

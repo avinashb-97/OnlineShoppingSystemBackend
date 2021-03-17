@@ -50,7 +50,7 @@ public class AddressServiceImpl implements AddressService {
         return user.getAddresses();
     }
 
-    private Address getAddressById(long id)
+    public Address getAddressById(long id)
     {
         return addressRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Address not found, id -> "+id));

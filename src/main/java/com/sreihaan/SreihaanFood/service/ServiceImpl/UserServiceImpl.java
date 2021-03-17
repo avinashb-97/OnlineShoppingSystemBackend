@@ -147,15 +147,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer generateOTP(String email) {
-        int otp = otpService.generateOTP(email);
+        Integer otp = otpService.generateOTP(email);
         emailSenderService.sendEmail(email, "OTP", "Your OTP is "+otp);
         return otp;
     }
 
     @Override
     public boolean verifyOTP(String email, int userOTP) {
-        int otp = otpService.getOtp(email);
-        return userOTP == otp;
+        Integer otp = otpService.getOtp(email);
+        return userOTP == otp && otp != null && otp != 0;
     }
 
     @Override

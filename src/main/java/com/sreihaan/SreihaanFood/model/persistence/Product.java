@@ -58,6 +58,11 @@ public class Product {
     @OneToOne(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
     private CartItem cartItem;
 
+    public BigDecimal getProductPrice()
+    {
+        return discountPrice == null || discountPrice.equals(BigDecimal.ZERO) ? price : discountPrice;
+    }
+
     @Override
     public boolean equals(Object o){
         Product product = (Product) o;

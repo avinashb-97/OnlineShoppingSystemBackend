@@ -5,5 +5,5 @@ public enum Status {
     PACKED,
     SHIPPED,
     DELIVERED,
-    RETURNED;
+    CANCELLED;
 }

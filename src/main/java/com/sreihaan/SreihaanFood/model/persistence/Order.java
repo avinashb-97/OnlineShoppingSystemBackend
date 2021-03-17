@@ -34,6 +34,7 @@ public class Order {
 
     private BigDecimal total;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @ManyToOne()

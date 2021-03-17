@@ -31,7 +31,7 @@ public class OTPServiceImpl implements OTPService {
         });
     }
 
-    public int generateOTP(String email)
+    public Integer generateOTP(String email)
     {
         Random random = new Random();
         int otp = 100000 + random.nextInt(900000);
@@ -40,7 +40,7 @@ public class OTPServiceImpl implements OTPService {
         return otp;
     }
 
-    public int getOtp(String email)
+    public Integer getOtp(String email)
     {
         try
         {
@@ -49,7 +49,7 @@ public class OTPServiceImpl implements OTPService {
         catch (Exception e)
         {
             logger.info("OTP not found, email -> "+email+" Exception : "+e.getMessage());
-            return 0;
+            return null;
         }
     }
 
