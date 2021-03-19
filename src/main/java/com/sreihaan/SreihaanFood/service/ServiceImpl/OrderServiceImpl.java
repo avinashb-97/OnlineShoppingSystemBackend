@@ -1,5 +1,6 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
+import com.sreihaan.SreihaanFood.model.page.OrderPage;
 import com.sreihaan.SreihaanFood.model.persistence.*;
 import com.sreihaan.SreihaanFood.model.persistence.enums.Status;
 import com.sreihaan.SreihaanFood.model.persistence.repository.OrderRepository;
@@ -8,6 +9,10 @@ import com.sreihaan.SreihaanFood.service.CartService;
 import com.sreihaan.SreihaanFood.service.OrderService;
 import com.sreihaan.SreihaanFood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -60,5 +65,24 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Status.ORDERED);
         cartService.removeAllFromCart();
         return orderRepository.save(order);
+    }
+
+    private Pageable getOrderPage(OrderPage orderPage)
+    {
+        Sort sort = Sort.by(orderPage.getSortDirection(), orderPage.getSortBy());
+        return PageRequest.of(orderPage.getPageNumber(), orderPage.getPageSize(), sort);
+    }
+
+    @Override
+    public Page<Order> getAllOrdersForAdmin(OrderPage page) {
+        Pageable orderPagable = getOrderPage(page);
+        return orderRepository.findAll(orderPagable);
+    }
+
+    @Override
+    public Page<Order> getAllOrdersForCurrentUser(OrderPage page) {
+        User user = userService.getCurrentUser();
+        Pageable orderPagable = getOrderPage(page);
+        return orderRepository.findAllByUser(user, orderPagable);
     }
 }
