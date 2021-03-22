@@ -1,5 +1,6 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
+import com.sreihaan.SreihaanFood.exception.DataNotFoundException;
 import com.sreihaan.SreihaanFood.model.page.OrderPage;
 import com.sreihaan.SreihaanFood.model.persistence.*;
 import com.sreihaan.SreihaanFood.model.persistence.enums.Status;
@@ -76,13 +77,56 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<Order> getAllOrdersForAdmin(OrderPage page) {
         Pageable orderPagable = getOrderPage(page);
-        return orderRepository.findAll(orderPagable);
+        if(page.getStatus() == null)
+        {
+            return orderRepository.findAll(orderPagable);
+        }
+        else
+        {
+            return orderRepository.findAllByStatus(page.getStatus(), orderPagable);
+        }
     }
 
     @Override
     public Page<Order> getAllOrdersForCurrentUser(OrderPage page) {
         User user = userService.getCurrentUser();
         Pageable orderPagable = getOrderPage(page);
-        return orderRepository.findAllByUser(user, orderPagable);
+        if(page.getStatus() == null)
+        {
+            return orderRepository.findAllByUser(user, orderPagable);
+        }
+        else
+        {
+            return orderRepository.findAllByUserAndStatus(user, page.getStatus(), orderPagable);
+        }
+    }
+
+    private Order getOrder(long id)
+    {
+        return orderRepository.findById(id)
+                .orElseThrow(()-> new DataNotFoundException("Order not found, id -> "+id));
+    }
+
+    @Override
+    public Order updateOrderStatus(long id, Status status) {
+        Order order = getOrder(id);
+        order.setStatus(status);
+        return order;
+    }
+
+    @Override
+    public Order getOrderByIdForAdmin(long id) {
+        return getOrder(id);
+    }
+
+    @Override
+    public Order getOrderById(long id) {
+        Order order = getOrder(id);
+        User currentUser = userService.getCurrentUser();
+        if(order.getUser().getId() != currentUser.getId())
+        {
+            throw new DataNotFoundException("No order found for the user with given id. id -> "+id);
+        }
+        return order;
     }
 }

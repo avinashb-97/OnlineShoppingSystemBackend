@@ -46,4 +46,11 @@ public class OrderController {
         return ResponseEntity.ok(orderDTOPage);
     }
 
+    @GetMapping("/order/{id}")
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable long id)
+    {
+        Order order = orderService.getOrderById(id);
+        OrderDTO orderDTO = OrderDTO.convertEntityToOrderDTO(order);
+        return ResponseEntity.ok(orderDTO);
+    }
 }
