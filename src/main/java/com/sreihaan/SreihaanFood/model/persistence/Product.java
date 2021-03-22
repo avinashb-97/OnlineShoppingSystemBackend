@@ -6,6 +6,7 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -55,8 +56,8 @@ public class Product {
     @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
 
-    @OneToOne(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
-    private CartItem cartItem;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<CartItem> cartItem;
 
     public BigDecimal getProductPrice()
     {

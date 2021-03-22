@@ -41,7 +41,12 @@ public class CartDTO {
         Comparator<CartItem> cartItemComparator = new Comparator<CartItem>() {
             @Override
             public int compare(CartItem c1, CartItem c2) {
-                return c1.getAddedTime().compareTo(c2.getAddedTime());
+                int compare = c1.getAddedTime().compareTo(c2.getAddedTime());
+                if(compare == 0)
+                {
+                    compare = (int)( c1.getId() - c2.getId());
+                }
+                return compare;
             }
         };
         Collections.sort(cartItems, cartItemComparator);

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 
@@ -142,15 +141,9 @@ public class CartServiceImpl implements CartService {
     @Override
     public Cart removeAllFromCart() {
         User user = userService.getUserByEmail(AuthUtil.getLoggedInUserName());
-        Cart cart = new Cart(user.getCart());
-        Set<CartItem> cartItemSet = cart.getCartItemList();
-        for(CartItem item : cartItemSet)
-        {
-            Product cartProduct = item.getProduct();
-            cartItemRepository.deleteCartItem(item.getId());
-        }
-        cart.setCartItemList(new HashSet<>());
-        return cartRepository.save(cart);
+        Cart cart = user.getCart();
+        cart.getCartItemList().clear();
+        return cart;
     }
 
 }
