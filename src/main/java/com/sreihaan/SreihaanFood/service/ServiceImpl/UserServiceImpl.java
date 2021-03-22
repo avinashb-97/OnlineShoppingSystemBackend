@@ -48,7 +48,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getCurrentUser()
     {
-        return getUserByEmail(AuthUtil.getLoggedInUserName());
+        User user = getUserByEmail(AuthUtil.getLoggedInUserName());
+        logger.info("Getting current user, userid -> "+user.getId());
+        return user;
     }
 
     @Override

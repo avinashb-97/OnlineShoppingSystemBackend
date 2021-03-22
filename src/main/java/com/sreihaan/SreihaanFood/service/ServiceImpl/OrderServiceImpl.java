@@ -1,6 +1,7 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
 import com.sreihaan.SreihaanFood.exception.DataNotFoundException;
+import com.sreihaan.SreihaanFood.exception.InvalidDataException;
 import com.sreihaan.SreihaanFood.model.page.OrderPage;
 import com.sreihaan.SreihaanFood.model.persistence.*;
 import com.sreihaan.SreihaanFood.model.persistence.enums.Status;
@@ -41,6 +42,10 @@ public class OrderServiceImpl implements OrderService {
     public Order makeOrderForCurrentUser(long addressId) {
         Address address = addressService.getAddressById(addressId);
         User user = userService.getCurrentUser();
+        if(address.getUser().getId() != user.getId())
+        {
+            throw new InvalidDataException("Given user has and address id doesn't match, addressId -> "+addressId);
+        }
         Cart cart = user.getCart();
         Order order = new Order();
         order.setAddress(address);

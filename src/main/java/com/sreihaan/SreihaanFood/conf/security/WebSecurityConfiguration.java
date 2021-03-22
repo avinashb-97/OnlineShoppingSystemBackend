@@ -50,7 +50,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/user/**").permitAll()
 
                 .antMatchers("/api/test/**").permitAll()
-                .antMatchers("/api/order/**").permitAll()
+                .antMatchers("/api/order/**").hasAnyAuthority("USER")
                 .antMatchers("/api/admin/**").hasAnyAuthority("MODERATOR", "ADMIN")
 
                 .antMatchers(SWAGGER_AUTH_WHITELIST).permitAll()
