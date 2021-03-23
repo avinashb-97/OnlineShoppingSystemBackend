@@ -19,7 +19,7 @@ public class AdminController {
     private OrderService orderService;
 
     @GetMapping("/order")
-    public ResponseEntity<Page<OrderDTO>> getAllOrders(@RequestBody OrderPage orderPage)
+    public ResponseEntity<Page<OrderDTO>> getAllOrders(OrderPage orderPage)
     {
         Page<Order> orderList = orderService.getAllOrdersForAdmin(orderPage);
         Page<OrderDTO> orderDTOPage = OrderDTO.convertEntityListToPage(orderList);
