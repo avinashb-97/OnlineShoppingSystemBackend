@@ -93,6 +93,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> searchProducts(String name, Long categoryId, int size) {
+
+        List<Product> products = null;
+        if(categoryId != null)
+        {
+            Category category = categoryService.getCategoryById(categoryId);
+            products = productRepository.findByNameContainingAndCategory(name, category);
+        }
+        else
+        {
+            products = productRepository.findByNameContaining(name);
+        }
+        size = products.size() < size ? products.size() : size;
+        return products.subList(0, size);
+
+    }
+
+    @Override
     public List<Product> getAllProducts() {
         long start = System.currentTimeMillis();
         List<Product> products = productRepository.findAll();

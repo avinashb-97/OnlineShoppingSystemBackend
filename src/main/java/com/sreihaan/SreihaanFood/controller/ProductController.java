@@ -103,5 +103,17 @@ public class ProductController {
         return ProductDTO.convertEntityListToProductDTOList(products);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductDTO>> searchProduct(@RequestParam String name,
+                                                          @RequestParam(required = false) Integer size,
+                                                          @RequestParam(required = false) Long categoryId)
+    {
+        int defaultSize = 50;
+        size = size == null || size > defaultSize ? defaultSize : size;
+        List<Product> products = productService.searchProducts(name, categoryId, size);
+        List<ProductDTO> productDTOS = ProductDTO.convertEntityListToProductDTOList(products);
+        return ResponseEntity.ok(productDTOS);
+    }
+
 
 }

@@ -28,4 +28,6 @@ public interface ProductService {
     Set<Product> getProductsForCategory(long categoryId);
 
     Product updateProduct(long productId, Product product, Long categoryId, Long subCategoryId, MultipartFile image);
+
+    List<Product> searchProducts(String key, Long categoryId, int size);
 }
