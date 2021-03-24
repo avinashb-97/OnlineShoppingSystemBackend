@@ -39,7 +39,7 @@ public class OrderController {
     }
 
     @GetMapping()
-    public ResponseEntity<Page<OrderDTO>> getAllOrders(@RequestBody OrderPage orderPage)
+    public ResponseEntity<Page<OrderDTO>> getAllOrders(OrderPage orderPage)
     {
         Page<Order> orderList = orderService.getAllOrdersForCurrentUser(orderPage);
         Page<OrderDTO> orderDTOPage = OrderDTO.convertEntityListToPage(orderList);
