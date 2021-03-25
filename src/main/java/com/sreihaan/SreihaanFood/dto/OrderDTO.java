@@ -23,6 +23,8 @@ public class OrderDTO {
 
     private long id;
 
+    private String orderId;
+
     private List<OrderItemDTO> orderItems;
 
     private BigDecimal total;
@@ -35,6 +37,8 @@ public class OrderDTO {
 
     private Date lastModifiedTime;
 
+    private String orderedBy;
+
     public static OrderDTO convertEntityToOrderDTO(Order order)
     {
         OrderDTO orderDTO = new OrderDTO();
@@ -42,6 +46,7 @@ public class OrderDTO {
         List<OrderItemDTO> orderItemDTOS = OrderItemDTO.convertEntityListToDTOList(order.getOrderItems());
         orderDTO.setOrderItems(orderItemDTOS);
         orderDTO.setAddress(AddressDTO.convertEntityToAddressDTO(order.getAddress()));
+        orderDTO.setOrderedBy(order.getUser().getEmail());
         return orderDTO;
     }
 

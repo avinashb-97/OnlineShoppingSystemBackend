@@ -25,6 +25,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    private String orderId;
+
     @ManyToOne()
     @JoinColumn(name = "userId", nullable = false)
     private User user;

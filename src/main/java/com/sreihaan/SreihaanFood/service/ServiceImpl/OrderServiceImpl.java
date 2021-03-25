@@ -1,5 +1,6 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
+import com.sreihaan.SreihaanFood.constants.OrderConstants;
 import com.sreihaan.SreihaanFood.exception.DataNotFoundException;
 import com.sreihaan.SreihaanFood.exception.InvalidDataException;
 import com.sreihaan.SreihaanFood.model.page.OrderPage;
@@ -48,6 +49,8 @@ public class OrderServiceImpl implements OrderService {
         }
         Cart cart = user.getCart();
         Order order = new Order();
+        long orderId = System.currentTimeMillis()/1000 - OrderConstants.INITIAL_TIMESTAMP;
+        order.setOrderId(OrderConstants.ORDER_ID_START+orderId);
         order.setAddress(address);
         List<OrderItem> orderItems = new ArrayList<>();
         BigDecimal totalAmount = BigDecimal.ZERO;
@@ -56,14 +59,15 @@ public class OrderServiceImpl implements OrderService {
             Product product = cartItem.getProduct();
             long quantity = cartItem.getQuantity();
             BigDecimal price = product.getProductPrice();
+            BigDecimal totalPrice = price.multiply(new BigDecimal(quantity));
             OrderItem orderItem = new OrderItem();
             orderItem.setItemName(product.getName());
             orderItem.setQuantity(quantity);
             orderItem.setUnitPrice(price);
-            orderItem.setTotalPrice(product.getProductPrice().multiply(new BigDecimal(quantity)));
+            orderItem.setTotalPrice(totalPrice);
             orderItems.add(orderItem);
             orderItem.setOrder(order);
-            totalAmount = totalAmount.add(price);
+            totalAmount = totalAmount.add(totalPrice);
         }
         order.setUser(user);
         order.setOrderItems(orderItems);
