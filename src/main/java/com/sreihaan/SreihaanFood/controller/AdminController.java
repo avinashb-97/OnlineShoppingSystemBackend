@@ -26,18 +26,18 @@ public class AdminController {
         return ResponseEntity.ok(orderDTOPage);
     }
 
-    @GetMapping("/order/{id}")
-    public ResponseEntity<OrderDTO> getOrderById(@PathVariable long id)
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable String orderId)
     {
-        Order order = orderService.getOrderByIdForAdmin(id);
+        Order order = orderService.getOrderByOrderIdForAdmin(orderId);
         OrderDTO orderDTO = OrderDTO.convertEntityToOrderDTO(order);
         return ResponseEntity.ok(orderDTO);
     }
 
-    @PostMapping("/order/{id}/status")
-    public ResponseEntity<OrderDTO> changeOrderStatus(@PathVariable long id, @RequestBody Status status)
+    @PostMapping("/order/{orderId}/status")
+    public ResponseEntity<OrderDTO> changeOrderStatus(@PathVariable String orderId, @RequestBody Status status)
     {
-        Order order = orderService.updateOrderStatus(id, status);
+        Order order = orderService.updateOrderStatus(orderId, status);
         OrderDTO orderDTO = OrderDTO.convertEntityToOrderDTO(order);
         return ResponseEntity.ok(orderDTO);
     }

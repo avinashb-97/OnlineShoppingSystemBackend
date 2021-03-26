@@ -15,9 +15,13 @@ public interface OrderService {
 
     Page<Order> getAllOrdersForCurrentUser(OrderPage orderPage);
 
-    Order updateOrderStatus(long id, Status status);
+    Order updateOrderStatus(String orderId, Status status);
 
     Order getOrderByIdForAdmin(long id);
 
+    Order getOrderByOrderIdForAdmin(String orderId);
+
     Order getOrderById(long id);
+
+    public Order getOrderByOrderId(String orderId);
 }

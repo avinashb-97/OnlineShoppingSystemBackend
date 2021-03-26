@@ -1,6 +1,5 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
-import com.sreihaan.SreihaanFood.constants.OrderConstants;
 import com.sreihaan.SreihaanFood.exception.DataNotFoundException;
 import com.sreihaan.SreihaanFood.exception.InvalidDataException;
 import com.sreihaan.SreihaanFood.model.page.OrderPage;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Transactional
@@ -49,8 +49,8 @@ public class OrderServiceImpl implements OrderService {
         }
         Cart cart = user.getCart();
         Order order = new Order();
-        long orderId = System.currentTimeMillis()/1000 - OrderConstants.INITIAL_TIMESTAMP;
-        order.setOrderId(OrderConstants.ORDER_ID_START+orderId);
+        String orderId = getOrderId();
+        order.setOrderId(orderId);
         order.setAddress(address);
         List<OrderItem> orderItems = new ArrayList<>();
         BigDecimal totalAmount = BigDecimal.ZERO;
@@ -62,6 +62,8 @@ public class OrderServiceImpl implements OrderService {
             BigDecimal totalPrice = price.multiply(new BigDecimal(quantity));
             OrderItem orderItem = new OrderItem();
             orderItem.setItemName(product.getName());
+            orderItem.setItemCode(product.getCode());
+            orderItem.setCategory(product.getCategory().getName());
             orderItem.setQuantity(quantity);
             orderItem.setUnitPrice(price);
             orderItem.setTotalPrice(totalPrice);
@@ -75,6 +77,18 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Status.ORDERED);
         cartService.removeAllFromCart();
         return orderRepository.save(order);
+    }
+
+    private String getOrderId()
+    {
+        long timeStamp = System.currentTimeMillis()/1000;
+        String orderId = String.valueOf(timeStamp) + (long)(Math.random()*100);
+        if(orderRepository.existsOrderByOrderId(orderId))
+        {
+            timeStamp = System.currentTimeMillis()/1000;
+            orderId = (char)(Math.random()*26 + 'A') + String.valueOf(timeStamp) + (long)(Math.random()*10);
+        }
+        return orderId;
     }
 
     private Pageable getOrderPage(OrderPage orderPage)
@@ -116,10 +130,20 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(()-> new DataNotFoundException("Order not found, id -> "+id));
     }
 
+    private Order getOrder(String orderId)
+    {
+        return orderRepository.findOrderByOrderId(orderId)
+                .orElseThrow(()-> new DataNotFoundException("Order not found, orderId -> "+orderId));
+    }
+
     @Override
-    public Order updateOrderStatus(long id, Status status) {
-        Order order = getOrder(id);
+    public Order updateOrderStatus(String orderId, Status status) {
+        Order order = getOrder(orderId);
         order.setStatus(status);
+        if(status.equals(Status.DELIVERED))
+        {
+            order.setDeliveryTime(new Date());
+        }
         return order;
     }
 
@@ -129,12 +153,28 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order getOrderByOrderIdForAdmin(String orderId) {
+        return getOrder(orderId);
+    }
+
+    @Override
     public Order getOrderById(long id) {
         Order order = getOrder(id);
         User currentUser = userService.getCurrentUser();
         if(order.getUser().getId() != currentUser.getId())
         {
             throw new DataNotFoundException("No order found for the user with given id. id -> "+id);
+        }
+        return order;
+    }
+
+    @Override
+    public Order getOrderByOrderId(String orderId) {
+        Order order = getOrder(orderId);
+        User currentUser = userService.getCurrentUser();
+        if(order.getUser().getId() != currentUser.getId())
+        {
+            throw new DataNotFoundException("No order found for the user with given id. orderId -> "+orderId);
         }
         return order;
     }

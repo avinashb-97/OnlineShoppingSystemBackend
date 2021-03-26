@@ -18,6 +18,10 @@ public class OrderItem {
 
     private String itemName;
 
+    private String itemCode;
+
+    private String category;
+
     private long quantity;
 
     private BigDecimal unitPrice;

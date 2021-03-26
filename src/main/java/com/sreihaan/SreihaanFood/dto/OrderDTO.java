@@ -21,8 +21,6 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderDTO {
 
-    private long id;
-
     private String orderId;
 
     private List<OrderItemDTO> orderItems;
@@ -36,6 +34,8 @@ public class OrderDTO {
     private Date createdTime;
 
     private Date lastModifiedTime;
+
+    private Date deliveryTime;
 
     private String orderedBy;
 

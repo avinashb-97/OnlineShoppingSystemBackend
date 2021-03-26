@@ -17,6 +17,10 @@ public class OrderItemDTO {
 
     private long quantity;
 
+    private String itemCode;
+
+    private String category;
+
     private BigDecimal unitPrice;
 
     private BigDecimal totalPrice;

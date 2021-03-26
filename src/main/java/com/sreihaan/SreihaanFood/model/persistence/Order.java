@@ -48,6 +48,8 @@ public class Order {
     @Column(name = "created_time")
     private Date createdTime;
 
+    private Date deliveryTime;
+
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_modified_time")
