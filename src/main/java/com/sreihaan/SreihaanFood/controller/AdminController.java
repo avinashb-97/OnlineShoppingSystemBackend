@@ -6,7 +6,6 @@ import com.sreihaan.SreihaanFood.dto.CartItemDTO;
 import com.sreihaan.SreihaanFood.dto.OrderDTO;
 import com.sreihaan.SreihaanFood.model.page.OrderPage;
 import com.sreihaan.SreihaanFood.model.persistence.Address;
-import com.sreihaan.SreihaanFood.model.persistence.CartItem;
 import com.sreihaan.SreihaanFood.model.persistence.Order;
 import com.sreihaan.SreihaanFood.model.persistence.enums.Status;
 import com.sreihaan.SreihaanFood.model.requests.AdminCreateOrderRequest;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Hashtable;
-import java.util.List;
 
 @RequestMapping("/api/admin")
 @RestController
@@ -55,7 +53,8 @@ public class AdminController {
         String email = adminCreateOrderRequest.getEmail();
         Address address = AddressDTO.convertAddressDTOToEntity(adminCreateOrderRequest.getAddressDTO());
         Order order = orderService.makeOrderForAdmin(email, productIdVsQuantity, address);
-        return null;
+        OrderDTO orderDTO = OrderDTO.convertEntityToOrderDTO(order);
+        return ResponseEntity.ok(orderDTO);
     }
 
     @PostMapping("/order/{orderId}/status")
