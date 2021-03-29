@@ -27,4 +27,6 @@ public interface UserService {
     void deleteUser(String email);
 
     public User getCurrentUser();
+
+    User createDummyUser(String email);
 }

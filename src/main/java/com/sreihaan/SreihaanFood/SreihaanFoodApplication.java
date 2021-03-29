@@ -5,11 +5,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackageClasses = UserRepository.class)
 @EnableAutoConfiguration
-//@EntityScan({"com.sreihaan.SreihaanFood.model.persistence.User","com.sreihaan.SreihaanFood.model.persistence.repository.SubCategory"})
+@EnableAsync
 public class SreihaanFoodApplication {
 
 	public static void main(String[] args) {

@@ -25,6 +25,11 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Address addAddress(Address address) {
         User user = userService.getCurrentUser();
+        return addAddress(address, user);
+    }
+
+    @Override
+    public Address addAddress(Address address, User user) {
         address.setUser(user);
         return addressRepository.save(address);
     }

@@ -6,10 +6,7 @@ import com.sreihaan.SreihaanFood.model.page.OrderPage;
 import com.sreihaan.SreihaanFood.model.persistence.*;
 import com.sreihaan.SreihaanFood.model.persistence.enums.Status;
 import com.sreihaan.SreihaanFood.model.persistence.repository.OrderRepository;
-import com.sreihaan.SreihaanFood.service.AddressService;
-import com.sreihaan.SreihaanFood.service.CartService;
-import com.sreihaan.SreihaanFood.service.OrderService;
-import com.sreihaan.SreihaanFood.service.UserService;
+import com.sreihaan.SreihaanFood.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +18,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 
 @Transactional
@@ -39,13 +37,21 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private ProductService productService;
+
     @Override
     public Order makeOrderForCurrentUser(long addressId) {
-        Address address = addressService.getAddressById(addressId);
         User user = userService.getCurrentUser();
-        if(address.getUser().getId() != user.getId())
+        Address address = addressService.getAddressById(addressId);
+        return makeOrderForUser(address, user);
+    }
+
+    private Order makeOrderForUser(Address address, User user)
+    {
+        if( address.getUser().getId() != user.getId())
         {
-            throw new InvalidDataException("Given user has and address id doesn't match, addressId -> "+addressId);
+            throw new InvalidDataException("Given user has and address id doesn't match, addressId -> "+address.getId());
         }
         Cart cart = user.getCart();
         Order order = new Order();
@@ -60,13 +66,7 @@ public class OrderServiceImpl implements OrderService {
             long quantity = cartItem.getQuantity();
             BigDecimal price = product.getProductPrice();
             BigDecimal totalPrice = price.multiply(new BigDecimal(quantity));
-            OrderItem orderItem = new OrderItem();
-            orderItem.setItemName(product.getName());
-            orderItem.setItemCode(product.getCode());
-            orderItem.setCategory(product.getCategory().getName());
-            orderItem.setQuantity(quantity);
-            orderItem.setUnitPrice(price);
-            orderItem.setTotalPrice(totalPrice);
+            OrderItem orderItem = setDataAndGetOrderItem(product, price, quantity, totalPrice);
             orderItems.add(orderItem);
             orderItem.setOrder(order);
             totalAmount = totalAmount.add(totalPrice);
@@ -77,6 +77,18 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Status.ORDERED);
         cartService.removeAllFromCart();
         return orderRepository.save(order);
+    }
+
+    private OrderItem setDataAndGetOrderItem(Product product, BigDecimal price, long quantity, BigDecimal totalPrice)
+    {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setItemName(product.getName());
+        orderItem.setItemCode(product.getCode());
+        orderItem.setCategory(product.getCategory().getName());
+        orderItem.setQuantity(quantity);
+        orderItem.setUnitPrice(price);
+        orderItem.setTotalPrice(totalPrice);
+        return orderItem;
     }
 
     private String getOrderId()
@@ -178,4 +190,49 @@ public class OrderServiceImpl implements OrderService {
         }
         return order;
     }
+
+    @Override
+    public Order makeOrderForAdmin(String email, Hashtable<Long, Long> productIdVsQuantity, Address address) {
+        User user = null;
+        try {
+            user = userService.getUserByEmail(email);
+        }
+        catch (Exception ex)
+        {
+            user = userService.createDummyUser(email);
+        }
+        User adminUser = userService.getCurrentUser();
+        Address savedAddress = addressService.addAddress(address);
+        Order order = makeOrderForAdmin(address, user, productIdVsQuantity);
+        return order;
+    }
+
+    private Order makeOrderForAdmin(Address address, User user, Hashtable<Long,Long> productIdVsQuantity)
+    {
+        Order order = new Order();
+        order.setUser(user);
+        String orderId = getOrderId();
+        order.setOrderId(orderId);
+        order.setAddress(address);
+        List<OrderItem> orderItems = new ArrayList<>();
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        for(long productId : productIdVsQuantity.keySet())
+        {
+            long quantity = productIdVsQuantity.get(productId);
+            Product product = productService.getProductById(productId);
+            BigDecimal price = product.getProductPrice();
+            BigDecimal totalPrice = price.multiply(new BigDecimal(quantity));
+            OrderItem orderItem = setDataAndGetOrderItem(product, price, quantity, totalPrice);
+            orderItems.add(orderItem);
+            orderItem.setOrder(order);
+            totalAmount = totalAmount.add(totalPrice);
+        }
+        order.setOrderItems(orderItems);
+        order.setTotal(totalAmount);
+        order.setStatus(Status.ORDERED);
+        return orderRepository.save(order);
+    }
+
+
+
 }

@@ -54,22 +54,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User createDummyUser(String email) {
+        if(userRepository.existsUserByEmailIgnoreCase(email))
+        {
+            logger.info("Dummy user already exists, email-> "+email);
+            return null;
+        }
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(null);
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(Role.USER);
+        user.setRoles(userRoles);
+        user.setDummyUser(true);
+        return userRepository.save(user);
+    }
+
+    @Override
     public User createUser(User user, String password) {
         if(userRepository.existsUserByEmailIgnoreCase(user.getEmail()))
         {
-            return user;
+            user = getUserByEmail(user.getEmail());
+            if(!user.isDummyUser())
+            {
+                return user;
+            }
         }
         if(user.getEmail().equals(SecurityConstants.MAIN_ADMIN_EMAIL))
         {
             user = addAdminRoleToUser(user);
         }
+        user.setDummyUser(false);
         user.setPassword(bCryptPasswordEncoder.encode(password));
         user.setEnabled(true);
         user = userRepository.save(user);
         cartService.createCart(user);
-//        UserToken userToken = userTokenService.GenerateUserConfirmationToken(user);
-//        String confirmationToken = userToken.getToken();
-//        emailSenderService.sendEmail(user.getEmail(), MailConstants.USER_CONFIRMATION_SUBJECT, MailConstants.USER_CONFIRMATION_BODY + MailUtil.getUserConfirmationLink(confirmationToken));
         return user;
     }
 

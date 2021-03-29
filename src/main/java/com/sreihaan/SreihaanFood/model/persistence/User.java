@@ -41,6 +41,9 @@ public class User {
     @Column(nullable = false, columnDefinition = "tinyint(1) default 0")
     private boolean enabled;
 
+    @Column(nullable = false, columnDefinition = "tinyint(1) default 0")
+    private boolean isDummyUser;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_time")

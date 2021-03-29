@@ -39,6 +39,8 @@ public class OrderDTO {
 
     private String orderedBy;
 
+    private String orderedFor;
+
     public static OrderDTO convertEntityToOrderDTO(Order order)
     {
         OrderDTO orderDTO = new OrderDTO();
@@ -46,7 +48,7 @@ public class OrderDTO {
         List<OrderItemDTO> orderItemDTOS = OrderItemDTO.convertEntityListToDTOList(order.getOrderItems());
         orderDTO.setOrderItems(orderItemDTOS);
         orderDTO.setAddress(AddressDTO.convertEntityToAddressDTO(order.getAddress()));
-        orderDTO.setOrderedBy(order.getUser().getEmail());
+        orderDTO.setOrderedFor(order.getUser().getEmail());
         return orderDTO;
     }
 
@@ -59,6 +61,13 @@ public class OrderDTO {
         }
         Page<OrderDTO> orderDTOPage = new PageImpl<>(orderDTOList, orders.getPageable(), orders.getTotalElements());
         return orderDTOPage;
+    }
+
+    public static Order convertOrderDTOToEntity(OrderDTO orderDTO)
+    {
+        Order order = new Order();
+        BeanUtils.copyProperties(orderDTO, order);
+        return order;
     }
 
 }

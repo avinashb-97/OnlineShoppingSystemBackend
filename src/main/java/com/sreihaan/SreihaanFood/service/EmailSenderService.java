@@ -11,6 +11,6 @@ public interface EmailSenderService {
 
     public void sendEmail(String toMail, String subject, String message);
 
-    public String getOrderSuccessMailTemplate(Order order);
+    public void sendOrderConfirmationMail(Order order);
 
 }

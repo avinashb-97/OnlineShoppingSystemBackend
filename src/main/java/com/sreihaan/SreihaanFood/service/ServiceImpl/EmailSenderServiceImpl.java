@@ -46,7 +46,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         }
     }
 
-    public String getOrderSuccessMailTemplate(Order order)
+    private String getOrderSuccessMailTemplate(Order order)
     {
         Context context = new Context();
         context.setVariable("userName", order.getUser().getFirstName());
@@ -56,6 +56,13 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         context.setVariable("orderDate", order.getCreatedTime());
         String process = templateEngine.process("emails/OrderSuccess", context);
         return process;
+    }
+
+    @Async
+    public void sendOrderConfirmationMail(Order order)
+    {
+        String message = getOrderSuccessMailTemplate(order);
+        sendEmail(order.getUser().getEmail(), "Order Confirmation - Order Id: "+order.getOrderId(), message);
     }
 
     private Properties getMailProperties() {
