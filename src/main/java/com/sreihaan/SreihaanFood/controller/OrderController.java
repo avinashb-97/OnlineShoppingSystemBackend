@@ -34,6 +34,8 @@ public class OrderController {
     {
         long addressId = createOrderRequest.getAddressId();
         Order order = orderService.makeOrderForCurrentUser(addressId);
+        String message = emailSenderService.getOrderSuccessMailTemplate(order);
+        emailSenderService.sendEmail(order.getUser().getEmail(), "Order Confirmation - Order Id: "+order.getOrderId(), message);
         OrderDTO orderDTO = OrderDTO.convertEntityToOrderDTO(order);
         return ResponseEntity.ok(orderDTO);
     }

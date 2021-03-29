@@ -1,6 +1,9 @@
 package com.sreihaan.SreihaanFood.utils;
 
 import com.sreihaan.SreihaanFood.constants.MailConstants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.thymeleaf.TemplateEngine;
 
 public class MailUtil {
 

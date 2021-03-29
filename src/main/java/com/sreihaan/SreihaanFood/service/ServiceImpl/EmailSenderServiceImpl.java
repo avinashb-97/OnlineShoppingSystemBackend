@@ -1,9 +1,14 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
 import com.sreihaan.SreihaanFood.constants.MailConstants;
+import com.sreihaan.SreihaanFood.model.persistence.Address;
+import com.sreihaan.SreihaanFood.model.persistence.Order;
 import com.sreihaan.SreihaanFood.service.EmailSenderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -13,6 +18,9 @@ import java.util.Properties;
 
 @Service
 public class EmailSenderServiceImpl implements EmailSenderService {
+
+    @Autowired
+    private TemplateEngine templateEngine;
 
     @Async
     public void sendEmail(String toMail, String subject, String message)  {
@@ -38,7 +46,17 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         }
     }
 
-
+    public String getOrderSuccessMailTemplate(Order order)
+    {
+        Context context = new Context();
+        context.setVariable("userName", order.getUser().getFirstName());
+        context.setVariable("address", order.getAddress());
+        context.setVariable("items", order.getOrderItems());
+        context.setVariable("orderId", order.getOrderId());
+        context.setVariable("orderDate", order.getCreatedTime());
+        String process = templateEngine.process("emails/OrderSuccess", context);
+        return process;
+    }
 
     private Properties getMailProperties() {
         Properties properties = new Properties();

@@ -18,6 +18,7 @@ public class TestController {
     @Autowired
     private EmailSenderService emailSenderService;
 
+
     @PostMapping("/mail/{mailId}")
     public void sendMail(@PathVariable String mailId) {
         emailSenderService.sendEmail(mailId, "Test", "Hello Test 123 !");
