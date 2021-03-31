@@ -14,9 +14,7 @@ public interface UserService {
 
     public User confirmUser(String confirmationToken);
 
-    void forgotPassword(String email);
-
-    void resetPassword(String resetToken, String password);
+    void resetPassword(String email, String password);
 
     void changePasswordForCurrentUser(String oldPassword, String password);
 

@@ -90,24 +90,24 @@ public class UserController {
         return ResponseEntity.ok(UserDTO.convertEntityToUserDTO(user));
     }
 
-    @PostMapping("/password/forgot")
-    public void forgotPassword(@RequestParam("email") String email)
-    {
-        logger.info("[Forgot password] forgot password initiated, email -> "+ email);
-        userService.forgotPassword(email);
-    }
-
     @PostMapping("/password/reset")
     public ResponseEntity resetPassword(@RequestBody PasswordResetRequest passwordResetRequest)
     {
-        logger.info("[Reset password] reset password initiated, resetToken -> "+ passwordResetRequest.getResetToken());
+        String email = passwordResetRequest.getEmail();
         String password = passwordResetRequest.getPassword();
+        logger.info("[Reset password] reset password initiated, email -> "+ email);
         if(!isPasswordStrong(password, passwordResetRequest.getConfirmPassword()))
         {
-            logger.info("[Reset Password] bad password given, resetToken -> "+ passwordResetRequest.getResetToken());
+            logger.info("[Reset Password] bad password given, email -> "+ email);
             return ResponseEntity.badRequest().build();
         }
-        userService.resetPassword(passwordResetRequest.getResetToken(), password);
+        boolean isOTPVerified = userService.verifyOTP(passwordResetRequest.getEmail(), passwordResetRequest.getOtp());
+        if(!isOTPVerified)
+        {
+            logger.info("[Create User] Invalid OTP, email -> "+email);
+            throw new InvalidOTPException("OTP is invalid or is Expired");
+        }
+        userService.resetPassword(email, password);
         return ResponseEntity.ok().build();
     }
 
@@ -123,7 +123,6 @@ public class UserController {
         }
         userService.changePasswordForCurrentUser(changePasswordRequest.getOldPassword() ,password);
         return ResponseEntity.ok().build();
-
     }
 
     private User convertCreateUserRequestToUserObject(CreateUserRequest createUserRequest)

@@ -122,32 +122,34 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    @Override
-    public void forgotPassword(String email) {
-        User user = null;
-        try {
-            user = getUserByEmail(email);
-            logger.info("[Forgot Password] User Found, Email: "+user.getEmail()+" isEnabled: "+user.isEnabled());
-            if(user.isEnabled())
-            {
-                UserToken forgotPasswordToken = userTokenService.generateForgotPasswordToken(user);
-                String resetToken = forgotPasswordToken.getToken();
-                logger.info("[Forgot Password] Reset token generated, user: "+user.getEmail()+" token: "+resetToken);
-                emailSenderService.sendEmail(user.getEmail(), MailConstants.PASSWORD_RESET_SUBJECT, MailUtil.getUserPasswordResetMessage(resetToken));
-            }
-        }
-        catch (Exception e)
-        {
-            String exception = e.getMessage();
-            logger.info("[Forgot Password] User not found, email: "+email+" Exception: "+exception);
-        }
 
-    }
+//    Code to generate forgot password token
+//
+//    private void forgotPassword(String email) {
+//        User user = null;
+//        try {
+//            user = getUserByEmail(email);
+//            logger.info("[Forgot Password] User Found, Email: "+user.getEmail()+" isEnabled: "+user.isEnabled());
+//            if(user.isEnabled())
+//            {
+//                UserToken forgotPasswordToken = userTokenService.generateForgotPasswordToken(user);
+//                String resetToken = forgotPasswordToken.getToken();
+//                logger.info("[Forgot Password] Reset token generated, user: "+user.getEmail()+" token: "+resetToken);
+//                emailSenderService.sendEmail(user.getEmail(), MailConstants.PASSWORD_RESET_SUBJECT, MailUtil.getUserPasswordResetMessage(resetToken));
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            String exception = e.getMessage();
+//            logger.info("[Forgot Password] User not found, email: "+email+" Exception: "+exception);
+//        }
+//
+//    }
 
     @Override
-    public void resetPassword(String resetToken, String password) {
-        User user = userTokenService.getUserAndDeleteResetToken(resetToken);
-        logger.info("[Reset Password] User found successfully, user: "+user.getEmail()+" token: "+resetToken);
+    public void resetPassword(String email, String password) {
+        User user = getUserByEmail(email);
+        logger.info("[Reset Password] User found successfully, user: "+user.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(password));
         userRepository.save(user);
         logger.info("[Reset Password] Password Reset Success, user: "+user.getEmail());
