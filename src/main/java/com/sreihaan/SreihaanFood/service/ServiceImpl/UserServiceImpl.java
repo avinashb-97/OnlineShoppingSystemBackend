@@ -1,15 +1,12 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
-import com.sreihaan.SreihaanFood.constants.MailConstants;
 import com.sreihaan.SreihaanFood.constants.SecurityConstants;
 import com.sreihaan.SreihaanFood.exception.UserNotFoundException;
 import com.sreihaan.SreihaanFood.model.persistence.User;
-import com.sreihaan.SreihaanFood.model.persistence.UserToken;
 import com.sreihaan.SreihaanFood.model.persistence.enums.Role;
 import com.sreihaan.SreihaanFood.model.persistence.repository.UserRepository;
 import com.sreihaan.SreihaanFood.service.*;
 import com.sreihaan.SreihaanFood.utils.AuthUtil;
-import com.sreihaan.SreihaanFood.utils.MailUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +65,41 @@ public class UserServiceImpl implements UserService {
         user.setRoles(userRoles);
         user.setDummyUser(true);
         return userRepository.save(user);
+    }
+
+    @Override
+    public Integer generateOTP(String email) {
+        Integer otp = otpService.generateOTP(email);
+        emailSenderService.sendEmail(email, "OTP", "Your OTP is "+otp);
+        return otp;
+    }
+
+    @Override
+    public void generateOTPForUserCreation(String email) {
+        boolean isUserExists = userRepository.existsUserByEmailIgnoreCase(email);
+        if(isUserExists)
+        {
+            emailSenderService.sendErrorMessageForUserCreation(email);
+        }
+        else
+        {
+            Integer otp = otpService.generateOTP(email);
+            emailSenderService.sendOTPForUser(email,  otp, "OTP - User Registration");
+        }
+    }
+
+    @Override
+    public void generateOTPForPasswordReset(String email) {
+        boolean isUserExists = userRepository.existsUserByEmailIgnoreCase(email);
+        if(!isUserExists)
+        {
+            logger.info("[Password Reset] Trying to generate otp for unregistered user, email -> "+email);
+        }
+        else
+        {
+            Integer otp = otpService.generateOTP(email);
+            emailSenderService.sendOTPForUser(email,  otp, "OTP - Password Reset");
+        }
     }
 
     @Override
@@ -166,13 +198,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(bCryptPasswordEncoder.encode(password));
         userRepository.save(user);
 
-    }
-
-    @Override
-    public Integer generateOTP(String email) {
-        Integer otp = otpService.generateOTP(email);
-        emailSenderService.sendEmail(email, "OTP", "Your OTP is "+otp);
-        return otp;
     }
 
     @Override

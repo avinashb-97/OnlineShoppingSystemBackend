@@ -27,4 +27,8 @@ public interface UserService {
     public User getCurrentUser();
 
     User createDummyUser(String email);
+
+    void generateOTPForUserCreation(String email);
+
+    void generateOTPForPasswordReset(String email);
 }

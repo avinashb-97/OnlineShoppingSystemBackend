@@ -146,11 +146,18 @@ public class UserController {
         return user;
     }
 
-    @PostMapping("/otp/generate")
-    public void sendOTPToVerifyGuestEmail(@RequestBody OtpDTO otpDTO)
+    @PostMapping("/create/otp/generate")
+    public void sendOTPToVerifyUserCreation(@RequestBody OtpDTO otpDTO)
     {
         String email = otpDTO.getEmail();
-        userService.generateOTP(email);
+        userService.generateOTPForUserCreation(email);
+    }
+
+    @PostMapping("/password/otp/generate")
+    public void sendOTPToVerifyPasswordReset(@RequestBody OtpDTO otpDTO)
+    {
+        String email = otpDTO.getEmail();
+        userService.generateOTPForPasswordReset(email);
     }
 
     @PostMapping("/otp/verify")

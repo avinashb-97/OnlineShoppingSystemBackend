@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 @Transactional
 public class OTPServiceImpl implements OTPService {
 
-    private static final Integer EXPIRE_MINS = 10;
+    private static final Integer EXPIRE_MINS = 20;
     Logger logger = LoggerFactory.getLogger(OTPServiceImpl.class);
 
     private LoadingCache<String, Integer> otpCache;

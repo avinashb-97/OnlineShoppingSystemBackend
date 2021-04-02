@@ -1,11 +1,6 @@
 package com.sreihaan.SreihaanFood.service;
 
-import com.sreihaan.SreihaanFood.model.persistence.Address;
 import com.sreihaan.SreihaanFood.model.persistence.Order;
-import org.springframework.mail.SimpleMailMessage;
-
-import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
 
 public interface EmailSenderService {
 
@@ -13,4 +8,8 @@ public interface EmailSenderService {
 
     public void sendOrderConfirmationMail(Order order);
 
+    public void sendOTPForUser(String email, int otp, String subject);
+
+    void sendErrorMessageForUserCreation(String email);
+    
 }

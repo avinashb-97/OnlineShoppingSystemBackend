@@ -65,6 +65,22 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         sendEmail(order.getUser().getEmail(), "Order Confirmation - Order Id: "+order.getOrderId(), message);
     }
 
+    @Async
+    public void sendOTPForUser(String email, int otp, String subject)
+    {
+        Context context = new Context();
+        context.setVariable("otp", otp);
+        String message = templateEngine.process("emails/UserOTP", context);
+        sendEmail(email, subject, message);
+    }
+
+    @Async
+    public void sendErrorMessageForUserCreation(String email) {
+        Context context = new Context();
+        String message = templateEngine.process("emails/UserAlreadyExistsError", context);
+        sendEmail(email, "OTP - User Registration", message);
+    }
+
     private Properties getMailProperties() {
         Properties properties = new Properties();
         properties.setProperty("mail.smtp.host", MailConstants.HOST);
