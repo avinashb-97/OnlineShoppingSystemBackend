@@ -6,6 +6,7 @@ import com.sreihaan.SreihaanFood.model.persistence.Address;
 import com.sreihaan.SreihaanFood.model.persistence.Order;
 import com.sreihaan.SreihaanFood.model.persistence.enums.Status;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.parameters.P;
 
 import java.util.Hashtable;
 import java.util.List;
@@ -29,4 +30,6 @@ public interface OrderService {
     public Order getOrderByOrderId(String orderId);
 
     Order makeOrderForAdmin(String email, Hashtable<Long, Long> productIdVsQuantity, Address address);
+
+    Page<Order> getAllOrdersUserByEmail(String email, OrderPage page);
 }

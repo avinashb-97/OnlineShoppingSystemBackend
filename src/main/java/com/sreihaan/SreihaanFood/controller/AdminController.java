@@ -11,9 +11,13 @@ import com.sreihaan.SreihaanFood.model.requests.AdminCreateOrderRequest;
 import com.sreihaan.SreihaanFood.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 @RequestMapping("/api/admin")
 @RestController
@@ -23,19 +27,28 @@ public class AdminController {
     private OrderService orderService;
 
     @GetMapping("/order")
-    public ResponseEntity<Page<OrderDTO>> getAllOrders(OrderPage orderPage)
+    public ResponseEntity<Page<OrderDTO>> getAllOrders(@RequestParam(required = false) String orderId, @RequestParam(required = false) String email, OrderPage orderPage)
     {
-        Page<Order> orderList = orderService.getAllOrdersForAdmin(orderPage);
-        Page<OrderDTO> orderDTOPage = OrderDTO.convertEntityListToPage(orderList);
-        return ResponseEntity.ok(orderDTOPage);
-    }
-
-    @GetMapping("/order/{orderId}")
-    public ResponseEntity<OrderDTO> getOrderById(@PathVariable String orderId)
-    {
-        Order order = orderService.getOrderByOrderIdForAdmin(orderId);
-        OrderDTO orderDTO = OrderDTO.convertEntityToOrderDTO(order);
-        return ResponseEntity.ok(orderDTO);
+        Page<OrderDTO> orderDTOS = null;
+        if (orderId != null)
+        {
+            Order order = orderService.getOrderByOrderIdForAdmin(orderId);
+            List<Order> orders = new ArrayList<>();
+            orders.add(order);
+            Page<Order> pages = new PageImpl<Order>(orders);
+            orderDTOS = OrderDTO.convertEntityListToPage(pages);
+        }
+        else if(email != null)
+        {
+            Page<Order> orders = orderService.getAllOrdersUserByEmail(email, orderPage);
+            orderDTOS = OrderDTO.convertEntityListToPage(orders);
+        }
+        else
+        {
+            Page<Order> orderList = orderService.getAllOrdersForAdmin(orderPage);
+            orderDTOS = OrderDTO.convertEntityListToPage(orderList);
+        }
+        return ResponseEntity.ok(orderDTOS);
     }
 
     @PostMapping

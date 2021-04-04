@@ -122,20 +122,6 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    @Override
-    public Page<Order> getAllOrdersForCurrentUser(OrderPage page) {
-        User user = userService.getCurrentUser();
-        Pageable orderPagable = getOrderPage(page);
-        if(page.getStatus() == null)
-        {
-            return orderRepository.findAllByUser(user, orderPagable);
-        }
-        else
-        {
-            return orderRepository.findAllByUserAndStatus(user, page.getStatus(), orderPagable);
-        }
-    }
-
     private Order getOrder(long id)
     {
         return orderRepository.findById(id)
@@ -203,11 +189,37 @@ public class OrderServiceImpl implements OrderService {
         }
         User adminUser = userService.getCurrentUser();
         Address savedAddress = addressService.addAddress(address);
-        Order order = makeOrderForAdmin(address, user, productIdVsQuantity);
+        Order order = makeOrder(address, user, productIdVsQuantity);
         return order;
     }
 
-    private Order makeOrderForAdmin(Address address, User user, Hashtable<Long,Long> productIdVsQuantity)
+    @Override
+    public Page<Order> getAllOrdersForCurrentUser(OrderPage page) {
+        User user = userService.getCurrentUser();
+        return getAllOrdersForUser(user, page);
+    }
+
+    @Override
+    public Page<Order> getAllOrdersUserByEmail(String email, OrderPage page) {
+        User user = userService.getUserByEmail(email);
+        return  getAllOrdersForUser(user, page);
+    }
+
+    public Page<Order> getAllOrdersForUser(User user, OrderPage page)
+    {
+        Pageable orderPagable = getOrderPage(page);
+        if(page.getStatus() == null)
+        {
+            return orderRepository.findAllByUser(user, orderPagable);
+        }
+        else
+        {
+            return orderRepository.findAllByUserAndStatus(user, page.getStatus(), orderPagable);
+        }
+    }
+
+
+    private Order makeOrder(Address address, User user, Hashtable<Long,Long> productIdVsQuantity)
     {
         Order order = new Order();
         order.setUser(user);
@@ -232,7 +244,5 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Status.ORDERED);
         return orderRepository.save(order);
     }
-
-
 
 }
