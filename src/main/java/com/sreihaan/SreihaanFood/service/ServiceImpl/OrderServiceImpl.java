@@ -1,5 +1,6 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
+import com.sreihaan.SreihaanFood.constants.OrderConstants;
 import com.sreihaan.SreihaanFood.exception.DataNotFoundException;
 import com.sreihaan.SreihaanFood.exception.InvalidDataException;
 import com.sreihaan.SreihaanFood.model.page.OrderPage;
@@ -13,9 +14,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.DateUtils;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
@@ -112,13 +116,36 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<Order> getAllOrdersForAdmin(OrderPage page) {
         Pageable orderPagable = getOrderPage(page);
-        if(page.getStatus() == null)
+        Date startDate = null;
+        Date endDate = null;
+        if(page.getStartDate() == null && page.getEndDate() == null)
         {
-            return orderRepository.findAll(orderPagable);
+
+            Instant now = Instant.now();
+            Instant start = now.minus(Duration.ofDays(OrderConstants.MAX_ORDER_FETCH_DAYS));
+            startDate = Date.from(start);
+            endDate = new Date();
         }
         else
         {
-            return orderRepository.findAllByStatus(page.getStatus(), orderPagable);
+            if(page.getStartDate() == null || page.getEndDate() == null)
+            {
+                throw new InvalidDataException("Both start date and end date should have data");
+            }
+            startDate = page.getStartDate();
+            endDate = page.getEndDate();
+            if((endDate.getTime()-startDate.getTime())/ (1000 * 60 * 60 * 24) > OrderConstants.MAX_ORDER_FETCH_DAYS)
+            {
+                throw new InvalidDataException("Difference between start and end date is greater than "+OrderConstants.MAX_ORDER_FETCH_DAYS);
+            }
+        }
+        if(page.getStatus() == null)
+        {
+            return orderRepository.findAllByCreatedTimeLessThanEqualAndCreatedTimeGreaterThanEqual(orderPagable, endDate, startDate);
+        }
+        else
+        {
+            return orderRepository.findAllByStatusAndCreatedTimeLessThanEqualAndCreatedTimeGreaterThanEqual(page.getStatus(), orderPagable, endDate, startDate);
         }
     }
 

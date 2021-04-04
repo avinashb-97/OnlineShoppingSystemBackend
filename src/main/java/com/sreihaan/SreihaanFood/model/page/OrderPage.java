@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Sort;
 
+import java.util.Date;
+
 @Getter
 @Setter
 public class OrderPage {
@@ -13,4 +15,6 @@ public class OrderPage {
     private Sort.Direction sortDirection = Sort.Direction.ASC;
     private String sortBy = "createdTime";
     private Status status = null;
+    private Date startDate = null;
+    private Date endDate = null;
 }
