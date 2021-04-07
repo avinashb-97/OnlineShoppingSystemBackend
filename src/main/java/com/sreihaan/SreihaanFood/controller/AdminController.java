@@ -52,7 +52,7 @@ public class AdminController {
         return ResponseEntity.ok(orderDTOS);
     }
 
-    @PostMapping
+    @PostMapping("/order")
     public ResponseEntity<OrderDTO> makeOrder(@RequestBody AdminCreateOrderRequest adminCreateOrderRequest)
     {
         Hashtable<Long, Long> productIdVsQuantity = new Hashtable<>();
