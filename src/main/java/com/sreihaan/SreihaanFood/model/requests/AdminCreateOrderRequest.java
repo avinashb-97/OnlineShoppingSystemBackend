@@ -15,9 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 public class AdminCreateOrderRequest {
 
-    private AddressDTO addressDTO;
+    private AddressDTO address;
 
-    private List<CartItemDTO> cartItemDTOS;
+    private List<CartItemDTO> cartItems;
 
     private String email;
 

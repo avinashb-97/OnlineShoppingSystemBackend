@@ -205,7 +205,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order makeOrderForAdmin(String email, Hashtable<Long, Long> productIdVsQuantity, Address address) {
+    public Order makeOrderForAdmin(String email, Address address, Hashtable<Long, Long> productIdVsQuantity, Hashtable<Long, BigDecimal> productIdVsPrice)
+    {
         User user = null;
         try {
             user = userService.getUserByEmail(email);
@@ -216,7 +217,7 @@ public class OrderServiceImpl implements OrderService {
         }
         User adminUser = userService.getCurrentUser();
         Address savedAddress = addressService.addAddress(address);
-        Order order = makeOrder(address, user, productIdVsQuantity);
+        Order order = makeOrder(address, user, productIdVsQuantity, productIdVsPrice);
         return order;
     }
 
@@ -246,7 +247,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    private Order makeOrder(Address address, User user, Hashtable<Long,Long> productIdVsQuantity)
+    private Order makeOrder(Address address, User user, Hashtable<Long,Long> productIdVsQuantity, Hashtable<Long, BigDecimal> productIdVsPrice)
     {
         Order order = new Order();
         order.setUser(user);
@@ -259,7 +260,7 @@ public class OrderServiceImpl implements OrderService {
         {
             long quantity = productIdVsQuantity.get(productId);
             Product product = productService.getProductById(productId);
-            BigDecimal price = product.getProductPrice();
+            BigDecimal price = productIdVsPrice.get(productId);
             BigDecimal totalPrice = price.multiply(new BigDecimal(quantity));
             OrderItem orderItem = setDataAndGetOrderItem(product, price, quantity, totalPrice);
             orderItems.add(orderItem);

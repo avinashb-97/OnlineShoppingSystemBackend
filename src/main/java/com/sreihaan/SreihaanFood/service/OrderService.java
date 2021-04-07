@@ -8,6 +8,7 @@ import com.sreihaan.SreihaanFood.model.persistence.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.parameters.P;
 
+import java.math.BigDecimal;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public interface OrderService {
 
     public Order getOrderByOrderId(String orderId);
 
-    Order makeOrderForAdmin(String email, Hashtable<Long, Long> productIdVsQuantity, Address address);
+    Order makeOrderForAdmin(String email, Address address, Hashtable<Long, Long> productIdVsQuantity, Hashtable<Long, BigDecimal> productIdVsPrice);
 
     Page<Order> getAllOrdersUserByEmail(String email, OrderPage page);
 }

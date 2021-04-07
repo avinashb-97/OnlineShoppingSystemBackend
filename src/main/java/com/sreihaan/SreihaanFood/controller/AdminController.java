@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -55,15 +56,18 @@ public class AdminController {
     public ResponseEntity<OrderDTO> makeOrder(@RequestBody AdminCreateOrderRequest adminCreateOrderRequest)
     {
         Hashtable<Long, Long> productIdVsQuantity = new Hashtable<>();
-        for(CartItemDTO cartItemDTO : adminCreateOrderRequest.getCartItemDTOS())
+        Hashtable<Long, BigDecimal> productIdVsPrice = new Hashtable<>();
+        for(CartItemDTO cartItemDTO : adminCreateOrderRequest.getCartItems())
         {
             long productId = cartItemDTO.getProductId();
             long quantity = cartItemDTO.getQuantity();
+            BigDecimal unitPrice = cartItemDTO.getUnitPrice();
             productIdVsQuantity.put(productId, quantity);
+            productIdVsPrice.put(productId, unitPrice);
         }
         String email = adminCreateOrderRequest.getEmail();
-        Address address = AddressDTO.convertAddressDTOToEntity(adminCreateOrderRequest.getAddressDTO());
-        Order order = orderService.makeOrderForAdmin(email, productIdVsQuantity, address);
+        Address address = AddressDTO.convertAddressDTOToEntity(adminCreateOrderRequest.getAddress());
+        Order order = orderService.makeOrderForAdmin(email, address, productIdVsQuantity, productIdVsPrice);
         OrderDTO orderDTO = OrderDTO.convertEntityToOrderDTO(order);
         return ResponseEntity.ok(orderDTO);
     }
