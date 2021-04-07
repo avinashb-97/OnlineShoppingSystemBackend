@@ -79,6 +79,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderItems(orderItems);
         order.setTotal(totalAmount);
         order.setStatus(Status.ORDERED);
+        order.setOrderedBy(user.getEmail());
         cartService.removeAllFromCart();
         return orderRepository.save(order);
     }

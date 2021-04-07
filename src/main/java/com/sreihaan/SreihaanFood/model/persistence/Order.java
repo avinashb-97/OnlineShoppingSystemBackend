@@ -55,6 +55,7 @@ public class Order {
     @Column(name = "last_modified_time")
     private Date lastModifiedTime;
 
+    @Column(nullable = false, columnDefinition = "tinyint(1) default 0")
     private boolean isOrderedByAdmin;
 
     private String orderedBy;
