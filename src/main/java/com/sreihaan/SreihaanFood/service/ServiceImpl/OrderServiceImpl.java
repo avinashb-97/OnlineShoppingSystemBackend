@@ -217,7 +217,7 @@ public class OrderServiceImpl implements OrderService {
         }
         User adminUser = userService.getCurrentUser();
         Address savedAddress = addressService.addAddress(address);
-        Order order = makeOrder(address, user, productIdVsQuantity, productIdVsPrice);
+        Order order = makeOrder(address, user, productIdVsQuantity, productIdVsPrice, adminUser.getEmail());
         return order;
     }
 
@@ -247,7 +247,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    private Order makeOrder(Address address, User user, Hashtable<Long,Long> productIdVsQuantity, Hashtable<Long, BigDecimal> productIdVsPrice)
+    private Order makeOrder(Address address, User user, Hashtable<Long,Long> productIdVsQuantity, Hashtable<Long, BigDecimal> productIdVsPrice, String orderedBy)
     {
         Order order = new Order();
         order.setUser(user);
@@ -270,6 +270,8 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderItems(orderItems);
         order.setTotal(totalAmount);
         order.setStatus(Status.ORDERED);
+        order.setOrderedByAdmin(true);
+        order.setOrderedBy(orderedBy);
         return orderRepository.save(order);
     }
 
