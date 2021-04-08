@@ -8,6 +8,7 @@ import com.sreihaan.SreihaanFood.model.persistence.Address;
 import com.sreihaan.SreihaanFood.model.persistence.Order;
 import com.sreihaan.SreihaanFood.model.persistence.enums.Status;
 import com.sreihaan.SreihaanFood.model.requests.AdminCreateOrderRequest;
+import com.sreihaan.SreihaanFood.service.EmailSenderService;
 import com.sreihaan.SreihaanFood.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,9 @@ public class AdminController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     @GetMapping("/order")
     public ResponseEntity<Page<OrderDTO>> getAllOrders(@RequestParam(required = false) String orderId, @RequestParam(required = false) String email, OrderPage orderPage)
@@ -76,6 +80,7 @@ public class AdminController {
     public ResponseEntity<OrderDTO> changeOrderStatus(@PathVariable String orderId, @RequestBody Status status)
     {
         Order order = orderService.updateOrderStatus(orderId, status);
+        emailSenderService.sendOrderConfirmationMail(order);
         OrderDTO orderDTO = OrderDTO.convertEntityToOrderDTO(order);
         return ResponseEntity.ok(orderDTO);
     }
