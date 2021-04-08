@@ -273,6 +273,7 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Status.ORDERED);
         order.setOrderedByAdmin(true);
         order.setOrderedBy(orderedBy);
+        order.setOrderId(getOrderId());
         return orderRepository.save(order);
     }
 
