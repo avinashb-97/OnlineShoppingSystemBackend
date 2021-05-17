@@ -61,7 +61,7 @@ public class Product {
 
     public BigDecimal getProductPrice()
     {
-        return discountPrice == null || discountPrice.equals(BigDecimal.ZERO) ? price : discountPrice;
+        return discountPrice == null || discountPrice.compareTo(BigDecimal.ZERO) == 0 ? price : discountPrice;
     }
 
     @Override

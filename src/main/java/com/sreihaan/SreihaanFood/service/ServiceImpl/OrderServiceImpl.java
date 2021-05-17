@@ -44,6 +44,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private EmailSenderService emailSenderService;
+
     @Override
     public Order makeOrderForCurrentUser(long addressId) {
         User user = userService.getCurrentUser();
@@ -232,6 +235,32 @@ public class OrderServiceImpl implements OrderService {
     public Page<Order> getAllOrdersUserByEmail(String email, OrderPage page) {
         User user = userService.getUserByEmail(email);
         return  getAllOrdersForUser(user, page);
+    }
+
+    @Override
+    public void makeOrderForGuestUser(String email, Address address, Hashtable<Long, Long> itemVsQuantity)
+    {
+        Order order = new Order();
+        order.setOrderedBy(email);
+        order.setOrderId("GO"+getOrderId());
+        order.setAddress(address);
+        order.setCreatedTime(new Date());
+        List<OrderItem> orderItems = new ArrayList<>();
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        for(long itemId : itemVsQuantity.keySet())
+        {
+            long quantity = itemVsQuantity.get(itemId);
+            Product product = productService.getProductById(itemId);
+            BigDecimal price = product.getProductPrice();
+            BigDecimal totalPrice = price.multiply(new BigDecimal(quantity));
+            OrderItem orderItem = setDataAndGetOrderItem(product, price, quantity, totalPrice);
+            orderItems.add(orderItem);
+            totalAmount = totalAmount.add(totalPrice);
+        }
+        order.setTotal(totalAmount);
+        order.setOrderItems(orderItems);
+        emailSenderService.sendOrderConfirmationMailForGuest(address.getCustomerName(), order);
+        emailSenderService.sendGuestOrderConfirmationMailForAdmin(address.getCustomerName(), order);
     }
 
     public Page<Order> getAllOrdersForUser(User user, OrderPage page)

@@ -3,7 +3,7 @@ package com.sreihaan.SreihaanFood.constants;
 public class MailConstants {
 
     public static final String USERNAME = "sreihaanfoods@gmail.com";
-    public static final String APP_PASSWORD = "rforwkqoekaghjeg";
+    public static final String APP_PASSWORD = "fhlfnobwddcudplf";
     public static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
     public static final String PROTOCOL = "smtp";
     public static final String HOST = "smtp.gmail.com";
@@ -25,4 +25,6 @@ public class MailConstants {
     public static final String PASSWORD_RESET_BODY = "To reset your password, please click here : ";
 
     public static final String EMAIL_NOREPLY_NOTE = "<br>Note: Do not reply to this email. This email is sent from an unattended mailbox. Replies will not be read.";
+    public static final String ADMIN_MAIL = "avinashbb695@gmail.com";
+
 }

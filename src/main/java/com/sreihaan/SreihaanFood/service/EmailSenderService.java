@@ -11,5 +11,10 @@ public interface EmailSenderService {
     public void sendOTPForUser(String email, int otp, String subject);
 
     void sendErrorMessageForUserCreation(String email);
-    
+
+    public void sendQueryMail(String name, String email, String query);
+
+    void sendOrderConfirmationMailForGuest(String customerName, Order order);
+
+    void sendGuestOrderConfirmationMailForAdmin(String customerName, Order order);
 }

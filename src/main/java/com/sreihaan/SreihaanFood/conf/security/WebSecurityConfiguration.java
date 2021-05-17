@@ -10,6 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.List;
 
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -37,7 +41,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests()
+        http.csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
 
                 .antMatchers(HttpMethod.GET, "/api/product/**").permitAll()
@@ -53,6 +57,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/order/**").hasAnyAuthority("USER")
                 .antMatchers("/api/admin/**").hasAnyAuthority("MODERATOR", "ADMIN")
 
+                .antMatchers("/api/query").permitAll()
+
+                .antMatchers(HttpMethod.POST,"/api/guest/order").permitAll()
+
                 .antMatchers(SWAGGER_AUTH_WHITELIST).permitAll()
                 .antMatchers("/").hasAnyAuthority("USER", "MODERATOR", "ADMIN")
                 .anyRequest().authenticated()
@@ -60,6 +68,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthenticationVerficationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.cors(c->{
+            CorsConfiguration cc = new CorsConfiguration();
+            cc.setAllowedOrigins(List.of("*"));
+            cc.setAllowedMethods(List.of("POST","GET","PUT","DELETE"));
+        });
     }
 
     @Bean

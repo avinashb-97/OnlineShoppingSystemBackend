@@ -1,7 +1,6 @@
 package com.sreihaan.SreihaanFood.service.ServiceImpl;
 
 import com.sreihaan.SreihaanFood.constants.MailConstants;
-import com.sreihaan.SreihaanFood.model.persistence.Address;
 import com.sreihaan.SreihaanFood.model.persistence.Order;
 import com.sreihaan.SreihaanFood.service.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,22 +45,63 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         }
     }
 
-    private String getOrderSuccessMailTemplate(Order order)
+    private String getOrderSuccessMailTemplate(Order order, String userName)
     {
         Context context = new Context();
-        context.setVariable("userName", order.getUser().getFirstName());
+        context.setVariable("userName", userName);
         context.setVariable("address", order.getAddress());
         context.setVariable("items", order.getOrderItems());
         context.setVariable("orderId", order.getOrderId());
         context.setVariable("orderDate", order.getCreatedTime());
+        context.setVariable("totalAmount", order.getTotal());
         String process = templateEngine.process("emails/OrderSuccess", context);
         return process;
+    }
+
+    private String getOrderSuccessMailTemplateForAdmin(Order order, String userName)
+    {
+        Context context = new Context();
+        context.setVariable("userName", userName);
+        context.setVariable("email", order.getOrderedBy());
+        context.setVariable("address", order.getAddress());
+        context.setVariable("items", order.getOrderItems());
+        context.setVariable("orderId", order.getOrderId());
+        context.setVariable("orderDate", order.getCreatedTime());
+        context.setVariable("totalAmount", order.getTotal());
+        context.setVariable("phone", order.getAddress().getPhone());
+        String process = templateEngine.process("emails/OrderSuccessAdmin", context);
+        return process;
+    }
+
+    @Async
+    public void sendQueryMail(String name, String email, String query)
+    {
+        Context context = new Context();
+        context.setVariable("name", name);
+        context.setVariable("email", email);
+        context.setVariable("query", query);
+        String message = templateEngine.process("emails/QueryMail", context);
+        sendEmail(MailConstants.ADMIN_MAIL, "Query - "+email, message);
+    }
+
+    @Override
+    @Async
+    public void sendOrderConfirmationMailForGuest(String customerName, Order order) {
+        String message = getOrderSuccessMailTemplate(order, customerName);
+        sendEmail(order.getOrderedBy(), "Order Confirmation - Order Id: "+order.getOrderId(), message);
+    }
+
+    @Override
+    @Async
+    public void sendGuestOrderConfirmationMailForAdmin(String customerName, Order order) {
+        String message = getOrderSuccessMailTemplateForAdmin(order, customerName);
+        sendEmail(MailConstants.ADMIN_MAIL, "Guest Order Confirmation - Order Id: "+order.getOrderId(), message);
     }
 
     @Async
     public void sendOrderConfirmationMail(Order order)
     {
-        String message = getOrderSuccessMailTemplate(order);
+        String message = getOrderSuccessMailTemplate(order, order.getUser().getFirstName());
         sendEmail(order.getUser().getEmail(), "Order Confirmation - Order Id: "+order.getOrderId(), message);
     }
 

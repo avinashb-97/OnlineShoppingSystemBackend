@@ -33,4 +33,6 @@ public interface OrderService {
     Order makeOrderForAdmin(String email, Address address, Hashtable<Long, Long> productIdVsQuantity, Hashtable<Long, BigDecimal> productIdVsPrice);
 
     Page<Order> getAllOrdersUserByEmail(String email, OrderPage page);
+
+    public void makeOrderForGuestUser(String email, Address address, Hashtable<Long, Long> itemVsQuantity);
 }

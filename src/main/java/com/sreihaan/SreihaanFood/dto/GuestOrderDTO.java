@@ -4,6 +4,7 @@ import com.sreihaan.SreihaanFood.model.persistence.Address;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -12,8 +13,8 @@ public class GuestOrderDTO {
 
     private String email;
 
-    private Address address;
+    private AddressDTO address;
 
-    private Map<Long, Long> cartContents;
+    private List<CartItemDTO> products;
 
 }

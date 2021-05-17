@@ -15,9 +15,8 @@
     </style>
 </head>
 <body>
-<div>Dear <span th:text="${userName}"></span>,</div><br>
-<div>Greetings from Sreihaan Foods!</div>
-<div>Your order has been placed successfully, Please find below the summary of your order</div><br>
+<div>Dear Admin,</div><br>
+<div><span th:text="${userName}"></span> has placed an order, Please find below the summary of your order</div><br>
 <table style="width:100%">
     <tr>
         <th>S.No</th>
@@ -34,14 +33,19 @@
 </table>
 <br>
 <div>Total Amount : <span th:text="${'$'+totalAmount}"></span></div>
+<div>Customer Email : <span th:text="${email}"></span></div>
+<div>Phone No. : <span th:text="${phone}"></span></div>
+
+
 <br>
-<div>Your order will be shipped to:</div><br>
+<div>Shipping Address:</div><br>
 <div th:text="${address.customerName}"></div>
 <div th:text="${address.addressLine1 +', '+address.addressLine2}"></div>
 <div th:text="${address.city}"></div>
 <div th:text="${address.state}"></div>
 <div th:text="${address.country}"></div>
 <div th:text="${address.postalCode}"></div>
+
 <br>
 <div th:text="${'Order Id: '+orderId}"></div>
 <div th:text="${'Order Placed on: '+orderDate}"></div>
