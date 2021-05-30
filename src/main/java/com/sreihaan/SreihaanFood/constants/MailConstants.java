@@ -25,6 +25,6 @@ public class MailConstants {
     public static final String PASSWORD_RESET_BODY = "To reset your password, please click here : ";
 
     public static final String EMAIL_NOREPLY_NOTE = "<br>Note: Do not reply to this email. This email is sent from an unattended mailbox. Replies will not be read.";
-    public static final String ADMIN_MAIL = "avinashbb695@gmail.com";
+    public static final String ADMIN_MAIL = "sreihaanfoodsales@gmail.com";
 
 }
